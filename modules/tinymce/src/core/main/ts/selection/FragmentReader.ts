@@ -19,6 +19,17 @@ const findParentListContainer = function (parents) {
   });
 };
 
+const getFullySelectedParagraphWrappers = function (parents, rng) {
+  return Arr.find(parents, function (elm) {
+    return Node.name(elm) === 'p' && SelectionUtils.hasAllContentsSelected(elm, rng);
+  }).fold(
+    Fun.constant([]),
+    (p) => [
+      p
+    ]
+  );
+};
+
 const getFullySelectedListWrappers = function (parents, rng) {
   return Arr.find(parents, function (elm) {
     return Node.name(elm) === 'li' && SelectionUtils.hasAllContentsSelected(elm, rng);
@@ -63,7 +74,8 @@ const getWrapElements = function (rootNode, rng) {
     return ElementType.isInline(elm) || ElementType.isHeading(elm);
   });
   const listWrappers = getFullySelectedListWrappers(parents, rng);
-  const allWrappers = wrapElements.concat(listWrappers.length ? listWrappers : directListWrappers(commonAnchorContainer));
+  const pWrappers = listWrappers.length > 0 ? listWrappers : getFullySelectedParagraphWrappers(parents, rng);
+  const allWrappers = wrapElements.concat(pWrappers.length ? pWrappers : directListWrappers(commonAnchorContainer));
   return Arr.map(allWrappers, Replication.shallow);
 };
 

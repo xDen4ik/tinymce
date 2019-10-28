@@ -1,6 +1,7 @@
 Version 5.2.0 (TBD)
     Changed and improved the visual appearance of the color input field #TINY-2917
     Changed fake caret container to use `forced_root_block` when possible #TINY-4190
+    Changed FragmentReader to wrap fully selected paragraph child nodes with paragraphs #TINY-4021
     Fixed content incorrectly scrolling to the top or bottom when pressing enter if they were already in view #TINY-4162
     Fixed `scrollIntoView` potentially hiding elements behind the toolbar #TINY-4162
 Version 5.1.1 (TBD)

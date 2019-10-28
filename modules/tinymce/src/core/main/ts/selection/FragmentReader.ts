@@ -67,24 +67,33 @@ const directListWrappers = function (commonAnchorContainer) {
   }
 };
 
-const getWrapElements = function (rootNode, rng) {
+const requiresP = (dom, listWrappers, commonAnchorContainer) => {
+  if (listWrappers.length > 0) {
+    return false;
+  }
+  const textInlinesMap = dom.schema.getTextInlineElements();
+  const nodeName = Node.name(commonAnchorContainer);
+  return Node.isText(commonAnchorContainer) || textInlinesMap[nodeName.toLowerCase()];
+};
+
+const getWrapElements = (dom, rootNode, rng) => {
   const commonAnchorContainer = Element.fromDom(rng.commonAncestorContainer);
   const parents = Parents.parentsAndSelf(commonAnchorContainer, rootNode);
   const wrapElements = Arr.filter(parents, function (elm) {
     return ElementType.isInline(elm) || ElementType.isHeading(elm);
   });
   const listWrappers = getFullySelectedListWrappers(parents, rng);
-  const pWrappers = listWrappers.length > 0 ? listWrappers : getFullySelectedParagraphWrappers(parents, rng);
+  const pWrappers = requiresP(dom, listWrappers, commonAnchorContainer) ? getFullySelectedParagraphWrappers(parents, rng) : listWrappers;
   const allWrappers = wrapElements.concat(pWrappers.length ? pWrappers : directListWrappers(commonAnchorContainer));
   return Arr.map(allWrappers, Replication.shallow);
 };
 
-const emptyFragment = function () {
+const emptyFragment = () => {
   return Fragment.fromElements([]);
 };
 
-const getFragmentFromRange = function (rootNode, rng) {
-  return wrap(Element.fromDom(rng.cloneContents()), getWrapElements(rootNode, rng));
+const getFragmentFromRange = (dom, rootNode, rng) => {
+  return wrap(Element.fromDom(rng.cloneContents()), getWrapElements(dom, rootNode, rng));
 };
 
 const getParentTable = function (rootElm, cell) {
@@ -103,13 +112,13 @@ const getTableFragment = function (rootNode, selectedTableCells) {
   }).getOrThunk(emptyFragment);
 };
 
-const getSelectionFragment = function (rootNode, ranges) {
-  return ranges.length > 0 && ranges[0].collapsed ? emptyFragment() : getFragmentFromRange(rootNode, ranges[0]);
+const getSelectionFragment = (dom, rootNode, ranges) => {
+  return ranges.length > 0 && ranges[0].collapsed ? emptyFragment() : getFragmentFromRange(dom, rootNode, ranges[0]);
 };
 
-const read = function (rootNode, ranges) {
+const read = (dom, rootNode, ranges) => {
   const selectedCells = TableCellSelection.getCellsFromElementOrRanges(ranges, rootNode);
-  return selectedCells.length > 0 ? getTableFragment(rootNode, selectedCells) : getSelectionFragment(rootNode, ranges);
+  return selectedCells.length > 0 ? getTableFragment(rootNode, selectedCells) : getSelectionFragment(dom, rootNode, ranges);
 };
 
 export default {

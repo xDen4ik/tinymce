@@ -32,7 +32,7 @@ const getHtmlContent = (editor: Editor, args: any): string => {
   let fragment;
   const ranges = EventProcessRanges.processRanges(editor, MultiRange.getRanges(sel));
 
-  fragment = args.contextual ? FragmentReader.read(Element.fromDom(editor.getBody()), ranges).dom() : rng.cloneContents();
+  fragment = args.contextual ? FragmentReader.read(editor.dom, Element.fromDom(editor.getBody()), ranges).dom() : rng.cloneContents();
   if (fragment) {
     tmpElm.appendChild(fragment);
   }

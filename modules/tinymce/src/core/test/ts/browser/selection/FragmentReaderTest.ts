@@ -5,6 +5,7 @@ import FragmentReader from 'tinymce/core/selection/FragmentReader';
 import ViewBlock from '../../module/test/ViewBlock';
 import { UnitTest } from '@ephox/bedrock-client';
 import { document } from '@ephox/dom-globals';
+import DOMUtils from 'tinymce/core/api/dom/DOMUtils';
 
 UnitTest.asynctest('browser.tinymce.core.selection.FragmentReaderTest', function () {
   const success = arguments[arguments.length - 2];
@@ -26,7 +27,7 @@ UnitTest.asynctest('browser.tinymce.core.selection.FragmentReaderTest', function
       rng.setStart(sc.dom(), startOffset);
       rng.setEnd(ec.dom(), endOffset);
 
-      return FragmentReader.read(Element.fromDom(viewBlock.get()), [rng]);
+      return FragmentReader.read(DOMUtils(document, { root_element: viewBlock.get() }), Element.fromDom(viewBlock.get()), [rng]);
     });
   };
 
@@ -39,7 +40,7 @@ UnitTest.asynctest('browser.tinymce.core.selection.FragmentReaderTest', function
         return rng;
       });
 
-      return FragmentReader.read(Element.fromDom(viewBlock.get()), ranges);
+      return FragmentReader.read(DOMUtils(document, { root_element: viewBlock.get() }), Element.fromDom(viewBlock.get()), ranges);
     });
   };
 
@@ -73,22 +74,27 @@ UnitTest.asynctest('browser.tinymce.core.selection.FragmentReaderTest', function
       Logger.t('Get fragment from partially selected inline element', Chain.asStep(viewBlock, [
         cSetHtml('<p><i>a<b>b</b></i></p>'),
         cReadFragment([0, 0, 0], 0, [0, 0, 1, 0], 1),
-        cAssertFragmentHtml('<i>a<b>b</b></i>')
+        cAssertFragmentHtml('<p><i>a<b>b</b></i></p>')
       ])),
       Logger.t('Get fragment on text only inside inline element', Chain.asStep(viewBlock, [
         cSetHtml('<p><b>a</b></p>'),
+        cReadFragment([0, 0, 0], 0, [0, 0, 0], 1),
+        cAssertFragmentHtml('<p><b>a</b></p>')
+      ])),
+      Logger.t('Get fragment on text only inside inline element', Chain.asStep(viewBlock, [
+        cSetHtml('<p><b>a</b><i>b</i></p>'),
         cReadFragment([0, 0, 0], 0, [0, 0, 0], 1),
         cAssertFragmentHtml('<b>a</b>')
       ])),
       Logger.t('Get fragment on text only inside inline elements', Chain.asStep(viewBlock, [
         cSetHtml('<p><a href="#1"><i><b>a</b></i></a></p>'),
         cReadFragment([0, 0, 0, 0, 0], 0, [0, 0, 0, 0, 0], 1),
-        cAssertFragmentHtml('<a href="#1"><i><b>a</b></i></a>')
+        cAssertFragmentHtml('<p><a href="#1"><i><b>a</b></i></a></p>')
       ])),
       Logger.t('Get fragment indexed element within inline element', Chain.asStep(viewBlock, [
         cSetHtml('<p><b><input></b></p>'),
         cReadFragment([0, 0], 0, [0, 0], 1),
-        cAssertFragmentHtml('<b><input></b>')
+        cAssertFragmentHtml('<p><b><input></b></p>')
       ]))
     ])),
     Logger.t('Fragments on headers', GeneralSteps.sequence([

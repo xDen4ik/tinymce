@@ -178,7 +178,7 @@ const getInlineBoundarySelector = (editor: Editor): string => {
   return editor.getParam('inline_boundaries_selector', 'a[href],code,.mce-annotation', 'string');
 };
 
-const readBlockParentWIthFragment = (editor: Editor): boolean => {
+const readBlockParentWithFragment = (editor: Editor): boolean => {
   return editor.getParam('read_block_parent_with_fragment', false, 'boolean');
 };
 
@@ -217,5 +217,5 @@ export default {
   getContentCss,
   getDirectionality,
   getInlineBoundarySelector,
-  readBlockParentWIthFragment
+  readBlockParentWithFragment
 };

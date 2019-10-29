@@ -35,7 +35,7 @@ const getHtmlContent = (editor: Editor, args: any): string => {
 
   const rootBlock = Settings.getForcedRootBlock(editor);
   const forcedRootBlock = rootBlock.length > 0 ? rootBlock : 'p';
-  const readblockParentWithFragment = Settings.readBlockParentWIthFragment(editor);
+  const readblockParentWithFragment = Settings.readBlockParentWithFragment(editor);
 
   fragment = args.contextual ? FragmentReader.read(editor.dom, Element.fromDom(editor.getBody()), ranges, forcedRootBlock, readblockParentWithFragment).dom() : rng.cloneContents();
   if (fragment) {

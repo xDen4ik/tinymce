@@ -5,38 +5,40 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import { Arr, Fun } from '@ephox/katamari';
+import { Arr, Fun, Option, Obj } from '@ephox/katamari';
 import { Compare, Insert, Replication, Element, Fragment, Node, SelectorFind, Traverse } from '@ephox/sugar';
 import * as ElementType from '../dom/ElementType';
 import Parents from '../dom/Parents';
 import * as SelectionUtils from './SelectionUtils';
 import SimpleTableModel from './SimpleTableModel';
 import TableCellSelection from './TableCellSelection';
+import DOMUtils from '../api/dom/DOMUtils';
+import { Range } from '@ephox/dom-globals';
 
-const findParentListContainer = function (parents) {
-  return Arr.find(parents, function (elm) {
+const findParentListContainer = (parents: Element[]): Option<Element> => {
+  return Arr.find(parents, (elm: Element): boolean => {
     return Node.name(elm) === 'ul' || Node.name(elm) === 'ol';
   });
 };
 
-const getFullySelectedParagraphWrappers = function (parents, rng) {
-  return Arr.find(parents, function (elm) {
-    return Node.name(elm) === 'p' && SelectionUtils.hasAllContentsSelected(elm, rng);
+const getFullySelectedParagraphWrappers = (parents: Element[], rng: Range, forcedRootBlock: string): Element[] => {
+  return Arr.find(parents, (elm: Element): boolean => {
+    return Node.name(elm) === forcedRootBlock && SelectionUtils.hasAllContentsSelected(elm, rng);
   }).fold(
     Fun.constant([]),
-    (p) => [
+    (p: Element): Element[] => [
       p
     ]
   );
 };
 
-const getFullySelectedListWrappers = function (parents, rng) {
-  return Arr.find(parents, function (elm) {
+const getFullySelectedListWrappers = (parents: Element[], rng: Range): Element[] => {
+  return Arr.find(parents, (elm: Element): boolean => {
     return Node.name(elm) === 'li' && SelectionUtils.hasAllContentsSelected(elm, rng);
   }).fold(
     Fun.constant([]),
-    function (li) {
-      return findParentListContainer(parents).map(function (listCont) {
+    (li: Element): Element[] => {
+      return findParentListContainer(parents).map((listCont: Element): Element[] => {
         return [
           Element.fromTag('li'),
           Element.fromTag(Node.name(listCont))
@@ -46,19 +48,19 @@ const getFullySelectedListWrappers = function (parents, rng) {
   );
 };
 
-const wrap = function (innerElm, elms) {
-  const wrapped = Arr.foldl(elms, function (acc, elm) {
+const wrap = (innerElm: Element, elms: Element[]): Element => {
+  const wrapped = Arr.foldl(elms, (acc: Element, elm: Element): Element => {
     Insert.append(elm, acc);
     return elm;
   }, innerElm);
   return elms.length > 0 ? Fragment.fromElements([wrapped]) : wrapped;
 };
 
-const directListWrappers = function (commonAnchorContainer) {
+const directListWrappers = (commonAnchorContainer: Element): Element[] => {
   if (ElementType.isListItem(commonAnchorContainer)) {
     return Traverse.parent(commonAnchorContainer).filter(ElementType.isList).fold(
       Fun.constant([]),
-      function (listElm) {
+      (listElm: Element): Element[] => {
         return [ commonAnchorContainer, listElm ];
       }
     );
@@ -67,41 +69,41 @@ const directListWrappers = function (commonAnchorContainer) {
   }
 };
 
-const requiresP = (dom, listWrappers, commonAnchorContainer) => {
-  if (listWrappers.length > 0) {
+const requiresP = (dom: DOMUtils, listWrappers: Element[], commonAnchorContainer: Element, readBlockParent: boolean): boolean => {
+  if (listWrappers.length > 0 || !readBlockParent) {
     return false;
   }
   const textInlinesMap = dom.schema.getTextInlineElements();
   const nodeName = Node.name(commonAnchorContainer);
-  return Node.isText(commonAnchorContainer) || textInlinesMap[nodeName.toLowerCase()];
+  return Node.isText(commonAnchorContainer) || Obj.has(textInlinesMap, nodeName.toLowerCase());
 };
 
-const getWrapElements = (dom, rootNode, rng) => {
+const getWrapElements = (dom: DOMUtils, rootNode: Element, rng: Range, forcedRootBlock: string, readBlockParent: boolean): Element[] => {
   const commonAnchorContainer = Element.fromDom(rng.commonAncestorContainer);
   const parents = Parents.parentsAndSelf(commonAnchorContainer, rootNode);
-  const wrapElements = Arr.filter(parents, function (elm) {
+  const wrapElements = Arr.filter(parents, (elm: Element): boolean => {
     return ElementType.isInline(elm) || ElementType.isHeading(elm);
   });
   const listWrappers = getFullySelectedListWrappers(parents, rng);
-  const pWrappers = requiresP(dom, listWrappers, commonAnchorContainer) ? getFullySelectedParagraphWrappers(parents, rng) : listWrappers;
+  const pWrappers = requiresP(dom, listWrappers, commonAnchorContainer, readBlockParent) ? getFullySelectedParagraphWrappers(parents, rng, forcedRootBlock) : listWrappers;
   const allWrappers = wrapElements.concat(pWrappers.length ? pWrappers : directListWrappers(commonAnchorContainer));
   return Arr.map(allWrappers, Replication.shallow);
 };
 
-const emptyFragment = () => {
+const emptyFragment = (): Element => {
   return Fragment.fromElements([]);
 };
 
-const getFragmentFromRange = (dom, rootNode, rng) => {
-  return wrap(Element.fromDom(rng.cloneContents()), getWrapElements(dom, rootNode, rng));
+const getFragmentFromRange = (dom: DOMUtils, rootNode: Element, rng: Range, forcedRootBlock: string, readBlockParent: boolean): Element => {
+  return wrap(Element.fromDom(rng.cloneContents()), getWrapElements(dom, rootNode, rng, forcedRootBlock, readBlockParent));
 };
 
-const getParentTable = function (rootElm, cell) {
+const getParentTable = (rootElm: Element, cell: Element): Option<Element> => {
   return SelectorFind.ancestor(cell, 'table', Fun.curry(Compare.eq, rootElm));
 };
 
-const getTableFragment = function (rootNode, selectedTableCells) {
-  return getParentTable(rootNode, selectedTableCells[0]).bind(function (tableElm) {
+const getTableFragment = (rootNode: Element, selectedTableCells: Element[]): Element => {
+  return getParentTable(rootNode, selectedTableCells[0]).bind((tableElm: Element) => {
     const firstCell = selectedTableCells[0];
     const lastCell = selectedTableCells[selectedTableCells.length - 1];
     const fullTableModel = SimpleTableModel.fromDom(tableElm);
@@ -112,13 +114,13 @@ const getTableFragment = function (rootNode, selectedTableCells) {
   }).getOrThunk(emptyFragment);
 };
 
-const getSelectionFragment = (dom, rootNode, ranges) => {
-  return ranges.length > 0 && ranges[0].collapsed ? emptyFragment() : getFragmentFromRange(dom, rootNode, ranges[0]);
+const getSelectionFragment = (dom: DOMUtils, rootNode: Element, ranges: Range[], forcedRootBlock: string, readBlockParent: boolean): Element => {
+  return ranges.length > 0 && ranges[0].collapsed ? emptyFragment() : getFragmentFromRange(dom, rootNode, ranges[0], forcedRootBlock, readBlockParent);
 };
 
-const read = (dom, rootNode, ranges) => {
+const read = (dom: DOMUtils, rootNode: Element, ranges: Range[], forcedRootBlock: string, readBlockParent: boolean): Element => {
   const selectedCells = TableCellSelection.getCellsFromElementOrRanges(ranges, rootNode);
-  return selectedCells.length > 0 ? getTableFragment(rootNode, selectedCells) : getSelectionFragment(dom, rootNode, ranges);
+  return selectedCells.length > 0 ? getTableFragment(rootNode, selectedCells) : getSelectionFragment(dom, rootNode, ranges, forcedRootBlock, readBlockParent);
 };
 
 export default {

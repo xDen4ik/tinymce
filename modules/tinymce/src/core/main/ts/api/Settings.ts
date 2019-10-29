@@ -178,6 +178,10 @@ const getInlineBoundarySelector = (editor: Editor): string => {
   return editor.getParam('inline_boundaries_selector', 'a[href],code,.mce-annotation', 'string');
 };
 
+const readBlockParentWIthFragment = (editor: Editor): boolean => {
+  return editor.getParam('read_block_parent_with_fragment', false, 'boolean');
+};
+
 export default {
   getIframeAttrs,
   getDocType,
@@ -212,5 +216,6 @@ export default {
   getIndentation,
   getContentCss,
   getDirectionality,
-  getInlineBoundarySelector
+  getInlineBoundarySelector,
+  readBlockParentWIthFragment
 };

@@ -89,7 +89,7 @@ UnitTest.asynctest('browser.tinymce.core.selection.FragmentReaderTest', function
         cSetHtml('<p><b><input></b></p>'),
         cReadFragment([0, 0], 0, [0, 0], 1),
         cAssertFragmentHtml('<b><input></b>')
-      ])),
+      ]))
     ])),
     Logger.t('Fragments on headers', GeneralSteps.sequence([
       Logger.t('Get fragment from partially selected text inside h1', Chain.asStep(viewBlock, [

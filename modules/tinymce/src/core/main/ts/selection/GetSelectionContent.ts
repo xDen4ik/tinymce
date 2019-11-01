@@ -12,7 +12,6 @@ import FragmentReader from './FragmentReader';
 import MultiRange from './MultiRange';
 import Zwsp from '../text/Zwsp';
 import Editor from '../api/Editor';
-import Settings from '../api/Settings';
 
 const getTextContent = (editor: Editor): string => {
   return Option.from(editor.selection.getRng()).map((rng) => {
@@ -33,11 +32,14 @@ const getHtmlContent = (editor: Editor, args: any): string => {
   let fragment;
   const ranges = EventProcessRanges.processRanges(editor, MultiRange.getRanges(sel));
 
-  const rootBlock = Settings.getForcedRootBlock(editor);
-  const forcedRootBlock = rootBlock.length > 0 ? rootBlock : 'p';
-  const readblockParentWithFragment = Settings.readBlockParentWithFragment(editor);
+  if (args.contextual) {
+    const rootNode = Element.fromDom(editor.getBody());
+    const elFragment = args.fragmentReaderOverride ? args.fragmentReaderOverride(rootNode, ranges, FragmentReader.read) : FragmentReader.read(rootNode, ranges);
+    fragment = elFragment.dom();
+  } else {
+    fragment = rng.cloneContents();
+  }
 
-  fragment = args.contextual ? FragmentReader.read(editor.dom, Element.fromDom(editor.getBody()), ranges, forcedRootBlock, readblockParentWithFragment).dom() : rng.cloneContents();
   if (fragment) {
     tmpElm.appendChild(fragment);
   }

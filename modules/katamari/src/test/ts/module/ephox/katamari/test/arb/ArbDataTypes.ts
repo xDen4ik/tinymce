@@ -1,34 +1,16 @@
-import * as Fun from 'ephox/katamari/api/Fun';
 import { Option } from 'ephox/katamari/api/Option';
 import { FutureResult } from 'ephox/katamari/api/FutureResult';
 import { Result } from 'ephox/katamari/api/Result';
-import Jsc from '@ephox/wrap-jsverify';
-import fc from 'fast-check';
+import fc, { Arbitrary } from 'fast-check';
 
-const show = function (res: Result<string, string>) {
-  return res.fold(function (e) {
-    return 'Result.error(' + e + ')';
-  }, function (v) {
-    return 'Result.value(' + v + ')';
-  });
-};
+export const resultError: Arbitrary<Result<string, string>> = fc.string().map((e: string) => Result.error(e));
 
-export const resultError: Result<string, string> = Jsc.string.smap(function (e: string) {
-  return Result.error(e);
-}, function (res) {
-  return res.fold(Fun.identity, Fun.die('This should not happen'));
-}, show);
+export const resultValue: Arbitrary<Result<string, string>> = fc.string().map((e: string) => Result.value(e));
 
-export const resultValue: Result<string, string> = Jsc.string.smap(function (e: string) {
-  return Result.value(e);
-}, function (res) {
-  return res.fold(Fun.die('This should not happen'), Fun.identity);
-}, show);
+export const result = fc.oneof(resultError, resultValue);
 
-export const result = Jsc.oneof([ resultError, resultValue ]);
-
-const genFutureResultSchema = result.generator.map(function (result) {
-  const futureResult = FutureResult.nu(function (callback) {
+const genFutureResultSchema = result.map((result) => {
+  const futureResult = FutureResult.nu((callback) => {
     callback(result);
   });
 
@@ -38,27 +20,17 @@ const genFutureResultSchema = result.generator.map(function (result) {
   };
 });
 
-const genFutureResult = result.generator.map(function (result) {
-  return FutureResult.nu(function (callback) {
-    callback(result);
-  });
-});
+const genFutureResult = result.map((result) => FutureResult.nu((callback) => {
+  callback(result);
+}));
 
-export const futureResult  = Jsc.bless({
-  generator: genFutureResult
-});
+export const futureResult = genFutureResult;
 
-export const futureResultSchema = Jsc.bless({
-  generator: genFutureResultSchema
-});
+export const futureResultSchema = genFutureResultSchema;
 
-export const optionNone = Jsc.constant(Option.none());
-export const optionSome = Jsc.json.smap(function (v) {
-  return Option.some(v);
-}, function (option) {
-  return option.getOrDie();
-});
+export const optionNone = <T> () => fc.constant(Option.none());
+export const optionSome = <T> (at: Arbitrary<T>) => at.map(Option.some);
 
-export const option = Jsc.oneof([ optionNone, optionSome ]);
+export const option = <T> (at: Arbitrary<T>) => fc.oneof(optionNone(), optionSome(at));
 
 export const negativeInteger = () => fc.integer(Number.MIN_SAFE_INTEGER, -1);

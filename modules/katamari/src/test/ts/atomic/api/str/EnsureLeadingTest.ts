@@ -1,11 +1,11 @@
 import * as Strings from 'ephox/katamari/api/Strings';
-import { UnitTest, assert } from '@ephox/bedrock-client';
+import { UnitTest, Assert } from '@ephox/bedrock-client';
 import fc from 'fast-check';
 
 UnitTest.test('ensureLeading', () => {
   function check(expected, str, prefix) {
     const actual = Strings.ensureLeading(str, prefix);
-    assert.eq(expected, actual);
+    Assert.eq('ensureLeading', expected, actual);
   }
 
   check('', '', '');

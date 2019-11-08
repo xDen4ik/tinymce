@@ -6,11 +6,7 @@ import * as ArbDataTypes from 'ephox/katamari/test/arb/ArbDataTypes';
 import fc from 'fast-check';
 import { UnitTest, Assert } from '@ephox/bedrock-client';
 
-UnitTest.test('OptionsTest', function () {
-  const person = function (name, age, address) {
-    return { name, age, address };
-  };
-
+UnitTest.test('OptionsTest', () => {
   const arr1 = [Option.some(1), Option.none(), Option.some(2), Option.some(3), Option.none(), Option.none(), Option.none(), Option.none(), Option.some(4)];
   Assert.eq('eq', [1, 2, 3, 4], Options.cat(arr1));
 
@@ -21,7 +17,7 @@ UnitTest.test('OptionsTest', function () {
 UnitTest.test('Options.cat of only nones should be an empty array', () => {
   fc.assert(fc.property(
     fc.array(ArbDataTypes.optionNone()),
-    function (options) {
+    (options) => {
       const output = Options.cat(options);
       Assert.eq('eq',  0, output.length);
     }
@@ -31,7 +27,7 @@ UnitTest.test('Options.cat of only nones should be an empty array', () => {
 UnitTest.test('Options.cat of only somes should have the same length', () => {
   fc.assert(fc.property(
     fc.array(ArbDataTypes.optionSome(fc.integer())),
-    function (options) {
+    (options) => {
       const output = Options.cat(options);
       Assert.eq('eq',  options.length, output.length);
     }
@@ -41,7 +37,7 @@ UnitTest.test('Options.cat of only somes should have the same length', () => {
 UnitTest.test('Options.cat of Arr.map(xs, Option.some) should be xs', () => {
   fc.assert(fc.property(
     fc.array(fc.json()),
-    function (arr) {
+    (arr) => {
       const options = Arr.map(arr, Option.some);
       const output = Options.cat(options);
       Assert.eq('eq',  arr, output);
@@ -52,7 +48,7 @@ UnitTest.test('Options.cat of Arr.map(xs, Option.some) should be xs', () => {
 UnitTest.test('Options.cat of somes and nones should have length <= original', () => {
   fc.assert(fc.property(
     fc.array(ArbDataTypes.option(fc.integer())),
-    function (arr) {
+    (arr) => {
       const output = Options.cat(arr);
       Assert.eq('eq',  output.length <= arr.length, true);
     }
@@ -64,7 +60,7 @@ UnitTest.test('Options.cat of nones.concat(somes).concat(nones) should be somes'
     fc.array(fc.json()),
     fc.array(fc.json()),
     fc.array(fc.json()),
-    function (before, on, after) {
+    (before, on, after) => {
       const beforeNones = Arr.map(before, Option.none);
       const afterNones = Arr.map(after, Option.none);
       const onSomes = Arr.map(on, Option.some);
@@ -77,7 +73,7 @@ UnitTest.test('Options.cat of nones.concat(somes).concat(nones) should be somes'
 UnitTest.test('Options.findMap of empty is none', () => {
   fc.assert(fc.property(
     fc.func(ArbDataTypes.option(fc.integer())),
-    function (f) {
+    (f) => {
       Assert.eq('eq',  true, Options.findMap([ ], f).isNone());
     }
   ));
@@ -86,7 +82,7 @@ UnitTest.test('Options.findMap of empty is none', () => {
 UnitTest.test('Options.findMap of non-empty is first if f is Option.some', () => {
   fc.assert(fc.property(
     fc.array(fc.json(), 1, 40),
-    function (arr) {
+    (arr) => {
       Assert.eq('eq',  arr[0], Options.findMap(arr, Option.some).getOrDie());
     }
   ));
@@ -95,7 +91,7 @@ UnitTest.test('Options.findMap of non-empty is first if f is Option.some', () =>
 UnitTest.test('Options.findMap of non-empty is none if f is Option.none', () => {
   fc.assert(fc.property(
     fc.array(fc.json(), 1, 40),
-    function (arr) {
+    (arr) => {
       Assert.eq('eq',  true, Options.findMap(arr, Option.none).isNone());
     }
   ));

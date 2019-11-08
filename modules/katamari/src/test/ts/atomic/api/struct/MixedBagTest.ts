@@ -223,7 +223,12 @@ UnitTest.test('MixedBag: properties', () => {
         bag(r);
         return false;
       } catch (err) {
-        return err.message.indexOf('All required') <= -1;
+        if (err.message.indexOf('All required') > -1) {
+          return true;
+        } else {
+          Assert.fail('Unexpected error: ' + err.message);
+          return false;
+        }
       }
     }
   }));

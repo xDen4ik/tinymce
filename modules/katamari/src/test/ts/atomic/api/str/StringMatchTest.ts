@@ -1,5 +1,4 @@
 import { StringMatch } from 'ephox/katamari/api/StringMatch';
-import Jsc from '@ephox/wrap-jsverify';
 import { UnitTest, Assert } from '@ephox/bedrock-client';
 import fc from 'fast-check';
 
@@ -179,10 +178,10 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === false when diffe
   fc.assert(fc.property(
     fc.asciiString(1, 40),
     function (s) {
-      return s.toUpperCase() === s.toLowerCase() || Jsc.eq(true, StringMatch.matches(
+      return s.toUpperCase() === s.toLowerCase() || StringMatch.matches(
         StringMatch.exact(s.toLowerCase(), StringMatch.caseInsensitive),
         s.toUpperCase()
-      ));
+      );
     }
   ));
 });
@@ -191,10 +190,10 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === false when diffe
   fc.assert(fc.property(
     fc.asciiString(1, 40),
     function (s) {
-      return s.toUpperCase() === s.toLowerCase() || Jsc.eq(false, StringMatch.matches(
+      return s.toUpperCase() === s.toLowerCase() || !StringMatch.matches(
         StringMatch.exact(s.toLowerCase(), StringMatch.caseSensitive),
         s.toUpperCase()
-      ));
+      );
     }
   ));
 });

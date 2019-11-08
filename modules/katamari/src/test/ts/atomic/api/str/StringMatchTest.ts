@@ -2,8 +2,8 @@ import { StringMatch } from 'ephox/katamari/api/StringMatch';
 import { UnitTest, Assert } from '@ephox/bedrock-client';
 import fc from 'fast-check';
 
-UnitTest.test('StringMatch: unit tests', function () {
-  const check = function (testcase) {
+UnitTest.test('StringMatch: unit tests', () => {
+  const check = (testcase) => {
     Assert.eq('matches', testcase.expected, StringMatch.matches(testcase.match, testcase.input));
     Assert.eq('not matches', !testcase.expected, StringMatch.matches(
       StringMatch.not(testcase.match),
@@ -11,21 +11,7 @@ UnitTest.test('StringMatch: unit tests', function () {
     ));
   };
 
-  const toString = function (subject) {
-    return StringMatch.cata(subject, function (s) {
-      return 'starts with: ' + s;
-    }, function (p) {
-      return 'pattern: ' + p;
-    }, function (s) {
-      return 'contains: ' + s;
-    }, function (s) {
-      return 'exact: ' + s;
-    }, function () {
-      return 'all';
-    }, function (n) {
-      return 'not: ' + toString(n);
-    });
-  };
+  const toString = (subject) => StringMatch.cata(subject, (s) => 'starts with: ' + s, (p) => 'pattern: ' + p, (s) => 'contains: ' + s, (s) => 'exact: ' + s, () => 'all', (n) => 'not: ' + toString(n));
 
   const testcases = [
     { expected: false, input: 'bee', match: StringMatch.starts('a', StringMatch.caseInsensitive) },
@@ -76,7 +62,7 @@ UnitTest.test('StringMatch.matches(StringMatch.starts(s1), s1 + s) === true', ()
   fc.assert(fc.property(
     fc.string(),
     fc.string(),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.starts(s1, StringMatch.caseInsensitive),
         s1 + s
@@ -89,7 +75,7 @@ UnitTest.test('StringMatch.matches(StringMatch.contains(s1), s1 + s) === true', 
   fc.assert(fc.property(
     fc.string(),
     fc.string(),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.contains(s1, StringMatch.caseInsensitive),
         s1 + s
@@ -102,7 +88,7 @@ UnitTest.test('StringMatch.matches(StringMatch.contains(s1), s + s1) === true', 
   fc.assert(fc.property(
     fc.string(),
     fc.string(),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.contains(s1, StringMatch.caseInsensitive),
         s + s1
@@ -115,7 +101,7 @@ UnitTest.test('StringMatch.matches(StringMatch.contains(s1), s) === s.indexOf(s1
   fc.assert(fc.property(
     fc.asciiString(),
     fc.asciiString(1, 40),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', s.toLowerCase().indexOf(s1.toLowerCase()) > -1, StringMatch.matches(
         StringMatch.contains(s1, StringMatch.caseInsensitive),
         s
@@ -127,7 +113,7 @@ UnitTest.test('StringMatch.matches(StringMatch.contains(s1), s) === s.indexOf(s1
 UnitTest.test('StringMatch.matches(StringMatch.contains(s), s) === true', () => {
   fc.assert(fc.property(
     fc.string(),
-    function (s) {
+    (s) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.contains(s, StringMatch.caseInsensitive),
         s
@@ -140,7 +126,7 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s + s1) === false', () 
   fc.assert(fc.property(
     fc.string(1, 40),
     fc.string(1, 40),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', false, StringMatch.matches(
         StringMatch.exact(s, StringMatch.caseInsensitive),
         s + s1
@@ -153,7 +139,7 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s1 + s) === false', () 
   fc.assert(fc.property(
     fc.string(1, 40),
     fc.string(1, 40),
-    function (s, s1) {
+    (s, s1) => {
       Assert.eq('eq', false, StringMatch.matches(
         StringMatch.exact(s, StringMatch.caseInsensitive),
         s1 + s
@@ -165,7 +151,7 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s1 + s) === false', () 
 UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === true', () => {
   fc.assert(fc.property(
     fc.string(1, 40),
-    function (s) {
+    (s) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.exact(s, StringMatch.caseInsensitive),
         s
@@ -177,24 +163,20 @@ UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === true', () => {
 UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === false when different case and case-insensitive', () => {
   fc.assert(fc.property(
     fc.asciiString(1, 40),
-    function (s) {
-      return s.toUpperCase() === s.toLowerCase() || StringMatch.matches(
-        StringMatch.exact(s.toLowerCase(), StringMatch.caseInsensitive),
-        s.toUpperCase()
-      );
-    }
+    (s) => s.toUpperCase() === s.toLowerCase() || StringMatch.matches(
+      StringMatch.exact(s.toLowerCase(), StringMatch.caseInsensitive),
+      s.toUpperCase()
+    )
   ));
 });
 
 UnitTest.test('StringMatch.matches(StringMatch.exact(s), s) === false when different case and case-sensitive', () => {
   fc.assert(fc.property(
     fc.asciiString(1, 40),
-    function (s) {
-      return s.toUpperCase() === s.toLowerCase() || !StringMatch.matches(
-        StringMatch.exact(s.toLowerCase(), StringMatch.caseSensitive),
-        s.toUpperCase()
-      );
-    }
+    (s) => s.toUpperCase() === s.toLowerCase() || !StringMatch.matches(
+      StringMatch.exact(s.toLowerCase(), StringMatch.caseSensitive),
+      s.toUpperCase()
+    )
   ));
 });
 
@@ -202,7 +184,7 @@ UnitTest.test('StringMatch.matches(StringMatch.all(s1), *) === true', () => {
   fc.assert(fc.property(
     fc.string(),
     fc.string(),
-    function (s) {
+    (s) => {
       Assert.eq('eq', true, StringMatch.matches(
         StringMatch.all(),
         s

@@ -2,73 +2,73 @@ import * as Fun from 'ephox/katamari/api/Fun';
 import { Result } from 'ephox/katamari/api/Result';
 import * as Results from 'ephox/katamari/api/Results';
 import * as ArbDataTypes from 'ephox/katamari/test/arb/ArbDataTypes';
-import Jsc from '@ephox/wrap-jsverify';
-import { UnitTest, assert } from '@ephox/bedrock-client';
+import fc from 'fast-check';
+import { UnitTest, Assert } from '@ephox/bedrock-client';
 
 UnitTest.test('ResultsTest', function () {
-  const testPartition = function () {
-    const actual = Results.partition([
-      Result.value('a'),
-      Result.value('b'),
-      Result.error('e1'),
-      Result.error('e2'),
-      Result.value('c'),
-      Result.value('d')
-    ]);
+  const actual = Results.partition([
+    Result.value('a'),
+    Result.value('b'),
+    Result.error('e1'),
+    Result.error('e2'),
+    Result.value('c'),
+    Result.value('d')
+  ]);
 
-    assert.eq('a', actual.values[0]);
-    assert.eq('b', actual.values[1]);
-    assert.eq('c', actual.values[2]);
-    assert.eq('d', actual.values[3]);
-    assert.eq('e1', actual.errors[0]);
-    assert.eq('e2', actual.errors[1]);
-  };
+  Assert.eq('eq', 'a', actual.values[0]);
+  Assert.eq('eq', 'b', actual.values[1]);
+  Assert.eq('eq', 'c', actual.values[2]);
+  Assert.eq('eq', 'd', actual.values[3]);
+  Assert.eq('eq', 'e1', actual.errors[0]);
+  Assert.eq('eq', 'e2', actual.errors[1]);
+});
 
-  testPartition();
+const arbResultError = ArbDataTypes.resultError;
+const arbResultValue = ArbDataTypes.resultValue;
+const arbResult = ArbDataTypes.result;
 
-  const arbResultError = ArbDataTypes.resultError;
-  const arbResultValue = ArbDataTypes.resultValue;
-  const arbResult = ArbDataTypes.result;
-
-  Jsc.property(
-    'Check that values should be empty and  errors should be all if we only generate errors',
-    Jsc.array(arbResultError),
+UnitTest.test('Check that values should be empty and  errors should be all if we only generate errors', () => {
+  fc.assert(fc.property(
+    fc.array(arbResultError),
     function (resErrors) {
       const actual = Results.partition(resErrors);
-      if (!Jsc.eq(0, actual.values.length)) {
-        return 'Values length should be 0';
-      } else if (!Jsc.eq(resErrors.length, actual.errors.length)) {
-        return 'Errors length should be ' + resErrors.length;
+      if (actual.values.length !== 0) {
+        Assert.fail('Values length should be 0');
+      } else if (resErrors.length !== actual.errors.length) {
+        Assert.fail('Errors length should be ' + resErrors.length);
       }
       return true;
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that errors should be empty and values should be all if we only generate values',
-    Jsc.array(arbResultValue),
+UnitTest.test('Check that errors should be empty and values should be all if we only generate values', () => {
+  fc.assert(fc.property(
+    fc.array(arbResultValue),
     function (resValues) {
       const actual = Results.partition(resValues);
-      if (!Jsc.eq(0, actual.errors.length)) {
-        return 'Errors length should be 0';
-      } else if (!Jsc.eq(resValues.length, actual.values.length)) {
-        return 'Values length should be ' + resValues.length;
+      if (actual.errors.length !== 0) {
+        Assert.fail('Errors length should be 0');
+      } else if (resValues.length !== actual.values.length) {
+        Assert.fail('Values length should be ' + resValues.length);
       }
       return true;
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that the total number of values and errors matches the input size',
-    Jsc.array(arbResult),
+UnitTest.test('Check that the total number of values and errors matches the input size', () => {
+  fc.assert(fc.property(
+    fc.array(arbResult),
     function (results) {
       const actual = Results.partition(results);
-      return Jsc.eq(results.length, actual.errors.length + actual.values.length) ? true : 'Total number should match size of input';
+      Assert.eq('Total number should match size of input', results.length, actual.errors.length + actual.values.length);
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that two errors always equal comparison.bothErrors',
+UnitTest.test('Check that two errors always equal comparison.bothErrors', () => {
+  fc.assert(fc.property(
     arbResultError,
     arbResultError,
     function (r1, r2) {
@@ -80,10 +80,11 @@ UnitTest.test('ResultsTest', function () {
         bothValues: Fun.constant(false)
       });
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that error, value always equal comparison.firstError',
+UnitTest.test('Check that error, value always equal comparison.firstError', () => {
+  fc.assert(fc.property(
     arbResultError,
     arbResultValue,
     function (r1, r2) {
@@ -95,10 +96,11 @@ UnitTest.test('ResultsTest', function () {
         bothValues: Fun.constant(false)
       });
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that value, error always equal comparison.secondError',
+UnitTest.test('Check that value, error always equal comparison.secondError', () => {
+  fc.assert(fc.property(
     arbResultValue,
     arbResultError,
     function (r1, r2) {
@@ -110,10 +112,11 @@ UnitTest.test('ResultsTest', function () {
         bothValues: Fun.constant(false)
       });
     }
-  );
+  ));
+});
 
-  Jsc.property(
-    'Check that value, value always equal comparison.bothValues',
+UnitTest.test('Check that value, value always equal comparison.bothValues', () => {
+  fc.assert(fc.property(
     arbResultValue,
     arbResultValue,
     function (r1, r2) {
@@ -125,5 +128,5 @@ UnitTest.test('ResultsTest', function () {
         bothValues: Fun.constant(true)
       });
     }
-  );
+  ));
 });

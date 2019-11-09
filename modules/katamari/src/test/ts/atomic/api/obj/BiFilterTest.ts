@@ -45,9 +45,9 @@ UnitTest.test('Check that if the filter always returns true, then everything is 
 
 UnitTest.test('Check that everything in f fails predicate and everything in t passes predicate', () => {
   fc.assert(fc.property(
-    fc.dictionary(fc.asciiString(), fc.string(1, 40)),
-    fc.func(fc.boolean()),
-    (obj, predicate) => {
+    fc.dictionary(fc.asciiString(1, 30), fc.integer()),
+    (obj) => {
+      const predicate = (x) => x % 2 === 0;
       const output = Obj.bifilter(obj, predicate);
 
       const matches = (k) => predicate(obj[k]);
@@ -56,7 +56,7 @@ UnitTest.test('Check that everything in f fails predicate and everything in t pa
       const trueKeys = Obj.keys(output.t);
 
       Assert.eq('Something in "f" passed predicate', false, Arr.exists(falseKeys, matches));
-      Assert.eq('Something in "t" failed predicate', false, Arr.exists(trueKeys, Fun.not(matches)));
+      Assert.eq('Something in "t" failed predicate', true, Arr.forall(trueKeys, matches));
     }
   ));
 });

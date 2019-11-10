@@ -4,41 +4,13 @@ import { FutureResult } from 'ephox/katamari/api/FutureResult';
 import { Result } from 'ephox/katamari/api/Result';
 import * as Fun from 'ephox/katamari/api/Fun';
 import fc from 'fast-check';
-import { UnitTest, Assert } from '@ephox/bedrock-client';
 import { tResult } from 'ephox/katamari/api/ResultInstances';
 import { Testable } from '@ephox/dispute';
 import { arbResult } from 'ephox/katamari/test/arb/ArbDataTypes';
+import { eqAsync, promiseTest } from 'ephox/katamari/test/AsyncProps';
 
 type Testable<A> = Testable.Testable<A>;
 const { tNumber } = Testable;
-
-// TODO: move to bedrock
-const promiseTest = <A>(name: string, f: () => Promise<A>): void => {
-  UnitTest.asynctest(name, (success, failure) => {
-    f().then(function () {
-      success();
-    }, failure);
-  });
-};
-
-/* // promiseTest template:
-promiseTest('', () => {
-  return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
-    return new Promise((resolve, reject) => {
-
-    });
-  }));
-});
-*/
-
-// TODO: move to bedrock
-const eqAsync = <A>(label: string, expected: A, actual: A, testableA: Testable<A>, reject: (a: any) => void) => {
-  try {
-    Assert.eq(label, expected, actual, testableA);
-  } catch (e) {
-    reject(e);
-  }
-};
 
 promiseTest('FutureResult: nu', () => {
   return fc.assert(fc.asyncProperty(arbResult(fc.integer(), fc.integer()), (r) => {

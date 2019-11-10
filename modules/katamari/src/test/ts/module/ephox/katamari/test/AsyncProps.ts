@@ -1,6 +1,10 @@
 /* tslint:disable:no-unimported-promise */
 import * as Arr from 'ephox/katamari/api/Arr';
 import Jsc from '@ephox/wrap-jsverify';
+import { Assert, UnitTest } from '@ephox/bedrock-client';
+import { Testable } from '@ephox/dispute';
+
+type Testable<A> = Testable.Testable<A>;
 
 export const checkProp = function (label: string, arbitraries: any, f: (x: any) => void) {
   return Jsc.asyncProperty(label, arbitraries, f, { tests: 100 });
@@ -46,4 +50,32 @@ export const checkLazy = function (lazy, predicate) {
   return lazyToPromise(lazy).then(function (answer) {
     return checkPromise(answer, predicate);
   });
+};
+
+// TODO: move to bedrock
+export const promiseTest = <A>(name: string, f: () => Promise<A>): void => {
+  UnitTest.asynctest(name, (success, failure) => {
+    f().then(function () {
+      success();
+    }, failure);
+  });
+};
+
+/* // promiseTest template:
+promiseTest('', () => {
+  return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
+    return new Promise((resolve, reject) => {
+
+    });
+  }));
+});
+*/
+
+// TODO: move to bedrock
+export const eqAsync = <A>(label: string, expected: A, actual: A, testableA: Testable<A>, reject: (a: any) => void) => {
+  try {
+    Assert.eq(label, expected, actual, testableA);
+  } catch (e) {
+    reject(e);
+  }
 };

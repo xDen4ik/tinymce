@@ -1,7 +1,7 @@
 import * as Fun from 'ephox/katamari/api/Fun';
 import { Result } from 'ephox/katamari/api/Result';
 import { Option } from 'ephox/katamari/api/Option';
-import * as ArbDataTypes from 'ephox/katamari/test/arb/ArbDataTypes';
+import { arbResultValue, arbResultError } from 'ephox/katamari/test/arb/ArbDataTypes';
 import fc from 'fast-check';
 import { UnitTest, Assert } from '@ephox/bedrock-client';
 import { tResult } from 'ephox/katamari/api/ResultInstances';
@@ -38,9 +38,6 @@ UnitTest.test('Result.error: unit tests', () => {
   Assert.eq('eq', true, Result.error(4).toOption().isNone());
 });
 
-const arbResultError = ArbDataTypes.resultError;
-const arbResultValue = ArbDataTypes.resultValue;
-
 const getErrorOrDie = (res) => res.fold((err) => err, Fun.die('Was not an error!'));
 
 UnitTest.test('Result.error: error.is === false', () => {
@@ -50,25 +47,25 @@ UnitTest.test('Result.error: error.is === false', () => {
 });
 
 UnitTest.test('Result.error: error.isValue === false', () => {
-  fc.assert(fc.property(arbResultError, (res) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), (res) => {
     Assert.eq('eq', false, res.isValue());
   }));
 });
 
 UnitTest.test('Result.error: error.isError === true', () => {
-  fc.assert(fc.property(arbResultError, (res) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), (res) => {
     Assert.eq('eq', true, res.isError());
   }));
 });
 
 UnitTest.test('Result.error: error.getOr(v) === v', () => {
-  fc.assert(fc.property(arbResultError, fc.json(), (res, json) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), fc.json(), (res, json) => {
     Assert.eq('eq', json, res.getOr(json));
   }));
 });
 
 UnitTest.test('Result.error: error.getOrDie() always throws', () => {
-  fc.assert(fc.property(arbResultError, (res) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), (res) => {
     Assert.throws('should throw', () => {
       res.getOrDie();
     });
@@ -88,7 +85,7 @@ UnitTest.test('Result.error: error.orThunk(_ -> v) === v', () => {
 });
 
 UnitTest.test('Result.error: error.fold(_ -> x, die) === x', () => {
-  fc.assert(fc.property(arbResultError, fc.json(), (res, json) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), fc.json(), (res, json) => {
     const actual = res.fold(Fun.constant(json), Fun.die('Should not die'));
     Assert.eq('eq', json, actual);
   }));
@@ -108,28 +105,28 @@ UnitTest.test('Result.error: error.mapError(f) === f(error)', () => {
 });
 
 UnitTest.test('Result.error: error.each(⊥) === undefined', () => {
-  fc.assert(fc.property(arbResultError, (res) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), (res) => {
     const actual = res.each(Fun.die('⊥'));
     Assert.eq('eq', undefined, actual);
   }));
 });
 
 UnitTest.test('Given f :: s -> RV, Result.error: error.bind(f) === error', () => {
-  fc.assert(fc.property(arbResultError, fc.func(arbResultValue), (res, f) => {
+  fc.assert(fc.property(arbResultError<number, number>(fc.integer()), fc.func(arbResultValue<number, number>(fc.integer())), (res, f) => {
     const actual = res.bind(f);
     Assert.eq('eq', true, getErrorOrDie(res) === getErrorOrDie(actual));
   }));
 });
 
 UnitTest.test('Given f :: s -> RE, Result.error: error.bind(f) === error', () => {
-  fc.assert(fc.property(arbResultError, fc.func(arbResultError), (res, f) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), fc.func(arbResultError(fc.integer())), (res, f) => {
     const actual = res.bind(f);
     Assert.eq('eq', true, getErrorOrDie(res) === getErrorOrDie(actual));
   }));
 });
 
 UnitTest.test('Result.error: error.forall === true', () => {
-  fc.assert(fc.property(arbResultError, fc.func(fc.boolean()), (res, f) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), fc.func(fc.boolean()), (res, f) => {
     Assert.eq('eq', true, res.forall(f));
   }));
 });
@@ -141,7 +138,7 @@ UnitTest.test('Result.error: error.exists === false', () => {
 });
 
 UnitTest.test('Result.error: error.toOption is always none', () => {
-  fc.assert(fc.property(arbResultError, (res) => {
+  fc.assert(fc.property(arbResultError(fc.integer()), (res) => {
     Assert.eq('eq', Option.none(), res.toOption(), tOption());
   }));
 });

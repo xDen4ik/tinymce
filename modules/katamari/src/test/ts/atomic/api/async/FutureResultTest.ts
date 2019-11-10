@@ -18,7 +18,7 @@ promiseTest('FutureResult: nu', () => {
       FutureResult.nu((completer) => {
         completer(r);
       }).get((ii) => {
-        eqAsync('eq', r, ii, tResult(), reject);
+        eqAsync('eq', r, ii, reject, tResult());
         resolve();
       });
     });
@@ -29,7 +29,7 @@ promiseTest('FutureResult: fromFuture', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.fromFuture<number, unknown>(Future.pure(i)).get((ii) => {
-        eqAsync('eq', Result.value(i), ii, tResult(), reject);
+        eqAsync('eq', Result.value(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -40,7 +40,7 @@ promiseTest('FutureResult: wrap get', () => {
   return fc.assert(fc.asyncProperty(arbResult(fc.integer(), fc.integer()), (r) => {
     return new Promise((resolve, reject) => {
       FutureResult.wrap(Future.pure(r)).get((ii) => {
-        eqAsync('eq', r, ii, tResult(), reject);
+        eqAsync('eq', r, ii, reject, tResult());
         resolve();
       });
     });
@@ -51,7 +51,7 @@ promiseTest('FutureResult: fromResult get', () => {
   return fc.assert(fc.asyncProperty(arbResult(fc.integer(), fc.integer()), (r) => {
     return new Promise((resolve, reject) => {
       FutureResult.fromResult(r).get((ii) => {
-        eqAsync('eq', r, ii, tResult(), reject);
+        eqAsync('eq', r, ii, reject, tResult());
         resolve();
       });
     });
@@ -62,7 +62,7 @@ promiseTest('FutureResult: pure get', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.pure<number, unknown>(i).get((ii) => {
-        eqAsync('eq', Result.value(i), ii, tResult(), reject);
+        eqAsync('eq', Result.value(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -73,7 +73,7 @@ promiseTest('FutureResult: value get', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.value<number, unknown>(i).get((ii) => {
-        eqAsync('eq', Result.value(i), ii, tResult(), reject);
+        eqAsync('eq', Result.value(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -84,7 +84,7 @@ promiseTest('FutureResult: error get', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.error<unknown, number>(i).get((ii) => {
-        eqAsync('eq', Result.error(i), ii, tResult(), reject);
+        eqAsync('eq', Result.error(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -96,7 +96,7 @@ promiseTest('FutureResult: value mapResult', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.value(i).mapResult(f).get((ii) => {
-        eqAsync('eq', Result.value(f(i)), ii, tResult(), reject);
+        eqAsync('eq', Result.value(f(i)), ii, reject, tResult());
         resolve();
       });
     });
@@ -108,7 +108,7 @@ promiseTest('FutureResult: error mapResult', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.error(i).mapResult(Fun.die('⊥')).get((ii) => {
-        eqAsync('eq', Result.error(i), ii, tResult(), reject);
+        eqAsync('eq', Result.error(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -119,7 +119,7 @@ promiseTest('FutureResult: value mapError', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.value(i).mapError(Fun.die('⊥')).get((ii) => {
-        eqAsync('eq', Result.value(i), ii, tResult(), reject);
+        eqAsync('eq', Result.value(i), ii, reject, tResult());
         resolve();
       });
     });
@@ -131,7 +131,7 @@ promiseTest('FutureResult: err mapError', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.error(i).mapError(f).get((ii) => {
-        eqAsync('eq', Result.error(f(i)), ii, tResult(), reject);
+        eqAsync('eq', Result.error(f(i)), ii, reject, tResult());
         resolve();
       });
     });
@@ -143,7 +143,7 @@ promiseTest('FutureResult: value bindFuture value', () => {
     return new Promise((resolve, reject) => {
       const f = (x) => x % 4;
       FutureResult.value(i).bindFuture((x) => FutureResult.value(f(x))).get((actual) => {
-        eqAsync('bind result', Result.value(f(i)), actual, tResult(tNumber), reject);
+        eqAsync('bind result', Result.value(f(i)), actual, reject, tResult(tNumber));
         resolve();
       });
     });
@@ -154,7 +154,7 @@ promiseTest('FutureResult: bindFuture: value bindFuture error', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), fc.string(), (i, s) => {
     return new Promise((resolve, reject) => {
       FutureResult.value(i).bindFuture((i) => FutureResult.error(s)).get((actual) => {
-        eqAsync('bind result', Result.error(s), actual, tResult(tNumber), reject);
+        eqAsync('bind result', Result.error(s), actual, reject, tResult(tNumber));
         resolve();
       });
     });
@@ -165,7 +165,7 @@ promiseTest('FutureResult: error bindFuture', () => {
   return fc.assert(fc.asyncProperty(fc.integer(), (i) => {
     return new Promise((resolve, reject) => {
       FutureResult.error(i).bindFuture(Fun.die('⊥')).get((actual) => {
-        eqAsync('bind result', Result.error(i), actual, tResult(tNumber), reject);
+        eqAsync('bind result', Result.error(i), actual, reject, tResult(tNumber));
         resolve();
       });
     });

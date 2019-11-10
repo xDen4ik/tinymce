@@ -72,7 +72,7 @@ promiseTest('', () => {
 */
 
 // TODO: move to bedrock
-export const eqAsync = <A>(label: string, expected: A, actual: A, testableA: Testable<A>, reject: (a: any) => void) => {
+export const eqAsync = <A>(label: string, expected: A, actual: A, reject: (a: any) => void, testableA: Testable<A> = Testable.tAny) => {
   try {
     Assert.eq(label, expected, actual, testableA);
   } catch (e) {

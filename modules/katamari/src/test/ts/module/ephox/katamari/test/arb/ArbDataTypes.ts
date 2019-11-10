@@ -29,8 +29,11 @@ export const arbFutureSoon = <A> (arbA: Arbitrary<A>): Arbitrary<Future<A>> =>
   arbA.map((a) => Future.nu((cb) => {
     setTimeout(() => {
       cb(a);
-    }, 10);
+    }, 5);
   }));
 
 export const arbFutureNever = <A> (): Arbitrary<Future<A>> =>
   fc.constant(Future.nu(() => {}));
+
+export const arbFutureNowOrSoon = <A> (arbA: Arbitrary<A>): Arbitrary<Future<A>> =>
+  fc.oneof(arbFutureNow(arbA), arbFutureSoon(arbA));

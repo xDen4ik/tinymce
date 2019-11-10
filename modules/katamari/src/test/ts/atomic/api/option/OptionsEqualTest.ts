@@ -1,6 +1,6 @@
 import * as Options from 'ephox/katamari/api/Options';
 import { Option } from 'ephox/katamari/api/Option';
-import { optionSome as arbOptionSome } from 'ephox/katamari/test/arb/ArbDataTypes';
+import { arbOptionSome as arbOptionSome } from 'ephox/katamari/test/arb/ArbDataTypes';
 
 import { Assert, UnitTest } from '@ephox/bedrock-client';
 import fc from 'fast-check';

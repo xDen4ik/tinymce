@@ -4,7 +4,7 @@ import { tOption } from 'ephox/katamari/api/OptionInstances';
 import { Assert, UnitTest } from '@ephox/bedrock-client';
 import { Testable } from '@ephox/dispute';
 import fc from 'fast-check';
-import { optionSome as arbOptionSome } from 'ephox/katamari/test/arb/ArbDataTypes';
+import { arbOptionSome as arbOptionSome } from 'ephox/katamari/test/arb/ArbDataTypes';
 
 const { die, constant } = Fun;
 const { some, none } = Option;

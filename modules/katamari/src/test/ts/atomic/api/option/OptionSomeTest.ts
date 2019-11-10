@@ -39,8 +39,8 @@ UnitTest.test('OptionSomeTest', () => {
   Assert.eq('fold 4', 'az', Option.some('a').fold(Fun.die('boom'), (x) => x + 'z'));
 });
 
-const arbOptionSome = ArbDataTypes.optionSome;
-const arbOptionNone = ArbDataTypes.optionNone;
+const arbOptionSome = ArbDataTypes.arbOptionSome;
+const arbOptionNone = ArbDataTypes.arbOptionNone;
 
 UnitTest.test('Checking some(x).fold(die, id) === x', () => {
   fc.assert(fc.property(fc.integer(), (json) => {

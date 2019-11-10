@@ -16,7 +16,7 @@ UnitTest.test('OptionsTest', () => {
 
 UnitTest.test('Options.cat of only nones should be an empty array', () => {
   fc.assert(fc.property(
-    fc.array(ArbDataTypes.optionNone()),
+    fc.array(ArbDataTypes.arbOptionNone()),
     (options) => {
       const output = Options.cat(options);
       Assert.eq('eq',  0, output.length);
@@ -26,7 +26,7 @@ UnitTest.test('Options.cat of only nones should be an empty array', () => {
 
 UnitTest.test('Options.cat of only somes should have the same length', () => {
   fc.assert(fc.property(
-    fc.array(ArbDataTypes.optionSome(fc.integer())),
+    fc.array(ArbDataTypes.arbOptionSome(fc.integer())),
     (options) => {
       const output = Options.cat(options);
       Assert.eq('eq',  options.length, output.length);
@@ -47,7 +47,7 @@ UnitTest.test('Options.cat of Arr.map(xs, Option.some) should be xs', () => {
 
 UnitTest.test('Options.cat of somes and nones should have length <= original', () => {
   fc.assert(fc.property(
-    fc.array(ArbDataTypes.option(fc.integer())),
+    fc.array(ArbDataTypes.arbOption(fc.integer())),
     (arr) => {
       const output = Options.cat(arr);
       Assert.eq('eq',  output.length <= arr.length, true);
@@ -72,7 +72,7 @@ UnitTest.test('Options.cat of nones.concat(somes).concat(nones) should be somes'
 
 UnitTest.test('Options.findMap of empty is none', () => {
   fc.assert(fc.property(
-    fc.func(ArbDataTypes.option(fc.integer())),
+    fc.func(ArbDataTypes.arbOption(fc.integer())),
     (f) => {
       Assert.eq('eq',  true, Options.findMap([ ], f).isNone());
     }

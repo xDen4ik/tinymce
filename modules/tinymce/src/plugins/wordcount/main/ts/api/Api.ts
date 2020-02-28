@@ -6,7 +6,7 @@
  */
 
 import Editor from 'tinymce/core/api/Editor';
-import { countWords, countCharacters, countCharactersWithoutSpaces, Counter } from '../core/Count';
+import { countCharacters, countCharactersWithoutSpaces, Counter, countWords } from '../core/Count';
 
 export type CountGetter = () => number;
 
@@ -19,34 +19,28 @@ interface CountGetters {
 export interface WordCountApi {
   body: CountGetters;
   selection: CountGetters;
-  getCount: CountGetter; // TODO: Deprecate
 }
 
-const createBodyCounter = (editor: Editor, count: Counter): CountGetter => {
-  return () => count(editor.getBody(), editor.schema);
-};
-
-const createSelectionCounter = (editor: Editor, count: Counter): CountGetter => {
-  return () => count(editor.selection.getRng().cloneContents(), editor.schema);
-};
-
-const createBodyWordCounter = (editor: Editor): CountGetter => {
-  return createBodyCounter(editor, countWords);
-};
-
 const get = (editor: Editor): WordCountApi => {
+  const createBodyCounter = (count: Counter): CountGetter => () =>
+    count(editor.getBody(), editor.schema);
+
+  const createSelectionCounter = (count: Counter): CountGetter => () =>
+    count(editor.selection.getRng().cloneContents(), editor.schema);
+
+  const bodyWordCounter = createBodyCounter(countWords);
+
   return {
     body: {
-      getWordCount: createBodyWordCounter(editor),
-      getCharacterCount: createBodyCounter(editor, countCharacters),
-      getCharacterCountWithoutSpaces: createBodyCounter(editor, countCharactersWithoutSpaces)
+      getWordCount: bodyWordCounter,
+      getCharacterCount: createBodyCounter(countCharacters),
+      getCharacterCountWithoutSpaces: createBodyCounter(countCharactersWithoutSpaces)
     },
     selection: {
-      getWordCount: createSelectionCounter(editor, countWords),
-      getCharacterCount: createSelectionCounter(editor, countCharacters),
-      getCharacterCountWithoutSpaces: createSelectionCounter(editor, countCharactersWithoutSpaces)
-    },
-    getCount: createBodyWordCounter(editor)
+      getWordCount: createSelectionCounter(countWords),
+      getCharacterCount: createSelectionCounter(countCharacters),
+      getCharacterCountWithoutSpaces: createSelectionCounter(countCharactersWithoutSpaces)
+    }
   };
 };
 

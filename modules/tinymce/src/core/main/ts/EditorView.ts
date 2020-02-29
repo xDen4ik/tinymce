@@ -18,10 +18,10 @@ const getComputedSizeProp = function (propName, elm) {
   return parseInt(Css.get(elm, propName), 10);
 };
 
-const getClientWidth = Fun.curry(getProp, 'clientWidth');
-const getClientHeight = Fun.curry(getProp, 'clientHeight');
-const getMarginTop = Fun.curry(getComputedSizeProp, 'margin-top');
-const getMarginLeft = Fun.curry(getComputedSizeProp, 'margin-left');
+const getClientWidth = Fun.curry2(getProp, 'clientWidth');
+const getClientHeight = Fun.curry2(getProp, 'clientHeight');
+const getMarginTop = Fun.curry2(getComputedSizeProp, 'margin-top');
+const getMarginLeft = Fun.curry2(getComputedSizeProp, 'margin-left');
 
 const getBoundingClientRect = function (elm) {
   return elm.dom().getBoundingClientRect();

@@ -26,7 +26,7 @@ const isWithin = function (bounds: Bounds, detail: DetailExt) {
 
 const isRectangular = function (warehouse: Warehouse, bounds: Bounds) {
   let isRect = true;
-  const detailIsWithin = Fun.curry(isWithin, bounds);
+  const detailIsWithin = Fun.curry2(isWithin, bounds);
 
   for (let i = bounds.startRow(); i <= bounds.finishRow(); i++) {
     for (let j = bounds.startCol(); j <= bounds.finishCol(); j++) {

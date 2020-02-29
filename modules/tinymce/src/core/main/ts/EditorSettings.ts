@@ -48,7 +48,7 @@ const normalizePlugins = function (plugins: string | string[]) {
 
 // Filter out plugins for the legacy mobile theme
 const filterLegacyMobilePlugins = function (plugins: string[]) {
-  return Arr.filter(plugins, Fun.curry(Arr.contains, legacyMobilePlugins));
+  return Arr.filter(plugins, Fun.curry2(Arr.contains, legacyMobilePlugins));
 };
 
 const extractSections = function (keys, settings) {

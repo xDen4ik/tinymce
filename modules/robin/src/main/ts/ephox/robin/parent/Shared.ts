@@ -28,7 +28,7 @@ const unsafeOne = function <E, D>(universe: Universe<E, D>, look: Looker<E, D>, 
 
 const commonElement = function <E, D>(universe: Universe<E, D>, start: Option<E>, end: Option<E>): Option<E> {
   return start.bind(function (s) {
-    return end.filter(Fun.curry(universe.eq, s));
+    return end.filter(Fun.curry2(universe.eq, s));
   });
 };
 

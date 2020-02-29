@@ -15,7 +15,7 @@ import * as NodeType from './NodeType';
 const hasWhitespacePreserveParent = function (rootNode: Node, node: Node) {
   const rootElement = Element.fromDom(rootNode);
   const startNode = Element.fromDom(node);
-  return SelectorExists.ancestor(startNode, 'pre,code', Fun.curry(Compare.eq, rootElement));
+  return SelectorExists.ancestor(startNode, 'pre,code', Fun.curry2(Compare.eq, rootElement));
 };
 
 const isWhitespace = function (rootNode: Node, node: Node) {

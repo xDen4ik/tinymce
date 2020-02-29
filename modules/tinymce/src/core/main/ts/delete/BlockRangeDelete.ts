@@ -38,7 +38,7 @@ const deleteRangeMergeBlocks = function (rootNode, selection: Selection) {
 
 const isRawNodeInTable = function (root, rawNode) {
   const node = Element.fromDom(rawNode);
-  const isRoot = Fun.curry(Compare.eq, root);
+  const isRoot = Fun.curry2(Compare.eq, root);
   return PredicateFind.ancestor(node, ElementType.isTableCell, isRoot).isSome();
 };
 

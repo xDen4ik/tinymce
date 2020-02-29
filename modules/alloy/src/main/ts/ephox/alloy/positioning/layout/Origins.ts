@@ -96,7 +96,7 @@ const reposition = (origin: OriginAdt, decision: RepositionDecision): PositionCs
 };
 
 const toBox = (origin: OriginAdt, element: Element): Boxes.Bounds => {
-  const rel = Fun.curry(OuterPosition.find, element);
+  const rel = Fun.curry1(OuterPosition.find, element);
   const position = origin.fold(rel, rel, () => {
     const scroll = Scroll.get();
     // TODO: Make adding the scroll in OuterPosition.find optional.

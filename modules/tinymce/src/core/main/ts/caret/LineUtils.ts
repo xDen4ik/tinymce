@@ -79,8 +79,8 @@ const findLineNodeRects = (root: Node, targetNodeRect: NodeClientRect): ClientRe
   };
 
   clientRects.push(targetNodeRect);
-  walkUntil(VDirection.Up, root, Fun.curry(collect, GeomClientRect.isAbove), targetNodeRect.node);
-  walkUntil(VDirection.Down, root, Fun.curry(collect, GeomClientRect.isBelow), targetNodeRect.node);
+  walkUntil(VDirection.Up, root, Fun.curry2(collect, GeomClientRect.isAbove), targetNodeRect.node);
+  walkUntil(VDirection.Down, root, Fun.curry2(collect, GeomClientRect.isBelow), targetNodeRect.node);
 
   return clientRects;
 };

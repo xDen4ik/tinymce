@@ -102,7 +102,7 @@ const doCreate = <
   const me: AlloyBehaviour<C, D, S> & typeof wrappedApis & typeof extra = {
     ...wrappedExtra,
     ...wrappedApis,
-    revoke: Fun.curry(revokeBehaviour, name),
+    revoke: Fun.curry1(revokeBehaviour, name),
     config (spec) {
       const prepared = ValueSchema.asRawOrDie(name + '-config', configSchema, spec);
 

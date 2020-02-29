@@ -11,7 +11,7 @@ const predicate = function <E, D> (_universe: Universe<E, D>, pred: (e: E) => bo
 };
 
 const exact = function <E, D> (universe: Universe<E, D>, item: E) {
-  const itemMatch = Fun.curry(universe.eq, item);
+  const itemMatch = Fun.curry2(universe.eq, item);
 
   return Look.predicate(itemMatch);
 };

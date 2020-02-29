@@ -83,7 +83,7 @@ const create = (cyclicField: FieldProcessorAdt) => {
     const tabstops: Element[] = SelectorFilter.descendants(component.element(), tabbingConfig.selector);
     return findCurrent(component, tabbingConfig).bind((tabstop) => {
       // focused component
-      const optStopIndex = Arr.findIndex(tabstops, Fun.curry(Compare.eq, tabstop));
+      const optStopIndex = Arr.findIndex(tabstops, Fun.curry2(Compare.eq, tabstop));
 
       return optStopIndex.bind((stopIndex) => {
         return goFromTabstop(component, tabstops, stopIndex, tabbingConfig, cycle);

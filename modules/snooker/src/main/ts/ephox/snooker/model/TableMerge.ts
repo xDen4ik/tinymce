@@ -8,7 +8,7 @@ import { Element } from '@ephox/sugar';
 
 const isSpanning = function (grid: Structs.RowCells[], row: number, col: number, comparator: (a: Element, b: Element) => boolean) {
   const candidate = GridRow.getCell(grid[row], col);
-  const matching = Fun.curry(comparator, candidate.element());
+  const matching = Fun.curry2(comparator, candidate.element());
   const currentRow = grid[row];
 
   // sanity check, 1x1 has no spans

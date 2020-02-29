@@ -137,7 +137,7 @@ const removeCaretContainer = function (editor: Editor, node: Node, moveCaret: bo
 };
 
 const insertCaretContainerNode = function (editor: Editor, caretContainer: Node, formatNode: Node) {
-  const dom = editor.dom, block = dom.getParent(formatNode, Fun.curry(FormatUtils.isTextBlock, editor));
+  const dom = editor.dom, block = dom.getParent(formatNode, Fun.curry2(FormatUtils.isTextBlock, editor));
 
   if (block && dom.isEmpty(block)) {
     // Replace formatNode with caretContainer when removing format from empty block like <p><b>|</b></p>

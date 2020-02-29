@@ -49,7 +49,7 @@ const deriveReplacing = (spec, component: AlloyComponent) => {
     } ... ];
     */
     return {
-      updateButton: Fun.curry(Replacing.set, component)
+      updateButton: Fun.curry2(Replacing.set, component)
     };
   }
 };

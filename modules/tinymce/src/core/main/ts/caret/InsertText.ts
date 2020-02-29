@@ -33,8 +33,8 @@ const insertTextAtPosition = (text: string, pos: CaretPosition): Option<CaretPos
   }
 };
 
-const insertNbspAtPosition = Fun.curry(insertTextAtPosition, Unicode.nbsp);
-const insertSpaceAtPosition = Fun.curry(insertTextAtPosition, ' ');
+const insertNbspAtPosition = Fun.curry2(insertTextAtPosition, Unicode.nbsp);
+const insertSpaceAtPosition = Fun.curry2(insertTextAtPosition, ' ');
 
 export {
   insertTextAtPosition,

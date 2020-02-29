@@ -29,8 +29,8 @@ const loadSkin = (isInline: boolean, editor: Editor) => {
   }
 };
 
-const iframe = Fun.curry(loadSkin, false);
-const inline = Fun.curry(loadSkin, true);
+const iframe = Fun.curry2(loadSkin, false);
+const inline = Fun.curry2(loadSkin, true);
 
 export {
   iframe,

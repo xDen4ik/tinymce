@@ -160,8 +160,8 @@ export const BarManager = function (wire: ResizeWire, direction: BarPositions<Co
     refresh,
     on: resizing.on,
     off: resizing.off,
-    hideBars: Fun.curry(Bars.hide, wire),
-    showBars: Fun.curry(Bars.show, wire),
+    hideBars: Fun.curry1(Bars.hide, wire),
+    showBars: Fun.curry1(Bars.show, wire),
     events: events.registry
   };
 };

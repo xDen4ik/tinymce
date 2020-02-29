@@ -32,7 +32,7 @@ const getScrollTop = function (element) {
 
 const moveScrollAndTop = function (element, destination, finalTop) {
   return Future.nu(function (callback) {
-    const getCurrent = Fun.curry(getScrollTop, element);
+    const getCurrent = Fun.curry1(getScrollTop, element);
 
     const update = function (newScroll) {
       element.dom().scrollTop = newScroll;
@@ -51,7 +51,7 @@ const moveScrollAndTop = function (element, destination, finalTop) {
 
 const moveOnlyScroll = function (element, destination) {
   return Future.nu(function (callback) {
-    const getCurrent = Fun.curry(getScrollTop, element);
+    const getCurrent = Fun.curry1(getScrollTop, element);
     Attr.set(element, lastScroll, getCurrent());
 
     const update = function (newScroll, abort) {
@@ -81,7 +81,7 @@ const moveOnlyScroll = function (element, destination) {
 
 const moveOnlyTop = function (element, destination) {
   return Future.nu(function (callback) {
-    const getCurrent = Fun.curry(getTop, element);
+    const getCurrent = Fun.curry1(getTop, element);
 
     const update = function (newTop) {
       Css.set(element, 'top', newTop + 'px');

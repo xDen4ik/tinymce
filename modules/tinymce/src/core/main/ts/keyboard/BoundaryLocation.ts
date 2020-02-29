@@ -44,7 +44,7 @@ const isNotInsideFormatCaretContainer = function (rootNode, elm) {
 };
 
 const findInsideRootInline = function (isInlineTarget, rootNode, pos) {
-  return InlineUtils.findRootInline(isInlineTarget, rootNode, pos).filter(Fun.curry(isNotInsideFormatCaretContainer, rootNode));
+  return InlineUtils.findRootInline(isInlineTarget, rootNode, pos).filter(Fun.curry2(isNotInsideFormatCaretContainer, rootNode));
 };
 
 const start = function (isInlineTarget, rootNode, pos) {
@@ -158,7 +158,7 @@ const skipNoMovement = function (fromLocation, toLocation) {
 
 const findLocationTraverse = function (forward, isInlineTarget, rootNode, fromLocation, pos) {
   const from = InlineUtils.normalizePosition(forward, pos);
-  const to = CaretFinder.fromPosition(forward, rootNode, from).map(Fun.curry(InlineUtils.normalizePosition, forward));
+  const to = CaretFinder.fromPosition(forward, rootNode, from).map(Fun.curry2(InlineUtils.normalizePosition, forward));
 
   const location = to.fold(
     function () {
@@ -167,7 +167,7 @@ const findLocationTraverse = function (forward, isInlineTarget, rootNode, fromLo
     function (to) {
       return readLocation(isInlineTarget, rootNode, to)
         .map(Fun.curry(betweenInlines, forward, isInlineTarget, rootNode, from, to))
-        .filter(Fun.curry(skipNoMovement, fromLocation));
+        .filter(Fun.curry2(skipNoMovement, fromLocation));
     }
   );
 
@@ -196,7 +196,7 @@ const findLocation = function (forward, isInlineTarget, rootNode, pos) {
   const from = InlineUtils.normalizePosition(forward, pos);
   const fromLocation = readLocation(isInlineTarget, rootNode, from);
 
-  return readLocation(isInlineTarget, rootNode, from).bind(Fun.curry(findLocationSimple, forward)).orThunk(function () {
+  return readLocation(isInlineTarget, rootNode, from).bind(Fun.curry2(findLocationSimple, forward)).orThunk(function () {
     return findLocationTraverse(forward, isInlineTarget, rootNode, fromLocation, pos);
   });
 };

@@ -57,7 +57,7 @@ const insertEmptyLine = (root: Element, rootBlockName: string, attrs: Record<str
 };
 
 const getClosestTargetBlock = (pos: CaretPosition, root: Element) => {
-  const isRoot = Fun.curry(Compare.eq, root);
+  const isRoot = Fun.curry2(Compare.eq, root);
   return PredicateFind.closest(Element.fromDom(pos.container()), ElementType.isBlock, isRoot).filter(isTarget);
 };
 

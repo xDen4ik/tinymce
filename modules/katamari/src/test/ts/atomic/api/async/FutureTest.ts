@@ -57,10 +57,10 @@ promiseTest('Future: anonBind', () =>
 promiseTest('Future: parallel', () => {
   return new Promise(function (resolve, reject) {
     const f = Future.nu(function (callback) {
-      setTimeout(Fun.curry(callback, 'apple'), 10);
+      setTimeout(Fun.curry1(callback, 'apple'), 10);
     });
     const g = Future.nu(function (callback) {
-      setTimeout(Fun.curry(callback, 'banana'), 5);
+      setTimeout(Fun.curry1(callback, 'banana'), 5);
     });
     const h = Future.nu(function (callback) {
       callback('carrot');

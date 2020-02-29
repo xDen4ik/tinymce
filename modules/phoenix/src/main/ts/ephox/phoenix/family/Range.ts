@@ -5,7 +5,7 @@ import { OrphanText } from '../wrap/OrphanText';
 import * as Parents from './Parents';
 
 const index = function <E, D>(universe: Universe<E, D>, items: E[], item: E) {
-  return Arr.findIndex(items, Fun.curry(universe.eq, item));
+  return Arr.findIndex(items, Fun.curry2(universe.eq, item));
 };
 
 const order = function <E>(items: E[], a: number, delta1: number, b: number, delta2: number) {

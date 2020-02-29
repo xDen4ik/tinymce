@@ -12,7 +12,7 @@ const find = (element: Element): Position => {
   // Get the path of iframe elements to this element.
   const path = Frames.pathTo(element, Navigation);
 
-  return path.fold(Fun.curry(Location.absolute, element), (frames) => {
+  return path.fold(Fun.curry1(Location.absolute, element), (frames) => {
     const offset = Location.viewport(element);
 
     const r = Arr.foldr(frames, (b, a) => {

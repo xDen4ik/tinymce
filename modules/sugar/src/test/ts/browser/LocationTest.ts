@@ -40,8 +40,8 @@ UnitTest.asynctest('LocationTest', (success, failure) => {
         const iframeDoc = iframeWin.document;
         const html = Element.fromDom(iframeDoc.documentElement);
         const body = Element.fromDom(iframeDoc.body);
-        attrMap.html.each(Fun.curry(Attr.setAll, html));
-        attrMap.body.each(Fun.curry(Attr.setAll, body));
+        attrMap.html.each(Fun.curry2(Attr.setAll, html));
+        attrMap.body.each(Fun.curry2(Attr.setAll, body));
         const doc = {
           iframe,
           rawWin: iframeWin,

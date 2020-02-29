@@ -54,7 +54,7 @@ const handleBlockContainer = function (editor: Editor, e: Event) {
 };
 
 const setup = function (editor: Editor) {
-  editor.on('keyup compositionstart', Fun.curry(handleBlockContainer, editor));
+  editor.on('keyup compositionstart', Fun.curry2(handleBlockContainer, editor));
 };
 
 export {

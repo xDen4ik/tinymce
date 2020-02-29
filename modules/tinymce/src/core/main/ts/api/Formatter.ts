@@ -162,7 +162,7 @@ const Formatter = function (editor: Editor): Formatter {
      * @param {String} name Name of format to check.
      * @return {boolean} true/false if the specified format can be applied to the current selection/node.
      */
-    canApply: Fun.curry(MatchFormat.canApply, editor),
+    canApply: Fun.curry2(MatchFormat.canApply, editor),
 
     /**
      * Executes the specified callback when the current selection matches the formats or not.
@@ -184,7 +184,7 @@ const Formatter = function (editor: Editor): Formatter {
      * var cssText1 = editor.formatter.getCssText('bold');
      * var cssText2 = editor.formatter.getCssText({inline: 'b'});
      */
-    getCssText: Fun.curry(Preview.getCssText, editor)
+    getCssText: Fun.curry2(Preview.getCssText, editor)
   };
 };
 

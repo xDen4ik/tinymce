@@ -42,7 +42,7 @@ const indexInParent = function <E extends DomNode> (element: Element<E>) {
 };
 
 const indexOf = function (elements: Element<DomNode>[], element: Element<DomNode>) {
-  return Arr.findIndex(elements, Fun.curry(Compare.eq, element));
+  return Arr.findIndex(elements, Fun.curry2(Compare.eq, element));
 };
 
 const selectorsInParent = function <E extends DomNode, S extends DomElement = DomElement>(element: Element<E>, selector: string) {

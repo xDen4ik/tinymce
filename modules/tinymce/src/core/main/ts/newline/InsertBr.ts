@@ -160,7 +160,7 @@ const isInsideAnchor = function (location) {
 };
 
 const readInlineAnchorLocation = function (editor: Editor) {
-  const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+  const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
   const position = CaretPosition.fromRangeStart(editor.selection.getRng());
   return BoundaryLocation.readLocation(isInlineTarget, editor.getBody(), position).filter(isInsideAnchor);
 };
@@ -168,8 +168,8 @@ const readInlineAnchorLocation = function (editor: Editor) {
 const insertBrOutsideAnchor = function (editor: Editor, location) {
   location.fold(
     Fun.noop,
-    Fun.curry(insertBrBefore, editor),
-    Fun.curry(insertBrAfter, editor),
+    Fun.curry2(insertBrBefore, editor),
+    Fun.curry2(insertBrAfter, editor),
     Fun.noop
   );
 };
@@ -178,7 +178,7 @@ const insert = function (editor: Editor, evt?) {
   const anchorLocation = readInlineAnchorLocation(editor);
 
   if (anchorLocation.isSome()) {
-    anchorLocation.each(Fun.curry(insertBrOutsideAnchor, editor));
+    anchorLocation.each(Fun.curry2(insertBrOutsideAnchor, editor));
   } else {
     insertBrAtCaret(editor, evt);
   }

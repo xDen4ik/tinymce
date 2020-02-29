@@ -177,8 +177,8 @@ const retry = function (movement: CaretMovement, bridge: WindowBridge, caret: Ca
 };
 
 export const Retries = {
-  tryUp: Fun.curry(retry, upMovement),
-  tryDown: Fun.curry(retry, downMovement),
+  tryUp: Fun.curry3(retry, upMovement),
+  tryDown: Fun.curry3(retry, downMovement),
   ieTryUp,
   ieTryDown,
   getJumpSize: Fun.constant(JUMP_SIZE)

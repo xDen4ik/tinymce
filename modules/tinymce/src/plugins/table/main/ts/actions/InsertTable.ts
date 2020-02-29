@@ -20,7 +20,7 @@ const placeCaretInCell = (editor: Editor, cell) => {
 };
 
 const selectFirstCellInTable = (editor: Editor, tableElm) => {
-  SelectorFind.descendant<HTMLTableDataCellElement | HTMLTableHeaderCellElement>(tableElm, 'td,th').each(Fun.curry(placeCaretInCell, editor));
+  SelectorFind.descendant<HTMLTableDataCellElement | HTMLTableHeaderCellElement>(tableElm, 'td,th').each(Fun.curry2(placeCaretInCell, editor));
 };
 
 const fireEvents = (editor: Editor, table) => {

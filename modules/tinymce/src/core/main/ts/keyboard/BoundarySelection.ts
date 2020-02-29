@@ -48,7 +48,7 @@ const renderCaretLocation = function (editor: Editor, caret: Cell<Text>, locatio
 const findLocation = function (editor: Editor, caret: Cell<Text>, forward: boolean) {
   const rootNode = editor.getBody();
   const from = CaretPosition.fromRangeStart(editor.selection.getRng());
-  const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+  const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
   const location = BoundaryLocation.findLocation(forward, isInlineTarget, rootNode, from);
   return location.bind(function (location) {
     return renderCaretLocation(editor, caret, location);
@@ -58,8 +58,8 @@ const findLocation = function (editor: Editor, caret: Cell<Text>, forward: boole
 const toggleInlines = function (isInlineTarget: NodePredicate, dom: DOMUtils, elms: Node[]) {
   const selectedInlines = Arr.filter(dom.select('*[data-mce-selected="inline-boundary"]'), isInlineTarget);
   const targetInlines = Arr.filter(elms, isInlineTarget);
-  Arr.each(Arr.difference(selectedInlines, targetInlines), Fun.curry(setSelected, false));
-  Arr.each(Arr.difference(targetInlines, selectedInlines), Fun.curry(setSelected, true));
+  Arr.each(Arr.difference(selectedInlines, targetInlines), Fun.curry2(setSelected, false));
+  Arr.each(Arr.difference(targetInlines, selectedInlines), Fun.curry2(setSelected, true));
 };
 
 const safeRemoveCaretContainer = function (editor: Editor, caret: Cell<Text>) {
@@ -98,7 +98,7 @@ const moveWord = function (forward: boolean, editor: Editor, caret: Cell<Text>) 
 
 const setupSelectedState = function (editor: Editor): Cell<Text> {
   const caret = Cell(null);
-  const isInlineTarget: NodePredicate  = Fun.curry(InlineUtils.isInlineTarget, editor);
+  const isInlineTarget: NodePredicate  = Fun.curry2(InlineUtils.isInlineTarget, editor);
 
   editor.on('NodeChange', function (e) {
     // IE will steal the focus when changing the selection since it uses a single selection model

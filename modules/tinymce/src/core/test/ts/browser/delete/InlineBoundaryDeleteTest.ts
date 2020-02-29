@@ -22,7 +22,7 @@ UnitTest.asynctest('browser.tinymce.core.delete.InlineBoundaryDeleteTest', funct
   };
 
   const readLocation = function (editor: Editor) {
-    const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+    const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
     return BoundaryLocation
       .readLocation(isInlineTarget, editor.getBody(), CaretPosition.fromRangeStart(editor.selection.getRng()))
       .map(locationName)

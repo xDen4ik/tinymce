@@ -112,7 +112,7 @@ const getActiveApi = function (editor) {
           doc: Fun.constant(doc),
           win: Fun.constant(win),
           html: Fun.constant(html),
-          getSelection: Fun.curry(getSelectionFromFrame, frame),
+          getSelection: Fun.curry1(getSelectionFromFrame, frame),
           setSelection,
           clearSelection,
           frame: Fun.constant(frame),

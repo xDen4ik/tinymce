@@ -162,7 +162,7 @@ const renderItemStructure = <T>(info: ItemStructureSpec, providersBackstage: UiF
   const textRender: (text: string) => AlloySpec = Option.from(info.meta).fold(
     () => renderText,
     (meta) => {
-      return Obj.has(meta, 'style') ? Fun.curry(renderStyledText, meta.style) : renderText;
+      return Obj.has(meta, 'style') ? Fun.curry2(renderStyledText, meta.style) : renderText;
     }
   );
 

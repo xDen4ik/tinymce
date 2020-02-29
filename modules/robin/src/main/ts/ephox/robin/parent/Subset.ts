@@ -1,16 +1,13 @@
 import { Universe } from '@ephox/boss';
 import { Arr, Fun, Option } from '@ephox/katamari';
 
-const eq = function <E, D>(universe: Universe<E, D>, item: E) {
-  return Fun.curry(universe.eq, item);
-};
-
 const unsafeSubset = function <E, D>(universe: Universe<E, D>, common: E, ps1: E[], ps2: E[]) {
   const children = universe.property().children(common);
-  if (universe.eq(common, ps1[0])) {
+  const eq = universe.eq;
+  if (eq(common, ps1[0])) {
     return Option.some([ps1[0]]);
   }
-  if (universe.eq(common, ps2[0])) {
+  if (eq(common, ps2[0])) {
     return Option.some([ps2[0]]);
   }
 
@@ -19,11 +16,11 @@ const unsafeSubset = function <E, D>(universe: Universe<E, D>, common: E, ps1: E
     const topDown = Arr.reverse(ps);
 
     // find the child of common in the ps array
-    const index = Arr.findIndex(topDown, eq(universe, common)).getOr(-1);
+    const index = Arr.findIndex(topDown, Fun.curry2(eq, common)).getOr(-1);
     const item = index < topDown.length - 1 ? topDown[index + 1] : topDown[index];
 
     // find the index of that child in the common children
-    return Arr.findIndex(children, eq(universe, item));
+    return Arr.findIndex(children, Fun.curry2(eq, item));
   };
 
   const startIndex = finder(ps1);
@@ -62,7 +59,7 @@ const ancestors = function <E, D>(universe: Universe<E, D>, start: E, end: E, is
   const pruned2 = prune(ps2);
 
   const shared = Arr.find(pruned1, function (x) {
-    return Arr.exists(pruned2, eq(universe, x));
+    return Arr.exists(pruned2, Fun.curry2(universe.eq, x));
   });
 
   return {

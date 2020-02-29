@@ -138,8 +138,8 @@ const createTextBlock = (editor: Editor): Element => {
 const exitPreBlock = (editor: Editor, direction: HDirection, range: Range): void => {
   let pre, caretPos, newBlock;
   const caretWalker = CaretWalker(editor.getBody());
-  const getNextVisualCaretPosition = Fun.curry(CaretUtils.getVisualCaretPosition, caretWalker.next);
-  const getPrevVisualCaretPosition = Fun.curry(CaretUtils.getVisualCaretPosition, caretWalker.prev);
+  const getNextVisualCaretPosition = Fun.curry2(CaretUtils.getVisualCaretPosition, caretWalker.next);
+  const getPrevVisualCaretPosition = Fun.curry2(CaretUtils.getVisualCaretPosition, caretWalker.prev);
 
   if (range.collapsed && editor.settings.forced_root_block) {
     pre = editor.dom.getParent(range.startContainer, 'PRE');
@@ -170,8 +170,8 @@ const exitPreBlock = (editor: Editor, direction: HDirection, range: Range): void
 
 const getHorizontalRange = (editor: Editor, forward: boolean): Range => {
   const caretWalker = CaretWalker(editor.getBody());
-  const getNextVisualCaretPosition = Fun.curry(CaretUtils.getVisualCaretPosition, caretWalker.next);
-  const getPrevVisualCaretPosition = Fun.curry(CaretUtils.getVisualCaretPosition, caretWalker.prev);
+  const getNextVisualCaretPosition = Fun.curry2(CaretUtils.getVisualCaretPosition, caretWalker.next);
+  const getPrevVisualCaretPosition = Fun.curry2(CaretUtils.getVisualCaretPosition, caretWalker.prev);
   let newRange;
   const direction = forward ? HDirection.Forwards : HDirection.Backwards;
   const getNextPosFn = forward ? getNextVisualCaretPosition : getPrevVisualCaretPosition;

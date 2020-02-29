@@ -76,8 +76,8 @@ const normalizePosition = function (forward: boolean, pos: CaretPosition) {
 
 type NormalisePostionFn = (pos: CaretPosition) => CaretPosition;
 
-const normalizeForwards = Fun.curry(normalizePosition, true) as NormalisePostionFn;
-const normalizeBackwards = Fun.curry(normalizePosition, false) as NormalisePostionFn;
+const normalizeForwards = Fun.curry2(normalizePosition, true) as NormalisePostionFn;
+const normalizeBackwards = Fun.curry2(normalizePosition, false) as NormalisePostionFn;
 
 export {
   isInlineTarget,

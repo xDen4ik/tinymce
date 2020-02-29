@@ -34,8 +34,8 @@ const deleteTableElement = (editor: Editor, table) => {
 const deleteCellRange = (editor: Editor, rootElm, rng: Range) => {
   return TableDeleteAction.getActionFromRange(rootElm, rng).map((action) => {
     return action.fold(
-      Fun.curry(deleteTableElement, editor),
-      Fun.curry(emptyCells, editor)
+      Fun.curry2(deleteTableElement, editor),
+      Fun.curry2(emptyCells, editor)
     );
   });
 };

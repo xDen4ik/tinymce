@@ -90,7 +90,7 @@ const findCaretPosition = function (forward: boolean, rootElement, elm) {
 };
 
 const findCaretPosOutsideElmAfterDelete = function (forward: boolean, rootElement, elm) {
-  return findCaretPosition(forward, rootElement, elm).map(Fun.curry(reposition, elm));
+  return findCaretPosition(forward, rootElement, elm).map(Fun.curry2(reposition, elm));
 };
 
 const setSelection = function (editor: Editor, forward: boolean, pos: Option<CaretPosition>) {
@@ -154,7 +154,7 @@ const isInlineElement = (editor: Editor, element: Element): boolean =>
 
 const deleteElement = (editor: Editor, forward: boolean, elm: Element, moveCaret: boolean = true) => {
   const afterDeletePos = findCaretPosOutsideElmAfterDelete(forward, editor.getBody(), elm.dom());
-  const parentBlock = PredicateFind.ancestor(elm, Fun.curry(isBlock, editor), eqRawNode(editor.getBody()));
+  const parentBlock = PredicateFind.ancestor(elm, Fun.curry2(isBlock, editor), eqRawNode(editor.getBody()));
   const normalizedAfterDeletePos = deleteNormalized(elm, afterDeletePos, isInlineElement(editor, elm));
 
   if (editor.dom.isEmpty(editor.getBody())) {

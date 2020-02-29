@@ -21,7 +21,7 @@ const up = function (descendant: Element<DomNode>, stopper: (e: Element<DomNode>
 };
 
 const path = function (ancestor: Element<DomNode>, descendant: Element<DomNode>) {
-  const stopper = Fun.curry(Compare.eq, ancestor);
+  const stopper = Fun.curry2(Compare.eq, ancestor);
   return Compare.eq(ancestor, descendant) ? Option.some<number[]>([]) : up(descendant, stopper);
 };
 

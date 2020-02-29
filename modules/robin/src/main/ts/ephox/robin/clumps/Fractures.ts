@@ -9,7 +9,7 @@ const slice = function <E, D> (universe: Universe<E, D>, parent: E, first: Optio
   const children = universe.property().children(parent);
 
   const finder = function (elem: E) {
-    return Arr.findIndex(children, Fun.curry(universe.eq, elem));
+    return Arr.findIndex(children, Fun.curry2(universe.eq, elem));
   };
 
   // Default to the start of the common parent.
@@ -22,8 +22,8 @@ const slice = function <E, D> (universe: Universe<E, D>, parent: E, first: Optio
 const breakPath = function <E, D> (universe: Universe<E, D>, element: E, common: E, breaker: (universe: Universe<E, D>, parent: E, child: E) => Option<LeftRight<E>>) {
   const isTop = function (elem: E) {
     return universe.property().parent(elem).fold(
-      Fun.constant(true),
-      Fun.curry(universe.eq, common)
+      Fun.always,
+      Fun.curry2(universe.eq, common)
     );
   };
 

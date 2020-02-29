@@ -173,8 +173,8 @@ const lean = (left: boolean, root: Node, node: Node): Node => {
   return null;
 };
 
-const before = Fun.curry(beforeAfter, true) as (node: Node) => Range;
-const after = Fun.curry(beforeAfter, false) as (node: Node) => Range;
+const before = Fun.curry2(beforeAfter, true) as (node: Node) => Range;
+const after = Fun.curry2(beforeAfter, false) as (node: Node) => Range;
 
 const normalizeRange = (direction: number, root: Node, range: Range): Range => {
   let node, container, offset, location;

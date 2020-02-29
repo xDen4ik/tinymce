@@ -28,7 +28,7 @@ const brokenPath: <E> (first: E, second: Option<E>, splits: BrokenPathSplits<E>[
 
 const bisect = function <E, D>(universe: Universe<E, D>, parent: E, child: E): Option<Bisect<E>> {
   const children = universe.property().children(parent);
-  const index = Arr.findIndex(children, Fun.curry(universe.eq, child));
+  const index = Arr.findIndex(children, Fun.curry2(universe.eq, child));
   return index.map(function (ind) {
     return {
       before: Fun.constant(children.slice(0, ind)),

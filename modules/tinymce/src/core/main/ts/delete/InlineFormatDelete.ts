@@ -30,7 +30,7 @@ const hasOnlyOneChild = function (elm) {
 };
 
 const deleteLastPosition = function (forward: boolean, editor: Editor, target, parentInlines) {
-  const isFormatElement = Fun.curry(CaretFormat.isFormatElement, editor);
+  const isFormatElement = Fun.curry2(CaretFormat.isFormatElement, editor);
   const formatNodes = Arr.map(Arr.filter(parentInlines, isFormatElement), function (elm) {
     return elm.dom();
   });

@@ -141,8 +141,8 @@ export default function (editor) {
   };
 
   return {
-    sExecToolbar: Fun.curry(sExec, true),
-    sExecDialog: Fun.curry(sExec, false),
+    sExecToolbar: Fun.curry2(sExec, true),
+    sExecDialog: Fun.curry2(sExec, false),
     cClickToolbarButton
   };
 }

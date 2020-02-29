@@ -43,7 +43,7 @@ const insertSpaceOrNbspAtSelection = (editor: Editor): boolean => {
   const root = Element.fromDom(editor.getBody());
 
   if (editor.selection.isCollapsed()) {
-    const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+    const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
     const caretPosition = CaretPosition.fromRangeStart(editor.selection.getRng());
 
     return BoundaryLocation.readLocation(isInlineTarget, editor.getBody(), caretPosition)

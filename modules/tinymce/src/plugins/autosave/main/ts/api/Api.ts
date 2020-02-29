@@ -10,11 +10,11 @@ import { Fun } from '@ephox/katamari';
 
 const get = function (editor) {
   return {
-    hasDraft: Fun.curry(Storage.hasDraft, editor),
-    storeDraft: Fun.curry(Storage.storeDraft, editor),
-    restoreDraft: Fun.curry(Storage.restoreDraft, editor),
-    removeDraft: Fun.curry(Storage.removeDraft, editor),
-    isEmpty: Fun.curry(Storage.isEmpty, editor)
+    hasDraft: Fun.curry1(Storage.hasDraft, editor),
+    storeDraft: Fun.curry1(Storage.storeDraft, editor),
+    restoreDraft: Fun.curry1(Storage.restoreDraft, editor),
+    removeDraft: Fun.curry1(Storage.removeDraft, editor),
+    isEmpty: Fun.curry1(Storage.isEmpty, editor)
   };
 };
 

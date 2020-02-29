@@ -57,7 +57,7 @@ const setCaretLocation = function (editor: Editor, caret) {
 
 const deleteFromTo = function (editor: Editor, caret, from, to) {
   const rootNode = editor.getBody();
-  const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+  const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
 
   editor.undoManager.ignore(function () {
     editor.selection.setRng(rangeFromPositions(from, to));
@@ -78,7 +78,7 @@ const rescope = function (rootNode, node) {
 
 const backspaceDeleteCollapsed = function (editor: Editor, caret, forward: boolean, from) {
   const rootNode = rescope(editor.getBody(), from.container());
-  const isInlineTarget = Fun.curry(InlineUtils.isInlineTarget, editor);
+  const isInlineTarget = Fun.curry2(InlineUtils.isInlineTarget, editor);
   const fromLocation = BoundaryLocation.readLocation(isInlineTarget, rootNode, from);
 
   return fromLocation.bind(function (location) {

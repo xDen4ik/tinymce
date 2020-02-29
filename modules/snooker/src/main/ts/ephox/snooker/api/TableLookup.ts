@@ -43,8 +43,8 @@ const neighbours = function (selector: string, element: Element) {
   });
 };
 
-const neighbourCells = Fun.curry(neighbours, 'th,td');
-const neighbourRows  = Fun.curry(neighbours, 'tr');
+const neighbourCells = Fun.curry2(neighbours, 'th,td');
+const neighbourRows  = Fun.curry2(neighbours, 'tr');
 
 const firstCell = function (ancestor: Element) {
   return SelectorFind.descendant(ancestor, 'th,td');

@@ -12,7 +12,7 @@ import * as CursorRefresh from '../../touch/focus/CursorRefresh';
 
 const scrollIntoView = function (cWin, socket, dropup, top, bottom) {
   const greenzone = DeviceZones.getGreenzone(socket, dropup);
-  const refreshCursor = Fun.curry(CursorRefresh.refresh, cWin);
+  const refreshCursor = Fun.curry1(CursorRefresh.refresh, cWin);
 
   if (top > greenzone || bottom > greenzone) {
     IosScrolling.moveOnlyScroll(socket, socket.dom().scrollTop - greenzone + bottom).get(refreshCursor);

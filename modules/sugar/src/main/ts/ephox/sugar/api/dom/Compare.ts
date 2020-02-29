@@ -13,7 +13,7 @@ const isEqualNode = function (e1: Element<DomNode>, e2: Element<DomNode>) {
 };
 
 const member = function (element: Element, elements: Element[]) {
-  return Arr.exists(elements, Fun.curry(eq, element));
+  return Arr.exists(elements, Fun.curry2(eq, element));
 };
 
 // DOM contains() method returns true if e1===e2, we define our contains() to return false (a node does not contain itself).

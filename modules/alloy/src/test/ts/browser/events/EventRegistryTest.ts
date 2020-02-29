@@ -32,7 +32,7 @@ UnitTest.asynctest('EventRegistryTest', (success, failure) => {
     Tagger.writeOnly(bit, Attr.get(bit, 'data-test-uid'));
   });
 
-  const isRoot = Fun.curry(Compare.eq, page);
+  const isRoot = Fun.curry2(Compare.eq, page);
 
   Insert.append(body, page);
 

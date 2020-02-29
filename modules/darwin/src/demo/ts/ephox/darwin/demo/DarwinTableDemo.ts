@@ -101,8 +101,8 @@ DomEvent.bind(Body.body(), 'mousemove', function (event) {
 });
 
 const annotations = SelectionAnnotation.byClass(Ephemera);
-const mouseHandlers = InputHandlers.mouse(window, ephoxUi, Fun.curry(Compare.eq, table), annotations);
-const keyHandlers = InputHandlers.keyboard(window, ephoxUi, Fun.curry(Compare.eq, table), annotations);
+const mouseHandlers = InputHandlers.mouse(window, ephoxUi, Fun.curry2(Compare.eq, table), annotations);
+const keyHandlers = InputHandlers.keyboard(window, ephoxUi, Fun.curry2(Compare.eq, table), annotations);
 
 DomEvent.bind(ephoxUi, 'mousedown', mouseHandlers.mousedown);
 DomEvent.bind(ephoxUi, 'mouseover', mouseHandlers.mouseover);

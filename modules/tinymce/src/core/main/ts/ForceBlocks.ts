@@ -121,7 +121,7 @@ const addRootBlocks = function (editor: Editor) {
 
 const setup = function (editor: Editor) {
   if (Settings.getForcedRootBlock(editor)) {
-    editor.on('NodeChange', Fun.curry(addRootBlocks, editor));
+    editor.on('NodeChange', Fun.curry2(addRootBlocks, editor));
   }
 };
 

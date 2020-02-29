@@ -19,7 +19,7 @@ UnitTest.test('IsRootTest', function () {
     return Compare.eq(TestPage.d1, e);
   };
 
-  const checkNone = Fun.curry(Checkers.checkOpt, Option.none());
+  const checkNone = Fun.curry2(Checkers.checkOpt, Option.none());
 
   checkNone(SelectorFind.ancestor(TestPage.t6, 'li', isRoot));
   checkNone(SelectorFind.ancestor(TestPage.t6, 'ol,ul', isRoot));

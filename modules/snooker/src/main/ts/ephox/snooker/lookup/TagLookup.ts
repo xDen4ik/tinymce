@@ -13,8 +13,8 @@ const detect = function (cell: Element) {
     });
   };
 
-  const getRowIndex = Fun.curry(getIndex, TableLookup.neighbourRows);
-  const getCellIndex = Fun.curry(getIndex, TableLookup.neighbourCells);
+  const getRowIndex = Fun.curry2(getIndex, TableLookup.neighbourRows);
+  const getCellIndex = Fun.curry2(getIndex, TableLookup.neighbourCells);
 
   return getCellIndex(cell).bind(function (colIdx: number) {
     return TableLookup.row(cell).bind(getRowIndex).map(function (rowIdx: number) {

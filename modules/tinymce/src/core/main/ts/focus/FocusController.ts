@@ -122,8 +122,8 @@ const unregisterDocumentEvents = function (editorManager: EditorManager, e: { ed
 };
 
 const setup = function (editorManager: EditorManager) {
-  editorManager.on('AddEditor', Fun.curry(registerEvents, editorManager));
-  editorManager.on('RemoveEditor', Fun.curry(unregisterDocumentEvents, editorManager));
+  editorManager.on('AddEditor', Fun.curry2(registerEvents, editorManager));
+  editorManager.on('RemoveEditor', Fun.curry2(unregisterDocumentEvents, editorManager));
 };
 
 export {

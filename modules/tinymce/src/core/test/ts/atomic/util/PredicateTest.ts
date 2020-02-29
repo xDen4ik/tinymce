@@ -7,8 +7,8 @@ UnitTest.test('atomic.tinymce.core.util.PredicateTest', () => {
     return value() > target();
   };
 
-  const isAbove5 = Fun.curry(isAbove, Fun.constant(5));
-  const isAbove10 = Fun.curry(isAbove, Fun.constant(10));
+  const isAbove5 = Fun.curry2(isAbove, Fun.constant(5));
+  const isAbove10 = Fun.curry2(isAbove, Fun.constant(10));
 
   Assert.eq('Should be extected and result', false, Predicate.and(isAbove10, isAbove5)(Fun.constant(10)));
   Assert.eq('Should be extected and result', true, Predicate.and(isAbove10, isAbove5)(Fun.constant(30)));

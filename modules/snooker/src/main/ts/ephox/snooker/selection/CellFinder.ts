@@ -15,7 +15,7 @@ const moveBy = function (warehouse: Warehouse, cell: Element, row: number, colum
 
 const intercepts = function (warehouse: Warehouse, start: Element, finish: Element) {
   return CellGroup.getAnyBox(warehouse, start, finish).map(function (bounds) {
-    const inside = Warehouse.filterItems(warehouse, Fun.curry(CellBounds.inSelection, bounds));
+    const inside = Warehouse.filterItems(warehouse, Fun.curry2(CellBounds.inSelection, bounds));
     return Arr.map(inside, function (detail) {
       return detail.element();
     });

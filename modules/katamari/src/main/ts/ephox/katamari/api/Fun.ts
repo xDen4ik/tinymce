@@ -13,6 +13,11 @@ const composeNary = function <T extends any[], U, V> (fa: (v: U) => V, fb: (...x
 const compose = <A, B, C>(g: (v: B) => C, f: (x: A) => B) => (a: A): C =>
   g(f(a));
 
+const sequence = (s1: () => void, s2: () => void) => (): void => {
+  s1();
+  s2();
+};
+
 const constant = function <T>(value: T): () => T {
   return function () {
     return value;
@@ -69,6 +74,7 @@ export {
   noop,
   noarg,
   compose,
+  composeNary,
   constant,
   identity,
   tripleEquals,
@@ -78,5 +84,6 @@ export {
   apply,
   call,
   never,
-  always
+  always,
+  sequence
 };

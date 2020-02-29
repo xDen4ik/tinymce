@@ -136,7 +136,7 @@ export default function (editor: Editor, lazyResize: () => Option<TableResize>, 
         event.preventDefault();
       };
 
-      const kill = Fun.compose(prevent, stop); // more of a sequence than a compose, but same effect
+      const kill = Fun.sequence(stop, prevent);
 
       // FIX: Don't just expose the raw event. Need to identify what needs standardisation.
       return {

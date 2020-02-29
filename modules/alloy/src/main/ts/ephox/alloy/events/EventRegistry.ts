@@ -49,30 +49,23 @@ export default () => {
   };
 
   const findHandler = (handlers: Option<Record<Uid, CurriedHandler>>, elem: Element): Option<ElementAndHandler> => {
-    return Tagger.read(elem).fold(() => {
-      return Option.none();
-    }, (id) => {
-      return handlers.bind((h) => Obj.get(h, id)).map((descHandler: CurriedHandler) => {
-        return eventHandler(elem, descHandler);
-      });
-    });
+    return Tagger.read(elem).fold(() => Option.none(), (id) =>
+      handlers.bind((h) =>
+        Obj.get(h, id))
+        .map(Fun.curry2(eventHandler, elem)));
   };
 
   // Given just the event type, find all handlers regardless of element
   const filterByType = (type: string): UidAndHandler[] => {
     return Obj.get(registry, type).map((handlers) => {
-      return Obj.mapToArray(handlers, (f, id) => {
-        return broadcastHandler(id, f);
-      });
+      return Obj.mapToArray(handlers, Fun.flip(broadcastHandler));
     }).getOr([ ]);
   };
 
   // Given event type, and element, find the handler.
   const find = (isAboveRoot: (elem: Element) => boolean, type: string, target: Element): Option<ElementAndHandler> => {
     const handlers = Obj.get(registry, type) as Option<Record<string, CurriedHandler>>;
-    return TransformFind.closest(target, (elem: Element) => {
-      return findHandler(handlers, elem);
-    }, isAboveRoot);
+    return TransformFind.closest(target, Fun.curry2(findHandler, handlers), isAboveRoot);
   };
 
   const unregisterId = (id: string): void => {

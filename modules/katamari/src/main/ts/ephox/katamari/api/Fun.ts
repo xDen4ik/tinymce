@@ -68,6 +68,9 @@ const curry2 = <A, B, C> (f: (a: A, b: B) => C, a: A) => (b: B): C =>
 const curry3 = <A, B, C, D> (f: (a: A, b: B, c: C) => D, a: A) => (b: B, c: C): D =>
   f(a, b, c);
 
+const flip = <A, B, C> (f: (a: A, b: B) => C) => (b: B, a: A): C =>
+  f(a, b);
+
 const not = <T> (f: (t: T) => boolean) => (t: T): boolean =>
   !f(t);
 
@@ -100,6 +103,7 @@ export {
   curry1,
   curry2,
   curry3,
+  flip,
   not,
   die,
   apply,

@@ -4,11 +4,14 @@ const noop: (...args: any[]) => void
 const noarg: <T>(f: () => T) => (...args: any[]) => void
 = (f) => () => f();
 
-const compose = function <T extends any[], U, V> (fa: (v: U) => V, fb: (...x: T) => U): (...x: T) => V {
+const composeNary = function <T extends any[], U, V> (fa: (v: U) => V, fb: (...x: T) => U): (...x: T) => V {
   return function (...args: T) {
     return fa(fb.apply(null, args));
   };
 };
+
+const compose = <A, B, C>(g: (v: B) => C, f: (x: A) => B) => (a: A): C =>
+  g(f(a));
 
 const constant = function <T>(value: T): () => T {
   return function () {

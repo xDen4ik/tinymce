@@ -6,7 +6,7 @@
  */
 
 import { Element, HTMLElement, Node } from '@ephox/dom-globals';
-import { Fun, Obj, Option } from '@ephox/katamari';
+import { Obj, Option } from '@ephox/katamari';
 import { Attr, Compare, Css, Element as SugarElement, Node as SugarNode, TransformFind } from '@ephox/sugar';
 import DOMUtils from '../api/dom/DOMUtils';
 
@@ -65,9 +65,11 @@ const getFontProp = (propName: string) => {
   };
 };
 
-const getFontSize = getFontProp('font-size');
+const getFontSize: (rootElm: Element, elm: Node) => string =
+  getFontProp('font-size');
 
-const getFontFamily = Fun.compose(normalizeFontFamily, getFontProp('font-family')) as (rootElm: Element, elm: Node) => string;
+const getFontFamily = (rootElm: Element, elm: Node): string =>
+  normalizeFontFamily(getFontProp('font-family')(rootElm, elm));
 
 export {
   getFontSize,

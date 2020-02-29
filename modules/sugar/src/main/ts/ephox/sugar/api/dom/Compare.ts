@@ -17,10 +17,10 @@ const member = function (element: Element, elements: Element[]) {
 };
 
 // DOM contains() method returns true if e1===e2, we define our contains() to return false (a node does not contain itself).
-const regularContains = function (e1: Element<DomNode>, e2: Element<DomNode>) {
+const regularContains = (e1: Element<DomNode>, e2: Element<DomNode>): boolean => {
   const d1 = e1.dom();
   const d2 = e2.dom();
-  return d1 === d2 ? false : d1.contains(d2);
+  return d1 !== d2 && d1.contains(d2);
 };
 
 const ieContains = function (e1: Element<DomNode>, e2: Element<DomNode>) {

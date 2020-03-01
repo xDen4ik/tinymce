@@ -26,9 +26,7 @@ const findIndex = function (element: Element<DomNode>) {
   return parent(element).bind(function (p) {
     // TODO: Refactor out children so we can avoid the constant unwrapping
     const kin = children(p);
-    return Arr.findIndex(kin, function (elem) {
-      return Compare.eq(element, elem);
-    });
+    return Arr.findIndex(kin, Compare.eqc(element));
   });
 };
 

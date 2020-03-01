@@ -6,7 +6,6 @@
  */
 
 import { Toolbar } from '@ephox/bridge';
-import { Node as DomNode } from '@ephox/dom-globals';
 import { Option, Arr } from '@ephox/katamari';
 import { Compare, Element, TransformFind } from '@ephox/sugar';
 import Editor from 'tinymce/core/api/Editor';
@@ -22,7 +21,7 @@ const matchTargetWith = (elem: Element, toolbars: Array<Toolbar.ContextToolbar |
 
 const lookup = (scopes: ScopedToolbars, editor: Editor): Option<LookupResult> => {
   const rootElem = Element.fromDom(editor.getBody());
-  const isRoot = (elem: Element<DomNode>) => Compare.eq(elem, rootElem);
+  const isRoot = Compare.eqc(rootElem);
 
   const startNode = Element.fromDom(editor.selection.getNode());
 

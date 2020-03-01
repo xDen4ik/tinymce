@@ -36,8 +36,6 @@ const deleteAction = Adt.generate([
   { emptyCells: [ 'cells' ] }
 ]);
 
-const isRootFromElement = (root: Element<any>) => (cur: Element<any>): boolean => Compare.eq(root, cur);
-
 const getClosestCell = (container: DomNode, isRoot: (e: Element<any>) => boolean) => {
   return SelectorFind.closest(Element.fromDom(container), 'td,th', isRoot);
 };
@@ -97,12 +95,12 @@ const getTableSelectionFromCellRng = (cellRng: TableCellRng, isRoot: (e: Element
 };
 
 const getTableSelectionFromRng = (root, rng: Range) => {
-  const isRoot = isRootFromElement(root);
+  const isRoot = Compare.eqc(root);
   return getCellRng(rng, isRoot).bind((cellRng) => getTableSelectionFromCellRng(cellRng, isRoot));
 };
 
 const getCellIndex = <T> (cells: Element<T>[], cell: Element<T>): Option<number> => {
-  return Arr.findIndex(cells, (x) => Compare.eq(x, cell));
+  return Arr.findIndex(cells, Compare.eqc(cell));
 };
 
 const getSelectedCells = (tableSelection: TableSelection) => {

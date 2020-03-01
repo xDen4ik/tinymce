@@ -41,9 +41,7 @@ const getSize = function (editor) {
   const elem = Element.fromDom(node);
   const root = Element.fromDom(editor.getBody());
 
-  const isRoot = function (e) {
-    return Compare.eq(root, e);
-  };
+  const isRoot = Compare.eqc(root);
 
   const elemSize = getRawOrComputed(isRoot, elem);
   return Arr.find(candidatesArray, function (size) {

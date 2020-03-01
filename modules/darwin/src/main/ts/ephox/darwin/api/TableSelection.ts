@@ -10,9 +10,7 @@ const retrieve = function (container: Element, selector: string) {
 
 const retrieveBox = function (container: Element, firstSelectedSelector: string, lastSelectedSelector: string) {
   return CellSelection.getEdges(container, firstSelectedSelector, lastSelectedSelector).bind(function (edges) {
-    const isRoot = function (ancestor: Element) {
-      return Compare.eq(container, ancestor);
-    };
+    const isRoot = Compare.eqc(container);
     const firstAncestor = SelectorFind.ancestor(edges.first(), 'thead,tfoot,tbody,table', isRoot);
     const lastAncestor = SelectorFind.ancestor(edges.last(), 'thead,tfoot,tbody,table', isRoot);
     return firstAncestor.bind(function (fA) {

@@ -5,7 +5,7 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import { Fun, Options } from '@ephox/katamari';
+import { Options } from '@ephox/katamari';
 import { Compare, Element, PredicateFind } from '@ephox/sugar';
 import * as CaretFinder from '../caret/CaretFinder';
 import CaretPosition from '../caret/CaretPosition';
@@ -38,7 +38,7 @@ const deleteRangeMergeBlocks = function (rootNode, selection: Selection) {
 
 const isRawNodeInTable = function (root, rawNode) {
   const node = Element.fromDom(rawNode);
-  const isRoot = Fun.curry(Compare.eq, root);
+  const isRoot = Compare.eqc(root);
   return PredicateFind.ancestor(node, ElementType.isTableCell, isRoot).isSome();
 };
 

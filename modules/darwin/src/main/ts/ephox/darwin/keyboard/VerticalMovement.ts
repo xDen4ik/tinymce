@@ -13,9 +13,7 @@ const detection = PlatformDetection.detect();
 
 const inSameTable = function (elem: Element, table: Element) {
   return PredicateExists.ancestor(elem, function (e) {
-    return Traverse.parent(e).exists(function (p) {
-      return Compare.eq(p, table);
-    });
+    return Traverse.parent(e).exists(Compare.eqc(table));
   });
 };
 

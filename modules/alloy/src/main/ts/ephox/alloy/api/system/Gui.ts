@@ -53,9 +53,7 @@ const takeover = (root: AlloyComponent): GuiSystem => {
       () => {
         return true;
       },
-      (parent) => {
-        return Compare.eq(el, parent);
-      }
+      Compare.eqc(el)
     );
   };
 

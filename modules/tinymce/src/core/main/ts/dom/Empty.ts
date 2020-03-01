@@ -6,7 +6,6 @@
  */
 
 import { Node } from '@ephox/dom-globals';
-import { Fun } from '@ephox/katamari';
 import { Compare, Element, SelectorExists } from '@ephox/sugar';
 import TreeWalker from '../api/dom/TreeWalker';
 import * as CaretCandidate from '../caret/CaretCandidate';
@@ -15,7 +14,7 @@ import * as NodeType from './NodeType';
 const hasWhitespacePreserveParent = function (rootNode: Node, node: Node) {
   const rootElement = Element.fromDom(rootNode);
   const startNode = Element.fromDom(node);
-  return SelectorExists.ancestor(startNode, 'pre,code', Fun.curry(Compare.eq, rootElement));
+  return SelectorExists.ancestor(startNode, 'pre,code', Compare.eqc(rootElement));
 };
 
 const isWhitespace = function (rootNode: Node, node: Node) {

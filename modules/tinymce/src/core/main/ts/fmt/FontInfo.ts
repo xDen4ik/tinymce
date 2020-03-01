@@ -25,7 +25,7 @@ const getSpecifiedFontProp = (propName: string, rootElm: Element, elm: HTMLEleme
       }
     });
   };
-  const isRoot = (elm: SugarElement) => Compare.eq(SugarElement.fromDom(rootElm), elm);
+  const isRoot = Compare.eqc(SugarElement.fromDom(rootElm));
 
   return TransformFind.closest(SugarElement.fromDom(elm), (elm) => getProperty(elm), isRoot);
 };

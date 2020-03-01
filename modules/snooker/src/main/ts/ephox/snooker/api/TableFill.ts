@@ -39,9 +39,7 @@ const cloneFormats = function (oldCell: Element, newCell: Element, formats: stri
   return first.map(function (firstText) {
     const formatSelector = formats.join(',');
     // Find the ancestors of the first text node that match the given formats.
-    const parents = SelectorFilter.ancestors(firstText, formatSelector, function (element) {
-      return Compare.eq(element, oldCell);
-    });
+    const parents = SelectorFilter.ancestors(firstText, formatSelector, Compare.eqc(oldCell));
     // Add the matched ancestors to the new cell, then return the new cell.
     return Arr.foldr(parents, function (last, parent) {
       const clonedFormat = Replication.shallow(parent);

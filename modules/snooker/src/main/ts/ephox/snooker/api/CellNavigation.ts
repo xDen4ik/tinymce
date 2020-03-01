@@ -10,9 +10,7 @@ import * as TableLookup from './TableLookup';
 const detect = function (current: Element, isRoot?: (e: Element) => boolean) {
   return TableLookup.table(current, isRoot).bind(function (table) {
     const all = TableLookup.cells(table);
-    const index = Arr.findIndex(all, function (x) {
-      return Compare.eq(current, x);
-    });
+    const index = Arr.findIndex(all, Compare.eqc(current));
 
     return index.map(function (ind) {
       return {

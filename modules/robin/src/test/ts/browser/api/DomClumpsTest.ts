@@ -14,9 +14,7 @@ UnitTest.test('DomClumpsTest', function () {
     return Hierarchy.follow(container, path).getOrDie('Could not find the path: ' + path.join(','));
   };
 
-  const isRoot = function (elem: Element) {
-    return Compare.eq(elem, container);
-  };
+  const isRoot = Compare.eqc(container);
 
   const mark = function (res: Element[]) {
     if (res.length > 0) {

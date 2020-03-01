@@ -76,7 +76,7 @@ const getFragmentFromRange = function (rootNode, rng) {
 };
 
 const getParentTable = function (rootElm, cell) {
-  return SelectorFind.ancestor(cell, 'table', Fun.curry(Compare.eq, rootElm));
+  return SelectorFind.ancestor(cell, 'table', Compare.eqc(rootElm));
 };
 
 const getTableFragment = function (rootNode, selectedTableCells) {

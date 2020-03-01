@@ -7,9 +7,7 @@ const detect = function (cell: Element) {
 
   const getIndex = function (getChildren: (parent: Element) => Option<Element[]>, elem: Element) {
     return getChildren(elem).bind(function (children) {
-      return Arr.findIndex(children, function (child) {
-        return Compare.eq(child, elem);
-      });
+      return Arr.findIndex(children, Compare.eqc(elem));
     });
   };
 

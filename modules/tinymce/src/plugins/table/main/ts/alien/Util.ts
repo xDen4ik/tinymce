@@ -18,11 +18,8 @@ const getPixelWidth = (elm: HTMLElement) => elm.getBoundingClientRect().width;
 
 const getPixelHeight = (elm: HTMLElement) => elm.getBoundingClientRect().height;
 
-const getIsRoot = function (editor: Editor) {
-  return function (element) {
-    return Compare.eq(element, getBody(editor));
-  };
-};
+const getIsRoot = (editor: Editor) =>
+  Compare.eqc(getBody(editor));
 
 const removePxSuffix = function (size: string) {
   return size ? size.replace(/px$/, '') : '';

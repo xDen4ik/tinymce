@@ -28,7 +28,7 @@ const focusInside = function (element: Element<HTMLElement>) {
   // Only call focus if the focus is not already inside it.
   const doc = Traverse.owner(element);
   const inside = active(doc).filter(function (a) {
-    return PredicateExists.closest(a, Fun.curry(Compare.eq, element));
+    return PredicateExists.closest(a, Compare.eqc(element));
   });
 
   inside.fold(function () {

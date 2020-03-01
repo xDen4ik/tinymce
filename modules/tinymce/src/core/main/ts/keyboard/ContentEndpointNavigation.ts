@@ -7,7 +7,7 @@
 
 import Editor from '../api/Editor';
 import CaretPosition from '../caret/CaretPosition';
-import { Fun, Arr } from '@ephox/katamari';
+import { Arr } from '@ephox/katamari';
 import { Insert, Element, Compare, PredicateFind, Node, Attr } from '@ephox/sugar';
 import * as Settings from '../api/Settings';
 import { document } from '@ephox/dom-globals';
@@ -57,7 +57,7 @@ const insertEmptyLine = (root: Element, rootBlockName: string, attrs: Record<str
 };
 
 const getClosestTargetBlock = (pos: CaretPosition, root: Element) => {
-  const isRoot = Fun.curry(Compare.eq, root);
+  const isRoot = Compare.eqc(root);
   return PredicateFind.closest(Element.fromDom(pos.container()), ElementType.isBlock, isRoot).filter(isTarget);
 };
 

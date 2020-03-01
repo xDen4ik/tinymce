@@ -55,7 +55,7 @@ const calcSnap = (selectorOpt: Option<AlloyComponent>, td: Element, x: number, y
 
 const getSnapsConfig = (getSnapPoints: () => DraggingTypes.SnapConfig[], cell: Cell<Option<Element>>, onChange: (td: Element) => void): DraggingTypes.SnapsConfigSpec => {
   // Can't use Option.is() here since we need to do a dom compare, not an equality compare
-  const isSameCell = (cellOpt: Option<Element>, td: Element) => cellOpt.exists((currentTd) => Compare.eq(currentTd, td));
+  const isSameCell = (cellOpt: Option<Element>, td: Element) => cellOpt.exists(Compare.eqc(td));
 
   return {
     getSnapPoints,

@@ -23,9 +23,7 @@ UnitTest.test('ClumpsTest', function () {
 
   Insert.append(body, container);
 
-  const isRoot = function (elem: Element) {
-    return Compare.eq(elem, container);
-  };
+  const isRoot = Compare.eqc(container);
 
   interface Expected {
     start: number[];

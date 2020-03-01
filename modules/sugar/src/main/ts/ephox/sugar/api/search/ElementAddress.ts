@@ -26,9 +26,7 @@ const inParent: <P, C, E>(parent: Element<P>, children: Element<C>[], element: E
 
 const childOf = function (element: Element<DomNode>, ancestor: Element<DomNode>) {
   return PredicateFind.closest(element, function (elem) {
-    return Traverse.parent(elem).exists(function (parent) {
-      return Compare.eq(parent, ancestor);
-    });
+    return Traverse.parent(elem).exists(Compare.eqc(ancestor));
   });
 };
 
@@ -42,7 +40,7 @@ const indexInParent = function <E extends DomNode> (element: Element<E>) {
 };
 
 const indexOf = function (elements: Element<DomNode>[], element: Element<DomNode>) {
-  return Arr.findIndex(elements, Fun.curry(Compare.eq, element));
+  return Arr.findIndex(elements, Compare.eqc(element));
 };
 
 const selectorsInParent = function <E extends DomNode, S extends DomElement = DomElement>(element: Element<E>, selector: string) {

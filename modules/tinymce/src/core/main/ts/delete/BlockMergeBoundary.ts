@@ -48,9 +48,7 @@ const isDifferentBlocks = function (blockBoundary: BlockBoundary): boolean {
 
 const hasSameParent = function (blockBoundary: BlockBoundary): boolean {
   return Traverse.parent(blockBoundary.from().block()).bind(function (parent1) {
-    return Traverse.parent(blockBoundary.to().block()).filter(function (parent2) {
-      return Compare.eq(parent1, parent2);
-    });
+    return Traverse.parent(blockBoundary.to().block()).filter(Compare.eqc(parent1));
   }).isSome();
 };
 

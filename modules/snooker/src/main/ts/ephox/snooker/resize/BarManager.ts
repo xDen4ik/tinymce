@@ -108,9 +108,7 @@ export const BarManager = function (wire: ResizeWire, direction: BarPositions<Co
     }
   });
 
-  const isRoot = function (e: Element) {
-    return Compare.eq(e, wire.view());
-  };
+  const isRoot = Compare.eqc(wire.view());
 
   const findClosestEditableTable = (target: Element): Option<Element> => {
     return SelectorFind.closest(target, 'table', isRoot).filter((table) => {

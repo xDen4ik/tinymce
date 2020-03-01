@@ -12,9 +12,11 @@ const isAriaPartOf = (component: AlloyComponent, queryElem: Element): boolean =>
 };
 
 const isPartOf = (component: AlloyComponent, queryElem: Element): boolean => {
-  return PredicateExists.closest(queryElem, (el: Element) => {
-    return Compare.eq(el, component.element());
-  }, Fun.constant(false)) || isAriaPartOf(component, queryElem);
+  return PredicateExists.closest(
+    queryElem,
+    Compare.eqc(component.element()),
+    Fun.constant(false)
+  ) || isAriaPartOf(component, queryElem);
 };
 
 const isPartOfAnchor = (anchor: AnchorSpec, queryElem: Element): boolean => {

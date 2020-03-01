@@ -50,12 +50,8 @@ const create = (): GuiSystem => {
 const takeover = (root: AlloyComponent): GuiSystem => {
   const isAboveRoot = (el: Element): boolean => {
     return Traverse.parent(root.element()).fold(
-      () => {
-        return true;
-      },
-      (parent) => {
-        return Compare.eq(el, parent);
-      }
+      Fun.constant(true),
+      Compare.eqc(el)
     );
   };
 

@@ -8,6 +8,10 @@ const eq = function (e1: Element<unknown>, e2: Element<unknown>) {
   return e1.dom() === e2.dom();
 };
 
+/** Curried version of eq. Handy for keeping code size down. */
+const eqc = (e1: Element<unknown>): (e2: Element<unknown>) => boolean =>
+  Fun.curry2(eq, e1);
+
 const isEqualNode = function (e1: Element<DomNode>, e2: Element<DomNode>) {
   return e1.dom().isEqualNode(e2.dom());
 };
@@ -41,7 +45,7 @@ const contains = browser.isIE() ? ieContains : regularContains;
 const is = Selectors.is;
 
 export {
-  eq, isEqualNode, member, contains,
+  eq, eqc, isEqualNode, member, contains,
   // Only used by DomUniverse. Remove (or should Selectors.is move here?)
   is
 };

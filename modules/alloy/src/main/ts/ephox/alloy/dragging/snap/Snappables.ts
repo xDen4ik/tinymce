@@ -79,11 +79,11 @@ const stopDrag = (component: AlloyComponent, snapInfo: SnapsConfig): void => {
 const findMatchingSnap = (snaps: SnapConfig[], newCoord: DragCoord.CoordAdt, scroll: Position, origin: Position): Option<SnapOutput> => {
   return Arr.findMap(snaps, (snap) => {
     // NOTE: These are structs because of the immutableBag in Dragging.ts
-    const sensor = snap.sensor();
-    const inRange = DragCoord.withinRange(newCoord, sensor, snap.range().left(), snap.range().top(), scroll, origin);
+    const sensor = snap.sensor;
+    const inRange = DragCoord.withinRange(newCoord, sensor, snap.range.left(), snap.range.top(), scroll, origin);
     return inRange ? Option.some(
       {
-        output: Fun.constant(DragCoord.absorb(snap.output(), newCoord, scroll, origin)),
+        output: Fun.constant(DragCoord.absorb(snap.output, newCoord, scroll, origin)),
         extra: snap.extra
       }
     ) : Option.none();
@@ -103,8 +103,8 @@ const findClosestSnap = (component: AlloyComponent, snapInfo: SnapsConfig, newCo
   return matchSnap.orThunk((): Option<SnapOutput> => {
     const bestSnap = Arr.foldl(snaps, (acc: SnapCandidate, snap: SnapConfig): SnapCandidate => {
       // NOTE: These are structs because of the immutableBag in Dragging.ts
-      const sensor = snap.sensor();
-      const deltas = DragCoord.getDeltas(newCoord, sensor, snap.range().left(), snap.range().top(), scroll, origin);
+      const sensor = snap.sensor;
+      const deltas = DragCoord.getDeltas(newCoord, sensor, snap.range.left(), snap.range.top(), scroll, origin);
       return acc.deltas.fold(() => {
         return {
           deltas: Option.some(deltas),
@@ -128,7 +128,7 @@ const findClosestSnap = (component: AlloyComponent, snapInfo: SnapsConfig, newCo
     });
     return bestSnap.snap.map((snap: SnapConfig): SnapOutput => {
       return {
-        output: Fun.constant(DragCoord.absorb(snap.output(), newCoord, scroll, origin)),
+        output: Fun.constant(DragCoord.absorb(snap.output, newCoord, scroll, origin)),
         extra: snap.extra
       };
     });
@@ -151,7 +151,7 @@ const snapTo = (snap: SnapConfig, scroll: Position, origin: Position): SnapPin =
   return {
     // TODO: This looks to be incorrect and needs fixing as DragCoord definitely needs a number
     // based drag coord for the second argument here, so this is probably a bug.
-    coord: DragCoord.absorb(snap.output(), snap.output() as any, scroll, origin),
+    coord: DragCoord.absorb(snap.output, snap.output as any, scroll, origin),
     extra: snap.extra()
   };
 };

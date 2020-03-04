@@ -13,7 +13,7 @@ import { TouchDraggingConfigSpec } from '../touch/TouchDraggingTypes';
 
 export interface DraggingBehaviour extends Behaviour.AlloyBehaviour<DraggingConfigSpec, DraggingConfig, DraggingState> {
   config: (config: DraggingConfigSpec) => Behaviour.NamedConfiguredBehaviour<DraggingConfigSpec, DraggingConfig, DraggingState>;
-  snap: (sConfig: SnapConfigSpec) => SnapConfig;
+  snap: (sConfig: SnapConfig) => SnapConfig;
   snapTo: (component: AlloyComponent, sConfig: SnapConfig) => void;
 }
 
@@ -28,13 +28,6 @@ export type SensorCoords = (x: number, y: number) => CoordAdt;
 export type OutputCoords = (x: Option<number>, y: Option<number>) => CoordAdt;
 
 export interface SnapConfig {
-  sensor: () => CoordAdt;
-  range: () => Position;
-  output: () => CoordAdt<Option<number>>;
-  extra: () => any;
-}
-
-export interface SnapConfigSpec {
   sensor: CoordAdt;
   range: Position;
   output: CoordAdt<Option<number>>;

@@ -1,4 +1,4 @@
-import { Option, Struct } from '@ephox/katamari';
+import { Fun, Option } from '@ephox/katamari';
 import { Element } from '@ephox/sugar';
 
 interface IdentifiedInput {
@@ -19,7 +19,11 @@ export interface IdentifiedExt {
   finish: () => Element;
 }
 
-const create: (obj: IdentifiedInput) => Identified = Struct.immutableBag(['boxes', 'start', 'finish'], []);
+const create = (obj: IdentifiedInput): Identified => ({
+  boxes: Fun.constant(obj.boxes),
+  start: Fun.constant(obj.start),
+  finish: Fun.constant(obj.finish)
+});
 
 export const Identified = {
   create

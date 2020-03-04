@@ -84,15 +84,15 @@ const attempt = (candidate: SpotInfo, width: number, height: number, bounds: Bou
   // TBIO-3367 + TBIO-3387:
   // Futz with the "height" of the popup to ensure if it doesn't fit it's capped at the available height.
   // As of TBIO-4291, we provide all available space for both up and down.
-  const upAvailable = Fun.constant((limitY + deltaH) - boundsY);
-  const downAvailable = Fun.constant(boundsBottom - limitY);
+  const upAvailable: () => number = Fun.constant((limitY + deltaH) - boundsY);
+  const downAvailable: () => number = Fun.constant(boundsBottom - limitY);
   const maxHeight = Direction.cataVertical(candidate.direction(), downAvailable, /* middle */ downAvailable, upAvailable);
 
-  const westAvailable = Fun.constant((limitX + deltaW) - boundsX);
-  const eastAvailable = Fun.constant(boundsRight - limitX);
+  const westAvailable: () => number = Fun.constant((limitX + deltaW) - boundsX);
+  const eastAvailable: () => number = Fun.constant(boundsRight - limitX);
   const maxWidth = Direction.cataHorizontal(candidate.direction(), eastAvailable, /* middle */ eastAvailable, westAvailable);
 
-  const reposition = Reposition.decision({
+  const reposition: Reposition.RepositionDecision = {
     x: limitX,
     y: limitY,
     width: deltaW,
@@ -106,7 +106,7 @@ const attempt = (candidate: SpotInfo, width: number, height: number, bounds: Bou
     },
     label: candidate.label(),
     candidateYforTest: newY
-  });
+  };
 
   // useful debugging that I don't want to lose
   // console.log(candidate.label());
@@ -171,7 +171,7 @@ const attempts = (candidates: AnchorLayout[], anchorBox: AnchorBox, elementBox: 
       return b.fold(adt.fit, bestNext);
     },
     // fold base case: No candidates, it's never going to be correct, so do whatever
-    adt.nofit(Reposition.decision({
+    adt.nofit({
       x: anchorBox.x(),
       y: anchorBox.y(),
       width: elementBox.width(),
@@ -185,7 +185,7 @@ const attempts = (candidates: AnchorLayout[], anchorBox: AnchorBox, elementBox: 
       },
       label: 'none',
       candidateYforTest: anchorBox.y()
-    }), -1, -1)
+    }, -1, -1)
   );
 
   // unwrapping 'reposition' from the adt, for both fit & nofit the first arg is the one we need,

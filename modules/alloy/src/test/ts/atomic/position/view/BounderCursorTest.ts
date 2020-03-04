@@ -17,10 +17,10 @@ UnitTest.test('BounderCursorTest', () => {
   /* global assert */
   const check = (expected: TestDecisionSpec, preference: AnchorLayout[], anchor: AnchorBox, panel: AnchorElement, bubbles: Bubble.Bubble, bounds: Bounds) => {
     const actual = Bounder.attempts(preference, anchor, panel, bubbles, bounds);
-    assert.eq(expected.label, actual.label());
-    assert.eq(expected.x, actual.x());
-    assert.eq(expected.y, actual.y());
-    if (expected.candidateYforTest !== undefined) { assert.eq(expected.candidateYforTest, actual.candidateYforTest()); }
+    assert.eq(expected.label, actual.label);
+    assert.eq(expected.x, actual.x);
+    assert.eq(expected.y, actual.y);
+    if (expected.candidateYforTest !== undefined) { assert.eq(expected.candidateYforTest, actual.candidateYforTest); }
   };
 
   // Layout is for boxes with a bubble pointing to a cursor position (vertically aligned to nearest side)

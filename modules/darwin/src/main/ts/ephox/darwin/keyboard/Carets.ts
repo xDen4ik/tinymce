@@ -1,4 +1,4 @@
-import { Struct } from '@ephox/katamari';
+import { Fun } from '@ephox/katamari';
 
 export interface Carets {
   left: () => number;
@@ -14,7 +14,12 @@ interface CaretsIn {
   bottom: number;
 }
 
-const nu: (data: CaretsIn) => Carets = Struct.immutableBag(['left', 'top', 'right', 'bottom'], []);
+const nu = (data: CaretsIn): Carets => ({
+  left: Fun.constant(data.left),
+  top: Fun.constant(data.top),
+  right: Fun.constant(data.right),
+  bottom: Fun.constant(data.bottom)
+});
 
 const moveDown = function (caret: Carets, amount: number) {
   return nu({

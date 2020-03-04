@@ -36,10 +36,10 @@ const adt: {
 ]);
 
 const positionWithDirection = (posName: string, decision: RepositionDecision, x: number, y: number, width: number, height: number) => {
-  const decisionX = decision.x() - x;
-  const decisionY = decision.y() - y;
-  const decisionWidth = decision.width();
-  const decisionHeight = decision.height();
+  const decisionX = decision.x - x;
+  const decisionY = decision.y - y;
+  const decisionWidth = decision.width;
+  const decisionHeight = decision.height;
   const decisionRight = width - (decisionX + decisionWidth);
   const decisionBottom = height - (decisionY + decisionHeight);
 
@@ -87,7 +87,7 @@ const positionWithDirection = (posName: string, decision: RepositionDecision, x:
 
 const reposition = (origin: OriginAdt, decision: RepositionDecision): PositionCss => {
   return origin.fold(function () {
-    return NuPositionCss('absolute', Option.some(decision.x()), Option.some(decision.y()), Option.none(), Option.none());
+    return NuPositionCss('absolute', Option.some(decision.x), Option.some(decision.y), Option.none(), Option.none());
   }, function (x, y, width, height) {
     return positionWithDirection('absolute', decision, x, y, width, height);
   }, function (x, y, width, height) {

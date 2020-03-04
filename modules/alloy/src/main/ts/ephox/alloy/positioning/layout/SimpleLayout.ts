@@ -1,4 +1,4 @@
-import { Fun, Option, Struct } from '@ephox/katamari';
+import { Fun, Option } from '@ephox/katamari';
 import { Element } from '@ephox/sugar';
 import { Bounds } from '../../alien/Boxes';
 import { AnchorOverrides, MaxHeightFunction, MaxWidthFunction } from '../mode/Anchoring';
@@ -9,23 +9,14 @@ import * as LayoutTypes from './LayoutTypes';
 import * as MaxHeight from './MaxHeight';
 import * as Origins from './Origins';
 
-export interface ReparteeOptionsSpec {
-  bounds: Bounds;
-  origin: Origins.OriginAdt;
-  preference: LayoutTypes.AnchorLayout[];
-  maxHeightFunction: MaxHeightFunction;
-  maxWidthFunction: MaxWidthFunction;
-}
-
 export interface ReparteeOptions {
-  bounds: () => Bounds;
-  origin: () => Origins.OriginAdt;
-  preference: () => LayoutTypes.AnchorLayout[];
-  maxHeightFunction: () => MaxHeightFunction;
-  maxWidthFunction: () => MaxWidthFunction;
+  readonly bounds: Bounds;
+  readonly origin: Origins.OriginAdt;
+  readonly preference: LayoutTypes.AnchorLayout[];
+  readonly maxHeightFunction: MaxHeightFunction;
+  readonly maxWidthFunction: MaxWidthFunction;
 }
 
-const reparteeOptions: (obj: ReparteeOptionsSpec) => ReparteeOptions = Struct.immutableBag(['bounds', 'origin', 'preference', 'maxHeightFunction', 'maxWidthFunction'], []);
 const defaultOr = <K extends keyof AnchorOverrides>(options: AnchorOverrides, key: K, dephault: NonNullable<AnchorOverrides[K]>): NonNullable<AnchorOverrides[K]> => {
   return options[key] === undefined ? dephault : options[key] as NonNullable<AnchorOverrides[K]>;
 };
@@ -39,13 +30,13 @@ const simple = (anchor: Anchor, element: Element, bubble: Bubble, layouts: Layou
   const anchorBox = anchor.anchorBox();
   const origin = anchor.origin();
 
-  const options = reparteeOptions({
+  const options = {
     bounds: Origins.viewport(origin, getBounds),
     origin,
     preference: layouts,
     maxHeightFunction,
     maxWidthFunction
-  });
+  };
 
   go(anchorBox, element, bubble, options);
 };

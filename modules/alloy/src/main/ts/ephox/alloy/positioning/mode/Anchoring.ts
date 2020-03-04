@@ -12,127 +12,127 @@ export type AnchorPlacement =
   (comp: AlloyComponent, origin: OriginAdt, anchoring: Anchoring, getBounds: Option<() => Bounds>, placee: AlloyComponent) => void;
 
 export interface CommonAnchorSpec {
-  anchor: string;
+  readonly anchor: string;
 }
 
 export type AnchorSpec = SelectionAnchorSpec | HotspotAnchorSpec | SubmenuAnchorSpec | MakeshiftAnchorSpec | NodeAnchorSpec;
 
 export interface AnchorDetail<D> {
-  placement: (comp: AlloyComponent, anchor: D, origin: OriginAdt) => Option<Anchoring>;
+  readonly placement: (comp: AlloyComponent, anchor: D, origin: OriginAdt) => Option<Anchoring>;
 }
 
 export type MaxHeightFunction =  (elem: Element, available: number) => void;
 export type MaxWidthFunction =  (elem: Element, available: number) => void;
 export interface AnchorOverrides {
-  maxHeightFunction?: MaxHeightFunction;
-  maxWidthFunction?: MaxWidthFunction;
+  readonly maxHeightFunction?: MaxHeightFunction;
+  readonly maxWidthFunction?: MaxWidthFunction;
 }
 
 export interface LayoutsDetail {
-  onLtr: (elem: Element) => AnchorLayout[];
-  onRtl: (elem: Element) => AnchorLayout[];
-  onBottomLtr: Option<(elem: Element) => AnchorLayout[]>;
-  onBottomRtl: Option<(elem: Element) => AnchorLayout[]>;
+  readonly onLtr: (elem: Element) => AnchorLayout[];
+  readonly onRtl: (elem: Element) => AnchorLayout[];
+  readonly onBottomLtr: Option<(elem: Element) => AnchorLayout[]>;
+  readonly onBottomRtl: Option<(elem: Element) => AnchorLayout[]>;
 }
 
 export interface HasLayoutAnchor {
-  layouts: Option<LayoutsDetail>;
+  readonly layouts: Option<LayoutsDetail>;
 }
 
 export interface Layouts {
-  onLtr: (elem: Element) => AnchorLayout[];
-  onRtl: (elem: Element) => AnchorLayout[];
-  onBottomLtr?: (elem: Element) => AnchorLayout[];
-  onBottomRtl?: (elem: Element) => AnchorLayout[];
+  readonly onLtr: (elem: Element) => AnchorLayout[];
+  readonly onRtl: (elem: Element) => AnchorLayout[];
+  readonly onBottomLtr?: (elem: Element) => AnchorLayout[];
+  readonly onBottomRtl?: (elem: Element) => AnchorLayout[];
 }
 
 export interface HasLayoutAnchorSpec {
-  layouts?: Layouts;
+  readonly layouts?: Layouts;
 }
 
 export interface SelectionAnchorSpec extends CommonAnchorSpec, HasLayoutAnchorSpec {
-  anchor: 'selection';
-  getSelection?: () => Option<SimRange>;
-  root: Element;
-  bubble?: Bubble;
-  overrides?: AnchorOverrides;
-  showAbove?: boolean;
+  readonly anchor: 'selection';
+  readonly getSelection?: () => Option<SimRange>;
+  readonly root: Element;
+  readonly bubble?: Bubble;
+  readonly overrides?: AnchorOverrides;
+  readonly showAbove?: boolean;
 }
 
 export interface SelectionAnchor extends AnchorDetail<SelectionAnchor>, HasLayoutAnchor {
-  getSelection: Option<() => Option<SimRange>>;
-  root: Element;
-  bubble: Option<Bubble>;
-  overrides: AnchorOverrides;
-  showAbove: boolean;
+  readonly getSelection: Option<() => Option<SimRange>>;
+  readonly root: Element;
+  readonly bubble: Option<Bubble>;
+  readonly overrides: AnchorOverrides;
+  readonly showAbove: boolean;
 }
 
 export interface NodeAnchorSpec extends CommonAnchorSpec, HasLayoutAnchorSpec {
-  anchor: 'node';
-  node: Option<Element>;
-  root: Element;
-  bubble?: Bubble;
-  overrides?: AnchorOverrides;
-  showAbove?: boolean;
+  readonly anchor: 'node';
+  readonly node: Option<Element>;
+  readonly root: Element;
+  readonly bubble?: Bubble;
+  readonly overrides?: AnchorOverrides;
+  readonly showAbove?: boolean;
 }
 
 export interface NodeAnchor extends AnchorDetail<NodeAnchor>, HasLayoutAnchor {
-  node: Option<Element>;
-  root: Element;
-  bubble: Option<Bubble>;
-  overrides: AnchorOverrides;
-  showAbove: boolean;
+  readonly node: Option<Element>;
+  readonly root: Element;
+  readonly bubble: Option<Bubble>;
+  readonly overrides: AnchorOverrides;
+  readonly showAbove: boolean;
 }
 
 export interface HotspotAnchorSpec extends CommonAnchorSpec, HasLayoutAnchorSpec {
-  anchor: 'hotspot';
-  hotspot: AlloyComponent;
-  bubble?: Bubble;
-  overrides?: AnchorOverrides;
+  readonly anchor: 'hotspot';
+  readonly hotspot: AlloyComponent;
+  readonly bubble?: Bubble;
+  readonly overrides?: AnchorOverrides;
 }
 
 export interface HotspotAnchor extends AnchorDetail<HotspotAnchor>, HasLayoutAnchor {
-  hotspot: AlloyComponent;
-  bubble: Option<Bubble>;
-  overrides: AnchorOverrides;
+  readonly hotspot: AlloyComponent;
+  readonly bubble: Option<Bubble>;
+  readonly overrides: AnchorOverrides;
 }
 
 export interface SubmenuAnchorSpec extends CommonAnchorSpec, HasLayoutAnchorSpec {
-  anchor: 'submenu';
-  overrides?: AnchorOverrides;
-  item: AlloyComponent;
+  readonly anchor: 'submenu';
+  readonly overrides?: AnchorOverrides;
+  readonly item: AlloyComponent;
 }
 
 export interface SubmenuAnchor extends AnchorDetail<SubmenuAnchor>, HasLayoutAnchor {
-  item: AlloyComponent;
-  overrides: AnchorOverrides;
+  readonly item: AlloyComponent;
+  readonly overrides: AnchorOverrides;
 }
 
 export interface MakeshiftAnchorSpec extends CommonAnchorSpec {
-  anchor: 'makeshift';
-  x: number;
-  y: number;
-  height?: number;
-  width?: number;
-  bubble?: Bubble;
-  overrides?: AnchorOverrides;
+  readonly anchor: 'makeshift';
+  readonly x: number;
+  readonly y: number;
+  readonly height?: number;
+  readonly width?: number;
+  readonly bubble?: Bubble;
+  readonly overrides?: AnchorOverrides;
 }
 
 export interface MakeshiftAnchor extends AnchorDetail<MakeshiftAnchor>, HasLayoutAnchor {
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-  bubble: Bubble;
-  overrides: AnchorOverrides;
+  readonly x: number;
+  readonly y: number;
+  readonly height: number;
+  readonly width: number;
+  readonly bubble: Bubble;
+  readonly overrides: AnchorOverrides;
 }
 
 export interface Anchoring {
-  anchorBox: AnchorBox;
-  bubble: Bubble;
-  overrides: AnchorOverrides;
-  layouts: AnchorLayout[];
-  placer: Option<AnchorPlacement>;
+  readonly anchorBox: AnchorBox;
+  readonly bubble: Bubble;
+  readonly overrides: AnchorOverrides;
+  readonly layouts: AnchorLayout[];
+  readonly placer: Option<AnchorPlacement>;
 }
 
 const nu: (spec: Anchoring) => Anchoring = (x) => x;

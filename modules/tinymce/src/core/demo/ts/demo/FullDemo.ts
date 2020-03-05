@@ -107,7 +107,7 @@ export default function () {
       'autosave advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker toc',
       'searchreplace wordcount visualblocks visualchars code fullscreen fullpage insertdatetime media nonbreaking',
       'save table directionality emoticons template paste textcolor importcss colorpicker textpattern',
-      'codesample help noneditable print'
+      'codesample help noneditable print export'
     ],
     // rtl_ui: true,
     add_unload_trigger: false,

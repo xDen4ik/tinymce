@@ -5,7 +5,7 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import { Fun, Singleton, Struct } from '@ephox/katamari';
+import { Singleton } from '@ephox/katamari';
 import { Class, Css, Element, Focus } from '@ephox/sugar';
 
 import * as Styles from '../../style/Styles';
@@ -21,7 +21,13 @@ import { document } from '@ephox/dom-globals';
 
 type IosApi = IosSetup.IosApi;
 
-const create = function (platform, mask) {
+interface IosMode {
+  readonly exit: () => void;
+  readonly enter: () => void;
+  readonly refreshStructure: () => void;
+}
+
+const create = (platform, mask): IosMode => {
   const meta = MetaViewport.tag();
 
   const priorState = Singleton.value();
@@ -30,10 +36,10 @@ const create = function (platform, mask) {
   const iosApi = Singleton.api<IosApi>();
   const iosEvents = Singleton.api();
 
-  const enter = function () {
+  const enter = () => {
     mask.hide();
     const doc = Element.fromDom(document);
-    PlatformEditor.getActiveApi(platform.editor).each(function (editorApi) {
+    PlatformEditor.getActiveApi(platform.editor).each((editorApi) => {
       // TODO: Orientation changes.
       // orientation = Orientation.onChange();
 
@@ -60,45 +66,22 @@ const create = function (platform, mask) {
 
       Focus.focus(editorApi.body());
 
-      const setupBag = Struct.immutableBag([
-        'cWin',
-        'ceBody',
-        'socket',
-        'toolstrip',
-        'toolbar',
-        'dropup',
-        'contentElement',
-        'cursor',
-        'keyboardType',
-        'isScrolling',
-        'outerWindow',
-        'outerBody'
-      ], []);
-
+      // TODO: add types to editorApi and platform
       iosApi.set(
-        IosSetup.setup(setupBag({
+        IosSetup.setup({
           cWin: editorApi.win(),
           ceBody: editorApi.body(),
           socket: platform.socket,
           toolstrip: platform.toolstrip,
-          toolbar: platform.toolbar,
           dropup: platform.dropup.element(),
           contentElement: editorApi.frame(),
-          cursor: Fun.noop,
           outerBody: platform.body,
           outerWindow: platform.win,
-          keyboardType: IosKeyboard.stubborn,
-          isScrolling () {
-            // TODO: There is no get in singleton investigate this
-            const scrollValue = scrollEvents as any;
-            return scrollValue.get().exists(function (s) {
-              return s.socket.isScrolling();
-            });
-          }
-        }))
+          keyboardType: IosKeyboard.stubborn
+        })
       );
 
-      iosApi.run(function (api) {
+      iosApi.run((api) => {
         api.syncHeight();
       });
 
@@ -108,25 +91,25 @@ const create = function (platform, mask) {
     });
   };
 
-  const exit = function () {
+  const exit = () => {
     meta.restore();
     iosEvents.clear();
     iosApi.clear();
 
     mask.show();
 
-    priorState.on(function (s: any) {
-      s.socketHeight.each(function (h) {
+    priorState.on((s: any) => {
+      s.socketHeight.each((h) => {
         Css.set(platform.socket, 'height', h);
       });
-      s.iframeHeight.each(function (h) {
+      s.iframeHeight.each((h) => {
         Css.set(platform.editor.getFrame(), 'height', h);
       });
       document.body.scrollTop = s.scrollTop;
     });
     priorState.clear();
 
-    scrollEvents.on(function (s: any) {
+    scrollEvents.on((s: any) => {
       s.exclusives.unbind();
     });
     scrollEvents.clear();
@@ -142,14 +125,14 @@ const create = function (platform, mask) {
     // still even once exited.
     Focus.blur(platform.editor.getFrame());
 
-    PlatformEditor.getActiveApi(platform.editor).each(function (editorApi) {
+    PlatformEditor.getActiveApi(platform.editor).each((editorApi) => {
       editorApi.clearSelection();
     });
   };
 
   // dropup
-  const refreshStructure = function () {
-    iosApi.run(function (api) {
+  const refreshStructure = () => {
+    iosApi.run((api) => {
       api.refreshStructure();
     });
   };

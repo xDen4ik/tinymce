@@ -14,11 +14,11 @@ import * as IosMode from '../ios/core/IosMode';
 import * as TapToEditMask from '../touch/view/TapToEditMask';
 
 export interface MobileWebApp {
-  setReadOnly(): void;
-  refreshStructure(): void;
-  enter(): void;
-  exit(): void;
-  destroy(): void;
+  readonly setReadOnly: () => void;
+  readonly refreshStructure: () => void;
+  readonly enter: () => void;
+  readonly exit: () => void;
+  readonly destroy: () => void;
 }
 
 const produce = function (raw: {any}): MobileWebApp {

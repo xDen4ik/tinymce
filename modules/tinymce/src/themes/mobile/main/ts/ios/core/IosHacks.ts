@@ -8,7 +8,7 @@
 import { Focus, WindowSelection } from '@ephox/sugar';
 import Delay from 'tinymce/core/api/util/Delay';
 
-const setSelectionAtTouch = function (editorApi, touchEvent) {
+const setSelectionAtTouch = (editorApi, touchEvent): void => {
   // shortTextFix, when text is short body height is short too, tapping at the bottom of the editor
   // should set a selection. We don't set body height to 100% because of side effects, so we resort
   // to a mousedown on the iDoc, it is a clean place, and very specific to this issue. On a vanilla
@@ -27,13 +27,13 @@ const setSelectionAtTouch = function (editorApi, touchEvent) {
 };
 
 // NOTE: NOT USED YET
-const onOrientationReady = function (outerWindow, refreshView) {
+const onOrientationReady = (outerWindow, refreshView): void => {
   // When rotating into portrait, the page (and toolbar) is off the top of the screen (pageYOffset > 0)
   // when the view settles, the toolbar will readjust to be visible/fixed to the top (pageYOffset = 0)
   // wait for the toolbar to recover before refreshing the view and scrolling cursor into view
   // done here instead of nomad toolbar fixup since that is tied to window scroll, which does not
   // fire on landscape
-  const scrollNotZero = Delay.setInterval(function () {
+  const scrollNotZero = Delay.setInterval(() => {
     if (outerWindow.pageYOffset === 0) {
       Delay.clearInterval(scrollNotZero);
       refreshView();

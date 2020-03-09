@@ -17,20 +17,20 @@ import BackgroundActivity from '../smooth/BackgroundActivity';
 import * as Greenzone from '../view/Greenzone';
 import * as IosUpdates from '../view/IosUpdates';
 import * as IosViewport from '../view/IosViewport';
+import { Window, Node as DomNode, HTMLElement, HTMLIFrameElement } from '@ephox/dom-globals';
+import { IosKeyboardConstructor } from 'tinymce/themes/mobile/ios/view/IosKeyboard';
 
 const VIEW_MARGIN = 5;
 
-const register = function (toolstrip, socket, container, outerWindow, structure, cWin) {
-  const scroller = BackgroundActivity(function (y) {
-    return IosScrolling.moveWindowScroll(toolstrip, socket, y);
-  });
+const register = (toolstrip, socket, container, outerWindow, structure, cWin) => {
+  const scroller = BackgroundActivity((y) => IosScrolling.moveWindowScroll(toolstrip, socket, y));
 
   // NOTE: This is a WebView specific way of scrolling when out of bounds. When we need to make
   // the webapp work again, we'll have to adjust this function. Essentially, it just jumps the scroll
   // back to show the current selection rectangle.
-  const scrollBounds = function () {
+  const scrollBounds = () => {
     const rects = Rectangles.getRectangles(cWin);
-    return Option.from(rects[0]).bind(function (rect) {
+    return Option.from(rects[0]).bind((rect) => {
       const viewTop = rect.top() - socket.dom().scrollTop;
       const outside = viewTop > outerWindow.innerHeight + VIEW_MARGIN || viewTop < -VIEW_MARGIN;
       return outside ? Option.some({
@@ -40,14 +40,14 @@ const register = function (toolstrip, socket, container, outerWindow, structure,
     });
   };
 
-  const scrollThrottle = Throttler.last(function () {
+  const scrollThrottle = Throttler.last(() => {
     /*
      * As soon as the window is back to 0 (idle), scroll the toolbar and socket back into place on scroll.
      */
-    scroller.idle(function () {
-      IosUpdates.updatePositions(container, outerWindow.pageYOffset).get(function (/* _ */) {
+    scroller.idle(() => {
+      IosUpdates.updatePositions(container, outerWindow.pageYOffset).get((/* _ */) => {
         const extraScroll = scrollBounds();
-        extraScroll.each(function (extra) {
+        extraScroll.each((extra) => {
           // TODO: Smoothly animate this in a way that doesn't conflict with anything else.
           socket.dom().scrollTop = socket.dom().scrollTop + extra.top();
         });
@@ -57,7 +57,7 @@ const register = function (toolstrip, socket, container, outerWindow, structure,
     });
   }, 1000);
 
-  const onScroll = DomEvent.bind(Element.fromDom(outerWindow), 'scroll', function () {
+  const onScroll = DomEvent.bind(Element.fromDom(outerWindow), 'scroll', () => {
     if (outerWindow.pageYOffset < 0) {
       return;
     }
@@ -109,32 +109,43 @@ export interface IosApi {
   destroy: () => void;
 }
 
-const setup = function (bag) {
-  const cWin = bag.cWin();
-  const ceBody = bag.ceBody();
-  const socket = bag.socket();
-  const toolstrip = bag.toolstrip();
-  const toolbar = bag.toolbar();
-  const contentElement = bag.contentElement();
-  const keyboardType = bag.keyboardType();
-  const outerWindow = bag.outerWindow();
-  const dropup = bag.dropup();
+interface IosSetupInputs {
+  readonly cWin: Window;
+  readonly ceBody: Element<DomNode>;
+  readonly socket: Element<HTMLElement>;
+  readonly toolstrip: Element<HTMLElement>;
+  readonly contentElement: Element<HTMLIFrameElement>;
+  readonly keyboardType: IosKeyboardConstructor;
+  readonly outerWindow: Window;
+  readonly dropup: Element<HTMLElement>;
+  readonly outerBody: Element<DomNode>;
+}
+
+const setup = (bag: IosSetupInputs) => {
+  const cWin = bag.cWin;
+  const ceBody = bag.ceBody;
+  const socket = bag.socket;
+  const toolstrip = bag.toolstrip;
+  const contentElement = bag.contentElement;
+  const keyboardType = bag.keyboardType;
+  const outerWindow = bag.outerWindow;
+  const dropup = bag.dropup;
 
   const structure = IosViewport.takeover(socket, ceBody, toolstrip, dropup);
-  const keyboardModel = keyboardType(bag.outerBody(), cWin, Body.body(), contentElement, toolstrip, toolbar);
+  const keyboardModel = keyboardType(bag.outerBody, cWin, Body.body(), contentElement);
 
-  const toEditing = function () {
+  const toEditing = () => {
     // Consider inlining, though it will make it harder to follow the API
     keyboardModel.toEditing();
     clearSelection();
   };
 
-  const toReading = function () {
+  const toReading = () => {
     keyboardModel.toReading();
   };
 
-  const onToolbarTouch = function (event) {
-    keyboardModel.onToolbarTouch(event);
+  const onToolbarTouch = (event) => {
+    keyboardModel.onToolbarTouch();
   };
 
   const onOrientation = Orientation.onChange(outerWindow, {
@@ -145,48 +156,48 @@ const setup = function (bag) {
   // NOTE: When the window is resizing (probably due to meta tags and viewport definitions), we are not receiving a window resize event.
   // However, it happens shortly after we start Ios mode, so here we just wait for the first window size event that we get. This code
   // is also the same code that is used for the Orientation ready event.
-  onOrientation.onAdjustment(function () {
+  onOrientation.onAdjustment(() => {
     structure.refresh();
   });
 
-  const onResize = DomEvent.bind(Element.fromDom(outerWindow), 'resize', function () {
+  const onResize = DomEvent.bind(Element.fromDom(outerWindow), 'resize', () => {
     if (structure.isExpanding()) {
       structure.refresh();
     }
   });
 
-  const onScroll = register(toolstrip, socket, bag.outerBody(), outerWindow, structure, cWin);
+  const onScroll = register(toolstrip, socket, bag.outerBody, outerWindow, structure, cWin);
 
   const unfocusedSelection = FakeSelection(cWin, contentElement);
 
-  const refreshSelection = function () {
+  const refreshSelection = () => {
     if (unfocusedSelection.isActive()) {
       unfocusedSelection.update();
     }
   };
 
-  const highlightSelection = function () {
+  const highlightSelection = () => {
     unfocusedSelection.update();
   };
 
-  const clearSelection = function () {
+  const clearSelection = () => {
     unfocusedSelection.clear();
   };
 
-  const scrollIntoView = function (top, bottom) {
+  const scrollIntoView = (top, bottom) => {
     Greenzone.scrollIntoView(cWin, socket, dropup, top, bottom);
   };
 
-  const syncHeight = function () {
+  const syncHeight = () => {
     Css.set(contentElement, 'height', contentElement.dom().contentWindow.document.body.scrollHeight + 'px');
   };
 
-  const setViewportOffset = function (newYOffset) {
+  const setViewportOffset = (newYOffset) => {
     structure.setViewportOffset(newYOffset);
     IosScrolling.moveOnlyTop(socket, newYOffset).get(Fun.identity);
   };
 
-  const destroy = function () {
+  const destroy = () => {
     structure.restore();
     onOrientation.destroy();
     onScroll.unbind();

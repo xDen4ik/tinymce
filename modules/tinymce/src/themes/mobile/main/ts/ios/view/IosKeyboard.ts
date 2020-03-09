@@ -6,10 +6,20 @@
  */
 
 import { Arr, Fun } from '@ephox/katamari';
-import { DomEvent, Focus, Node } from '@ephox/sugar';
+import { DomEvent, Element, Focus, Node } from '@ephox/sugar';
+import { HTMLElement, Node as DomNode, Window } from '@ephox/dom-globals';
 
 import * as CaptureBin from '../../util/CaptureBin';
 import * as ResumeEditing from '../focus/ResumeEditing';
+
+export interface IosKeyboard {
+  readonly toReading: () => void;
+  readonly toEditing: () => void;
+  readonly destroy: () => void;
+  readonly onToolbarTouch: () => void;
+}
+
+export type IosKeyboardConstructor = (outerBody: Element<DomNode>, cWin: Window, page: Element<DomNode>, frame: Element<HTMLElement>) => IosKeyboard;
 
 /*
  * Stubborn IOS Keyboard mode:
@@ -40,16 +50,16 @@ import * as ResumeEditing from '../focus/ResumeEditing';
  * the stubborn keyboard in webapp mode, we will need to find some way to let repartee know the MaxHeight
  * needs to exclude the keyboard. This isn't a problem with timid, because the keyboard is dismissed.
  */
-const stubborn = function (outerBody, cWin, page, frame/*, toolstrip, toolbar*/) {
-  const toEditing = function () {
+const stubborn: IosKeyboardConstructor = (outerBody: Element<DomNode>, cWin: Window, page: Element<DomNode>, frame: Element<HTMLElement>): IosKeyboard => {
+  const toEditing = () => {
     ResumeEditing.resume(cWin, frame);
   };
 
-  const toReading = function () {
+  const toReading = () => {
     CaptureBin.input(outerBody, Focus.blur);
   };
 
-  const captureInput = DomEvent.bind(page, 'keydown', function (evt) {
+  const captureInput = DomEvent.bind(page, 'keydown', (evt) => {
     // Think about killing the event.
     if (! Arr.contains([ 'input', 'textarea' ], Node.name(evt.target()))) {
 
@@ -60,11 +70,11 @@ const stubborn = function (outerBody, cWin, page, frame/*, toolstrip, toolbar*/)
     }
   });
 
-  const onToolbarTouch = function (/* event */) {
+  const onToolbarTouch = (/* event */) => {
     // Do nothing
   };
 
-  const destroy = function () {
+  const destroy = () => {
     captureInput.unbind();
   };
 
@@ -94,20 +104,20 @@ const stubborn = function (outerBody, cWin, page, frame/*, toolstrip, toolbar*/)
  * However, the timid keyboard mode will seamlessly integrate with dropdowns max-height, because
  * dropdowns dismiss the keyboard, so they have all the height they require.
  */
-const timid = function (outerBody, cWin, page, frame/*, toolstrip, toolbar*/) {
-  const dismissKeyboard = function () {
+const timid: IosKeyboardConstructor = (outerBody: Element<DomNode>, cWin: Window, page: Element<DomNode>, frame: Element<HTMLElement>): IosKeyboard => {
+  const dismissKeyboard = () => {
     Focus.blur(frame);
   };
 
-  const onToolbarTouch = function () {
+  const onToolbarTouch = () => {
     dismissKeyboard();
   };
 
-  const toReading = function () {
+  const toReading = () => {
     dismissKeyboard();
   };
 
-  const toEditing = function () {
+  const toEditing = () => {
     ResumeEditing.resume(cWin, frame);
   };
 

@@ -1,4 +1,4 @@
-import { PlatformDetection } from 'ephox/sand/core/PlatformDetection';
+import * as PlatformDetection from 'ephox/sand/core/PlatformDetection';
 import { UnitTest, assert } from '@ephox/bedrock-client';
 
 UnitTest.test('DeviceTypeTest', function () {

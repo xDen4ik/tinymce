@@ -10,7 +10,12 @@ export interface PlatformDetection {
   deviceType: DeviceType;
 }
 
-const detect = function (userAgent: string, mediaMatch: (query: string) => boolean): PlatformDetection {
+/**
+ * @deprecated Please detect OS and Browser separately.
+ * @param userAgent
+ * @param mediaMatch
+ */
+export const detect = function (userAgent: string, mediaMatch: (query: string) => boolean): PlatformDetection {
   const browsers = PlatformInfo.browsers();
   const oses = PlatformInfo.oses();
 
@@ -31,6 +36,20 @@ const detect = function (userAgent: string, mediaMatch: (query: string) => boole
   };
 };
 
-export const PlatformDetection = {
-  detect
+export const detectBrowser = function (userAgent: string): Browser {
+  const browsers = PlatformInfo.browsers();
+
+  return UaString.detectBrowser(browsers, userAgent).fold(
+    Browser.unknown,
+    Browser.nu
+  );
+};
+
+export const detectOs = function (userAgent: string): OperatingSystem {
+  const oses = PlatformInfo.oses();
+
+  return UaString.detectOs(oses, userAgent).fold(
+    OperatingSystem.unknown,
+    OperatingSystem.nu
+  );
 };

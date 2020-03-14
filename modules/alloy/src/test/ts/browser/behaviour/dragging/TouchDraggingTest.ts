@@ -15,12 +15,10 @@ import { Container } from 'ephox/alloy/api/ui/Container';
 
 UnitTest.asynctest('TouchDraggingTest', (success, failure) => {
   // Override isTouch() to make Alloy listen to touch events
-  const origPlatform = PlatformDetection.detect();
-  PlatformDetection.override({
-    deviceType: {
-      ...origPlatform.deviceType,
-      isTouch: () => true
-    }
+  const origPlatform = PlatformDetection.detectDeviceType();
+  PlatformDetection.overrideDeviceType({
+    ...origPlatform,
+    isTouch: () => true
   });
 
   const subject = Memento.record(
@@ -261,10 +259,10 @@ UnitTest.asynctest('TouchDraggingTest', (success, failure) => {
       ])
     ];
   }, () => {
-    PlatformDetection.override(origPlatform);
+    PlatformDetection.overrideDeviceType(origPlatform);
     success();
   }, (err, logs) => {
-    PlatformDetection.override(origPlatform);
+    PlatformDetection.overrideDeviceType(origPlatform);
     failure(err, logs);
   });
 });

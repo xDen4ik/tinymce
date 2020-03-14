@@ -45,3 +45,11 @@ export const detectBrowser = (): Browser => browser.get();
 export const overrideBrowser = (override: Browser) => {
   browser.set(override);
 };
+
+const deviceType = Cell<DeviceType>(PD.detectDeviceType(navigator.userAgent, mediaMatch));
+
+export const detectDeviceType = (): DeviceType => deviceType.get();
+
+export const overrideDeviceType = (override: DeviceType) => {
+  deviceType.set(override);
+};

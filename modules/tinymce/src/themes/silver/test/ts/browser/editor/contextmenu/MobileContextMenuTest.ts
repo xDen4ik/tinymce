@@ -12,8 +12,8 @@ import TablePlugin from 'tinymce/plugins/table/Plugin';
 import SilverTheme from 'tinymce/themes/silver/Theme';
 
 UnitTest.asynctest('MobileContextMenuTest', (success, failure) => {
-  const detection = PlatformDetection.detect();
-  const browser = detection.browser;
+  const origDeviceType = PlatformDetection.detectDeviceType();
+  const browser = PlatformDetection.detectBrowser();
   const runTests = browser.isChrome() || browser.isFirefox() || browser.isSafari();
   if (!runTests) {
     return success();
@@ -26,11 +26,9 @@ UnitTest.asynctest('MobileContextMenuTest', (success, failure) => {
   TablePlugin();
 
   // Override the platform detection, so that it thinks we're on a touch device
-  PlatformDetection.override({
-    deviceType: {
-      ...detection.deviceType,
-      isTouch: () => true
-    }
+  PlatformDetection.overrideDeviceType({
+    ...origDeviceType,
+    isTouch: () => true
   });
 
   TinyLoader.setup((editor, onSuccess, onFailure) => {
@@ -237,10 +235,10 @@ UnitTest.asynctest('MobileContextMenuTest', (success, failure) => {
     base_url: '/project/tinymce/js/tinymce',
     image_caption: true,
   }, () => {
-    PlatformDetection.override(detection);
+    PlatformDetection.overrideDeviceType(origDeviceType);
     success();
   }, (err, logs) => {
-    PlatformDetection.override(detection);
+    PlatformDetection.overrideDeviceType(origDeviceType);
     failure(err, logs);
   });
 });

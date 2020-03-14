@@ -232,8 +232,8 @@ export default (): void => {
     })
   );
 
-  const platform = PlatformDetection.detect();
-  const isTouch = platform.deviceType.isTouch();
+  const deviceType = PlatformDetection.detectDeviceType();
+  const isTouch = deviceType.isTouch();
 
   DomEvent.bind(body, 'click', () => {
     if (!isTouch) { Keying.focusIn(slider1); }

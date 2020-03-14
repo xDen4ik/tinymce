@@ -5,7 +5,7 @@ import * as Assertions from 'ephox/snooker/test/Assertions';
 import { UnitTest } from '@ephox/bedrock-client';
 
 UnitTest.test('EraseOperationsTest', function () {
-  const platform = PlatformDetection.detect();
+  const browser = PlatformDetection.detectBrowser();
 
   const deleteExpectedContent1 = '<table><tbody>' +
       '<tr><td>B1</td><td>C1</td><td>D1</td></tr>' +
@@ -27,7 +27,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseColumns, [
       { section: 0, row: 1, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent2 = '<table><tbody>' +
@@ -50,7 +50,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 0 },
       { section: 0, row: 0, column: 1 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent3 = '<table><tbody>' +
@@ -77,7 +77,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseColumns, [
       { section: 0, row: 1, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent4 = '<table><tbody>' +
@@ -99,7 +99,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseColumns, [
       { section: 0, row: 1, column: 1 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent5 = '<table><tbody>' +
@@ -120,7 +120,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent6 = '<table><tbody>' +
@@ -143,7 +143,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 0 },
       { section: 0, row: 1, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent7 = '<table><tbody>' +
@@ -169,7 +169,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent8 = '<table><tbody>' +
@@ -192,7 +192,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent9 = '<table border="1">' +
@@ -213,7 +213,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 0 },
       { section: 0, row: 1, column: 2 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent10 = '<table border="1">' +
@@ -249,7 +249,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 3, column: 2 },
       { section: 0, row: 4, column: 2 }
     ],
-    platform
+    browser
   );
 
   const deleteExpected11 = {
@@ -281,7 +281,7 @@ UnitTest.test('EraseOperationsTest', function () {
         { section: 0, row: 3, column: 1 },
         { section: 0, row: 4, column: 1 }
       ],
-    platform
+    browser
   );
 
   const deleteExpectedContent12 = '<table border="1">' +
@@ -310,7 +310,7 @@ UnitTest.test('EraseOperationsTest', function () {
      TableOperations.eraseColumns, [
         { section: 0, row: 3, column: 3 }
       ],
-    platform
+    browser
   );
 
   const deleteExpected13 = {
@@ -340,7 +340,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 3, column: 3 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent14 = '<table border="1">' +
@@ -370,7 +370,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 4, column: 5 },
       { section: 0, row: 5, column: 5 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent15 = '<table border="1"><tbody><tr><td>row 0 cell 0 row 1 cell 0 </td><td>row 1 cell 1</td><td rowspan="2">row 0 cell 2 row 1 cell 2 row 2 cell 2 </td></tr><tr><td>row 2 cell 0</td><td>row 2 cell 1</td></tr><tr><td>row 3 cell 0</td><td>row 3 cell 1</td><td>row 3 cell 2</td></tr><tr><td>row 4 cell 0</td><td>row 4 cell 1</td><td>row 4 cell 2</td></tr></tbody></table>';
@@ -386,7 +386,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 1 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent16 = '<table border="1"><tbody><tr><td>row 2 cell 0</td><td>row 2 cell 1</td><td>row 0 cell 2 row 1 cell 2 row 2 cell 2 </td></tr><tr><td>row 3 cell 0</td><td>row 3 cell 1</td><td>row 3 cell 2</td></tr><tr><td>row 4 cell 0</td><td>row 4 cell 1</td><td>row 4 cell 2</td></tr></tbody></table>';
@@ -403,7 +403,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 1 },
       { section: 0, row: 1, column: 0 }  // Note: this one is 0 because hierarchy doesn't account for merged cells, here we are actually targeting cell 1,1 but in the dom structure is in position 0
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent17 = '<table border="1"><tbody><tr><td rowspan="2">row 0 cell 0 row 1 cell 0 </td><td rowspan="3">row 0 cell 2 row 1 cell 2 row 2 cell 2 </td></tr><tr></tr><tr><td>row 2 cell 0</td></tr><tr><td>row 3 cell 0</td><td>row 3 cell 2</td></tr><tr><td>row 4 cell 0</td><td>row 4 cell 2</td></tr></tbody></table>';
@@ -420,7 +420,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 1 },
       { section: 0, row: 1, column: 0 } // Note: this one is 0 because hierarchy doesn't account for merged cells, here we are actually targeting cell 1,1 but in the dom structure is in position 0
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent18 = '<table border="1"><tbody><tr><td rowspan="2">row 0 cell 0 row 1 cell 0 </td></tr><tr></tr><tr><td>row 2 cell 0</td></tr><tr><td>row 3 cell 0</td></tr><tr><td>row 4 cell 0</td></tr></tbody></table>';
@@ -441,7 +441,7 @@ UnitTest.test('EraseOperationsTest', function () {
         { section: 0, row: 4, column: 1 },
         { section: 0, row: 4, column: 2 }
       ],
-    platform
+    browser
   );
 
   Assertions.checkDelete(Option.none(),
@@ -457,7 +457,7 @@ UnitTest.test('EraseOperationsTest', function () {
         { section: 0, row: 4, column: 1 },
         { section: 0, row: 4, column: 2 }
       ],
-      platform
+      browser
   );
 
   Assertions.checkDelete(Option.none(),
@@ -470,7 +470,7 @@ UnitTest.test('EraseOperationsTest', function () {
         { section: 0, row: 4, column: 1 },
         { section: 0, row: 4, column: 2 }
       ],
-    platform
+    browser
   );
 
   const deleteExpectedContent19 = '<table><tbody>' +
@@ -493,7 +493,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent20 = '<table><thead>' +
@@ -516,7 +516,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 1, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   Assertions.checkDelete(Option.none(),
@@ -533,7 +533,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 0 },
       { section: 1, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent21 = '<table><thead>' +
@@ -559,7 +559,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseColumns, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent22 = '<table><thead>' +
@@ -586,7 +586,7 @@ UnitTest.test('EraseOperationsTest', function () {
       { section: 0, row: 0, column: 0 },
       { section: 1, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent23 = '<table><tbody>' +
@@ -609,7 +609,7 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseColumns, [
       { section: 0, row: 1, column: 0 }
     ],
-    platform
+    browser
   );
 
   const deleteExpectedContent24 = '<table><tbody>' +
@@ -630,6 +630,6 @@ UnitTest.test('EraseOperationsTest', function () {
     TableOperations.eraseRows, [
       { section: 0, row: 0, column: 0 }
     ],
-    platform
+    browser
   );
 });

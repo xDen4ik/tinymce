@@ -4,24 +4,26 @@ import * as PlatformQuery from 'ephox/sand/test/PlatformQuery';
 
 UnitTest.test('BrowserTest', function () {
   function check(expectedQuery: string, expectedOs: string, expectedBrowser: string, expectedMajor: number, expectedMinor: number, userAgent: string) {
-    const platform = PlatformDetection.detect(userAgent, () => false);
-    assert.eq(expectedBrowser, platform.browser.current);
-    assert.eq(expectedOs, platform.os.current);
+    const platformBrowser = PlatformDetection.detectBrowser(userAgent);
+    const platformOs = PlatformDetection.detectOs(userAgent);
 
-    const actualBrowserVersion = platform.browser.version;
+    assert.eq(expectedBrowser, platformBrowser.current);
+    assert.eq(expectedOs, platformOs.current);
+
+    const actualBrowserVersion = platformBrowser.version;
     assert.eq(expectedMajor, actualBrowserVersion.major);
     assert.eq(expectedMinor, actualBrowserVersion.minor);
 
     if (! PlatformQuery.hasOwnProperty(expectedQuery)) {
       assert.fail('Platform query: ' + expectedQuery + ' not known');
     }
-    assert.eq(true, PlatformQuery[expectedQuery](platform), 'The query ' + expectedQuery + ' should match.\nUser Agent: ' + userAgent +  '\nbrowser: ' + expectedBrowser);
+    assert.eq(true, PlatformQuery[expectedQuery](platformBrowser), 'The query ' + expectedQuery + ' should match.\nUser Agent: ' + userAgent +  '\nbrowser: ' + expectedBrowser);
   }
 
   const checkOSVersion = function (expectedMajor: number, expectedMinor: number, userAgent: string) {
-    const platform = PlatformDetection.detect(userAgent, () => false);
-    assert.eq(expectedMajor, platform.os.version.major, 'invalid major OS version ' + platform.os.version.major + ' for agent: ' + userAgent);
-    assert.eq(expectedMinor, platform.os.version.minor, 'invalid minor OS version ' + platform.os.version.minor + ' for agent: ' + userAgent);
+    const platformOs = PlatformDetection.detectOs(userAgent);
+    assert.eq(expectedMajor, platformOs.version.major, 'invalid major OS version ' + platformOs.version.major + ' for agent: ' + userAgent);
+    assert.eq(expectedMinor, platformOs.version.minor, 'invalid minor OS version ' + platformOs.version.minor + ' for agent: ' + userAgent);
   };
 
   // These tests are assuming there is no chromeframe activeX object active in the page.

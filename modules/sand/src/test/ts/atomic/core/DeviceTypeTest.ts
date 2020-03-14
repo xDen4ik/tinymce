@@ -1,34 +1,35 @@
 import * as PlatformDetection from 'ephox/sand/core/PlatformDetection';
 import { UnitTest, assert } from '@ephox/bedrock-client';
+import { DeviceType } from 'ephox/sand/detect/DeviceType';
 
 UnitTest.test('DeviceTypeTest', function () {
-  const getPlatform = function (userAgent: string) {
-    return PlatformDetection.detect(userAgent, () => false);
+  const getPlatform = function (userAgent: string): DeviceType {
+    return PlatformDetection.detectDeviceType(userAgent, () => false);
   };
 
   const checkTablet = function (expected: boolean, userAgent: string) {
-    const platform = getPlatform(userAgent);
-    assert.eq(expected, platform.deviceType.isTablet(), 'Tablet incorrect: ' + userAgent);
+    const deviceType = getPlatform(userAgent);
+    assert.eq(expected, deviceType.isTablet(), 'Tablet incorrect: ' + userAgent);
   };
 
   const checkiPad = function (expected: boolean, userAgent: string) {
-    const platform = getPlatform(userAgent);
-    assert.eq(expected, platform.deviceType.isiPad(), 'iPad incorrect: ' + userAgent);
+    const deviceType = getPlatform(userAgent);
+    assert.eq(expected, deviceType.isiPad(), 'iPad incorrect: ' + userAgent);
   };
 
   const checkiPhone = function (expected: boolean, userAgent: string) {
-    const platform = getPlatform(userAgent);
-    assert.eq(expected, platform.deviceType.isiPhone(), 'iPhone incorrect: ' + userAgent);
+    const deviceType = getPlatform(userAgent);
+    assert.eq(expected, deviceType.isiPhone(), 'iPhone incorrect: ' + userAgent);
   };
 
   const checkIsWebView = function (expected: boolean, userAgent: string) {
-    const platform = getPlatform(userAgent);
-    assert.eq(expected, platform.deviceType.isWebView(), 'WebView incorrect: ' + userAgent);
+    const deviceType = getPlatform(userAgent);
+    assert.eq(expected, deviceType.isWebView(), 'WebView incorrect: ' + userAgent);
   };
 
   const checkDesktop = function (expected: boolean, userAgent: string) {
-    const platform = getPlatform(userAgent);
-    assert.eq(expected, platform.deviceType.isDesktop(), 'desktop incorrect: ' + userAgent);
+    const deviceType = getPlatform(userAgent);
+    assert.eq(expected, deviceType.isDesktop(), 'desktop incorrect: ' + userAgent);
   };
 
   // iPad ios10 wkWebview

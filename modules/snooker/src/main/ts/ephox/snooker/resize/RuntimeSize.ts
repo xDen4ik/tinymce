@@ -2,10 +2,10 @@ import { PlatformDetection } from '@ephox/sand';
 import { Css, Height, Width, Element } from '@ephox/sugar';
 import { HTMLElement } from '@ephox/dom-globals';
 
-const platform = PlatformDetection.detect();
+const browser = PlatformDetection.detectBrowser();
 
 const needManualCalc = function () {
-  return platform.browser.isIE() || platform.browser.isEdge();
+  return browser.isIE() || browser.isEdge();
 };
 
 const toNumber = function (px: string, fallback: number) {

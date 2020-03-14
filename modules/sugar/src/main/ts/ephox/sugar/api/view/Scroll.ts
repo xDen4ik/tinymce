@@ -8,7 +8,7 @@ import Element from '../node/Element';
 import * as Location from './Location';
 import { Position } from './Position';
 
-const isSafari = PlatformDetection.detect().browser.isSafari();
+const isSafari = PlatformDetection.detectBrowser().isSafari();
 
 // get scroll position (x,y) relative to document _doc (or global if not supplied)
 const get = function (_DOC?: Element<Document>) {

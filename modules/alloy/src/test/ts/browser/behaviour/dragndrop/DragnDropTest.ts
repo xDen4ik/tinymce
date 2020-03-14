@@ -13,7 +13,7 @@ import { TestStore } from 'ephox/alloy/api/testhelpers/TestStore';
 import { StartingDragndropConfigSpec, DropDragndropConfigSpec } from 'ephox/alloy/dragging/dragndrop/DragnDropTypes';
 
 UnitTest.asynctest('DragnDropTest', (success, failure) => {
-  const platform = PlatformDetection.detect();
+  const browser = PlatformDetection.detectBrowser();
 
   const createDraggable = (store: TestStore, cls: string, overrides: Partial<StartingDragndropConfigSpec>) => {
     return Container.sketch({
@@ -177,7 +177,7 @@ UnitTest.asynctest('DragnDropTest', (success, failure) => {
         sAssertDraggedData('Should have expected data', store, { data: 'b' })
       ])),
 
-      Logger.t('Drag and drop with custom dataTransfer code', GeneralSteps.sequence(platform.browser.isIE() ? [] : [
+      Logger.t('Drag and drop with custom dataTransfer code', GeneralSteps.sequence(browser.isIE() ? [] : [
         store.sClear,
         Dnd.sDragnDrop('.draggableDataC', '.dropzoneA'),
         sAssertDraggedData('Should have expected data', store, { data: 'c' })

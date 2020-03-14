@@ -15,7 +15,7 @@ type Carets = Carets.Carets;
 
 const MAX_RETRIES = 20;
 
-const platform = PlatformDetection.detect();
+const browser = PlatformDetection.detectBrowser();
 
 const findSpot = function (bridge: WindowBridge, isRoot: (e: Element) => boolean, direction: KeyDirection) {
   return bridge.getSelection().bind(function (sel) {
@@ -66,9 +66,9 @@ const tryAgain = function (bridge: WindowBridge, element: Element, offset: numbe
 
 const tryAt = function (bridge: WindowBridge, direction: KeyDirection, box: Carets) {
   // NOTE: As we attempt to take over selection everywhere, we'll probably need to separate these again.
-  if (platform.browser.isChrome() || platform.browser.isSafari() || platform.browser.isFirefox() || platform.browser.isEdge()) {
+  if (browser.isChrome() || browser.isSafari() || browser.isFirefox() || browser.isEdge()) {
     return direction.otherRetry(bridge, box);
-  } else if (platform.browser.isIE()) {
+  } else if (browser.isIE()) {
     return direction.ieRetry(bridge, box);
   } else {
     return Option.none<Situs>();

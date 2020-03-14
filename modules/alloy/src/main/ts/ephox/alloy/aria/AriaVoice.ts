@@ -3,7 +3,7 @@ import { Id } from '@ephox/katamari';
 import { PlatformDetection } from '@ephox/sand';
 import { Attr, Css, Element, Insert, Remove, Traverse } from '@ephox/sugar';
 
-const isFirefox: boolean = PlatformDetection.detect().browser.isFirefox();
+const isFirefox: boolean = PlatformDetection.detectBrowser().isFirefox();
 
 const offscreen = {
   position: 'absolute',

@@ -1,32 +1,18 @@
-import { PlatformDetection } from 'ephox/sand/core/PlatformDetection';
+import { Browser } from 'ephox/sand/core/Browser';
 
-const isEdge = function (platform: PlatformDetection) {
-  return platform.browser.isEdge();
-};
+const isEdge = (browser: Browser) => browser.isEdge();
 
-const isChrome = function (platform: PlatformDetection) {
-  return platform.browser.isChrome();
-};
+const isChrome = (browser: Browser) => browser.isChrome();
 
-const isFirefox = function (platform: PlatformDetection) {
-  return platform.browser.isFirefox();
-};
+const isFirefox = (browser: Browser) => browser.isFirefox();
 
-const isIE11 = function (platform: PlatformDetection) {
-  return isIE(platform) && platform.browser.version.major === 11;
-};
+const isIE11 = (browser: Browser) => isIE(browser) && browser.version.major === 11;
 
-const isIE = function (platform: PlatformDetection) {
-  return platform.browser.isIE();
-};
+const isIE = (browser: Browser) => browser.isIE();
 
-const isSafari = function (platform: PlatformDetection) {
-  return platform.browser.isSafari();
-};
+const isSafari = (browser: Browser) => browser.isSafari();
 
-const isOpera = function (platform: PlatformDetection) {
-  return platform.browser.isOpera();
-};
+const isOpera = (browser: Browser) => browser.isOpera();
 
 export {
   isEdge,

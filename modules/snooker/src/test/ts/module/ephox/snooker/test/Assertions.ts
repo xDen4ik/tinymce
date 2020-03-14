@@ -7,7 +7,7 @@ import * as TableOperations from 'ephox/snooker/api/TableOperations';
 import * as Bars from 'ephox/snooker/resize/Bars';
 import * as Bridge from 'ephox/snooker/test/Bridge';
 import { BarPositions, ColInfo } from 'ephox/snooker/resize/BarPositions';
-import { PlatformDetection } from '@ephox/sand';
+import { Browser } from '@ephox/sand';
 import { RunOperationOutput, TargetSelection, TargetElement, TargetPasteRows } from 'ephox/snooker/model/RunOperation';
 import { SimpleGenerators, Generators } from 'ephox/snooker/api/Generators';
 import { HTMLTableElement, HTMLTableDataCellElement, HTMLTableHeaderCellElement } from '@ephox/dom-globals';
@@ -79,7 +79,15 @@ const checkStructure = function (expCell: { section: number, row: number, column
   Bars.destroy(wire);
 };
 
-const checkDelete = function (optExpCell: Option<{ section: number, row: number, column: number }>, optExpectedHtml: Option<{ ie: string, normal: string }>, input: string, operation: Op<TargetSelection>, cells: { section: number, row: number, column: number }[], platform: ReturnType<typeof PlatformDetection.detect>, direction: BarPositions<ColInfo> = ResizeDirection.ltr) {
+const checkDelete = function (
+  optExpCell: Option<{ section: number, row: number, column: number }>,
+  optExpectedHtml: Option<{ ie: string, normal: string }>,
+  input: string,
+  operation: Op<TargetSelection>,
+  cells: { section: number, row: number, column: number }[],
+  browser: Browser,
+  direction: BarPositions<ColInfo> = ResizeDirection.ltr
+) {
   const table = Element.fromHtml<HTMLTableElement>(input);
   Insert.append(Body.body(), table);
   const wire = ResizeWire.only(Body.body());
@@ -108,7 +116,7 @@ const checkDelete = function (optExpCell: Option<{ section: number, row: number,
     assert.eq(false, Traverse.parent(table).isSome(), 'The table was expected to be removed from the DOM');
 
   }, function (expectedHtml) {
-    if (platform.browser.isIE() || platform.browser.isEdge()) {
+    if (browser.isIE() || browser.isEdge()) {
       assert.eq(expectedHtml.ie, Html.getOuter(table));
     } else {
       assert.eq(expectedHtml.normal, Html.getOuter(table));

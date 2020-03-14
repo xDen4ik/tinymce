@@ -37,7 +37,7 @@ const resize = (element: Element, changeX: number, changeY: number): void => {
 
 export default (): void => {
   const ephoxUi = SelectorFind.first('#ephox-ui').getOrDie();
-  const platform = PlatformDetection.detect();
+  const deviceType = PlatformDetection.detectDeviceType();
 
   const onNode = (name: string) => (elem: Element): Option<Element> =>
     Options.someIf(Node.name(elem) === name, elem);
@@ -99,7 +99,7 @@ export default (): void => {
           alloyConfig: {
             behaviours: Behaviour.derive([
               Dragging.config({
-                mode: platform.deviceType.isTouch() ? 'touch' : 'mouse',
+                mode: deviceType.isTouch() ? 'touch' : 'mouse',
                 blockerClass: 'blocker'
               })
             ])

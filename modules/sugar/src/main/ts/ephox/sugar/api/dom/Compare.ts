@@ -32,7 +32,7 @@ const ieContains = function (e1: Element<DomNode>, e2: Element<DomNode>) {
   return Node.documentPositionContainedBy(e1.dom(), e2.dom());
 };
 
-const browser = PlatformDetection.detect().browser;
+const browser = PlatformDetection.detectBrowser();
 
 // Returns: true if node e1 contains e2, otherwise false.
 // (returns false if e1===e2: A node does not contain itself).

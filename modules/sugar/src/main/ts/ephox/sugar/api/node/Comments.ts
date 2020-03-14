@@ -22,7 +22,7 @@ const ieGetNodes = function <T extends DomNode>(texas: TreeWalker) {
 };
 
 // I hate needing platform detection in Sugar, but the alternative is to always try/catch which will swallow coding errors as well
-const browser = PlatformDetection.detect().browser;
+const browser = PlatformDetection.detectBrowser();
 const getNodes = browser.isIE() || browser.isEdge() ? ieGetNodes : regularGetNodes;
 
 // Weird, but oh well

@@ -10,7 +10,7 @@ import { Input } from 'ephox/alloy/api/ui/Input';
 
 UnitTest.asynctest('InputTest', (success, failure) => {
 
-  const platform = PlatformDetection.detect();
+  const browser = PlatformDetection.detectBrowser();
 
   GuiSetup.setup((store, doc, body) => {
     return GuiFactory.build(
@@ -58,7 +58,7 @@ UnitTest.asynctest('InputTest', (success, failure) => {
       });
     };
 
-    const defaultCursor = platform.browser.isChrome() || platform.browser.isSafari() || platform.browser.isFirefox() ? 'Initial Value'.length : 0;
+    const defaultCursor = browser.isChrome() || browser.isSafari() || browser.isFirefox() ? 'Initial Value'.length : 0;
 
     const testFocus = Logger.t(
       'Testing input.focus selects text inside',

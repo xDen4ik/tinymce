@@ -5,7 +5,7 @@ import { Attr, Css, DomEvent, Element, Insert, Remove, Replication } from '@epho
 
 import * as DataTransfers from './DataTransfers';
 
-const platform = PlatformDetection.detect();
+const browser = PlatformDetection.detectBrowser();
 
 export interface DragnDropImageClone {
   element: () => Element;
@@ -114,7 +114,7 @@ const setDragImageFromCloneEdgeFallback = (image: DragnDropImageClone, parent: E
 const setImageClone = (transfer: DataTransfer, image: DragnDropImageClone, parent: Element, target: Element) => {
   if (DataTransfers.hasDragImageSupport(transfer)) {
     setDragImageFromClone(transfer, parent, image);
-  } else if (platform.browser.isEdge()) {
+  } else if (browser.isEdge()) {
     setDragImageFromCloneEdgeFallback(image, parent, target);
   } else {
     // We can't provide a fallback on IE 11 since the drag event doesn't update the mouse position

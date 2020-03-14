@@ -15,7 +15,7 @@ const isDangerous = (event: EventArgs<KeyboardEvent>): boolean => {
   return keyEv.which === Keys.BACKSPACE()[0] && !Arr.contains([ 'input', 'textarea' ], Node.name(event.target())) && !SelectorExists.closest(event.target(), '[contenteditable="true"]');
 };
 
-const isFirefox: boolean = PlatformDetection.detect().browser.isFirefox();
+const isFirefox: boolean = PlatformDetection.detectBrowser().isFirefox();
 
 export interface GuiEventSettings {
   triggerEvent: (eventName: string, event: EventFormat) => boolean;

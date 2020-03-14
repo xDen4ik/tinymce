@@ -9,7 +9,7 @@ import * as TableKeys from './TableKeys';
 import { WindowBridge } from '../api/WindowBridge';
 import { KeyDirection } from '../navigation/KeyDirection';
 
-const detection = PlatformDetection.detect();
+const browser = PlatformDetection.detectBrowser();
 
 const inSameTable = function (elem: Element, table: Element) {
   return PredicateExists.ancestor(elem, function (e) {
@@ -48,7 +48,7 @@ const simulate = function (bridge: WindowBridge, isRoot: (e: Element) => boolean
 
 const navigate = function (bridge: WindowBridge, isRoot: (e: Element) => boolean, direction: KeyDirection, initial: Element, anchor: Element, precheck: (initial: Element, isRoot: (e: Element) => boolean) => Option<Response>) {
   // Do not override the up/down keys on IE.
-  if (detection.browser.isIE()) {
+  if (browser.isIE()) {
     return Option.none<Response>();
   } else {
     return precheck(initial, isRoot).orThunk(function () {

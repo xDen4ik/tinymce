@@ -12,14 +12,15 @@ const isPhantom = navigator.userAgent.indexOf('PhantomJS') > -1;
 
 UnitTest.asynctest('TinyScenariosTest', (success, failure) => {
 
-  const platform = PlatformDetection.detect();
+  const browser = PlatformDetection.detectBrowser();
+
   if (isPhantom) {
     // tslint:disable-next-line:no-console
     console.log('Skipping TinyScenariosTest as PhantomJS has dodgy selection/style implementation and returns false positives.');
     success();
     return;
   }
-  if (platform.browser.isFirefox()) {
+  if (browser.isFirefox()) {
     // tslint:disable-next-line:no-console
     console.log('Skipping TinyScenariosTest as it triggers a tinymce bug in Firefox');
     success();

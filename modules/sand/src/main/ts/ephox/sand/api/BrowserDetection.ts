@@ -9,8 +9,12 @@ type BrowserOverride = Browser | undefined;
 // Yes, a Cell<Option<Browser>> would be nice, but we'd like to avoid a Katamari dependency here
 let override: BrowserOverride;
 
-export const setOverride = (bo: BrowserOverride): void => {
+export const setOverride = (bo: Browser): void => {
   override = bo;
+};
+
+export const clearOverride = (): void => {
+  override = undefined;
 };
 
 export const getOverride = (): BrowserOverride => override;

@@ -1,6 +1,7 @@
 import { Assert, UnitTest } from '@ephox/bedrock-client';
 import { Arr } from '@ephox/katamari';
 import * as BrowserDetection from 'ephox/sand/api/BrowserDetection';
+import fc from 'fast-check';
 
 const check = (
   uaStrings: string[],
@@ -23,19 +24,23 @@ const check = (
   });
 };
 
-UnitTest.test('BrowserDetectionTest: IE', () => {
-  check([
-    'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
-    'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0; .NET4.0E; .NET4.0C; InfoPath.3)',
-    'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; chromeframe/10.0.648.204; SLCC1; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 1.1.4322; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; SLCC1; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 1.1.4322; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)',
-    'Mozilla/4.0 (compatible; MSIE 7.0; chromeframe/10.0.648.204; Windows NT 5.1)',
-    'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
-    'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
-    'Mozilla/4.0 (compatible; MSIE 6.0; chromeframe/10.0.648.204; Windows NT 5.1; SV1)'
-  ], true, false, false, false, false, false, false);
-});
+const ieStrings = [
+  'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
+  'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0; .NET4.0E; .NET4.0C; InfoPath.3)',
+  'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)',
+  'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; chromeframe/10.0.648.204; SLCC1; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 1.1.4322; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)',
+  'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; SLCC1; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 1.1.4322; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)',
+  'Mozilla/4.0 (compatible; MSIE 7.0; chromeframe/10.0.648.204; Windows NT 5.1)',
+  'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+  'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
+  'Mozilla/4.0 (compatible; MSIE 6.0; chromeframe/10.0.648.204; Windows NT 5.1; SV1)'
+];
+
+const checkIE = () => {
+  check(ieStrings, true, false, false, false, false, false, false);
+};
+
+UnitTest.test('BrowserDetectionTest: IE', checkIE);
 
 UnitTest.test('BrowserDetectionTest: Edge', () => {
   check([
@@ -80,4 +85,38 @@ UnitTest.test('BrowserDetectionTest: PhantomJS', () => {
   check([
     'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1'
   ], false, false, false, false, false, true, false);
+});
+
+UnitTest.test('BrowserdetectionTest: Override', () => {
+  try {
+    fc.assert(fc.property(fc.oneof(fc.string(), fc.constantFrom(...ieStrings)), (ua) => {
+      BrowserDetection.setOverride('IE');
+      check([ua], true, false, false, false, false, false, false);
+
+      BrowserDetection.setOverride('Chrome');
+      check([ua], false, true, false, false, false, false, false);
+
+      BrowserDetection.setOverride('Safari');
+      check([ua], false, false, false, false, false, false, true);
+
+      BrowserDetection.setOverride('Edge');
+      check([ua], false, false, true, false, false, false, false);
+
+      BrowserDetection.setOverride('Opera');
+      check([ua], false, false, false, false, true, false, false);
+
+      BrowserDetection.setOverride('PhantomJS');
+      check([ua], false, false, false, false, false, true, false);
+
+      BrowserDetection.setOverride('Unknown');
+      check([ua], false, false, false, false, false, false, false);
+
+      BrowserDetection.setOverride('Firefox');
+      check([ua], false, false, false, true, false, false, false);
+
+    }));
+  } finally {
+    BrowserDetection.clearOverride();
+    checkIE();
+  }
 });

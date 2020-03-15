@@ -8,7 +8,7 @@
 import { AlloyComponent, AlloyEvents, Replacing, SystemEvents, TabSection, TabbarTypes } from '@ephox/alloy';
 import { Element as DomElement, window } from '@ephox/dom-globals';
 import { Arr, Cell, Option } from '@ephox/katamari';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import { Css, Element, Focus, Height, SelectorFind, Traverse, Width } from '@ephox/sugar';
 import Delay from 'tinymce/core/api/util/Delay';
 import { formResizeEvent } from '../general/FormEvents';
@@ -70,7 +70,7 @@ const setTabviewHeight = (tabview: Element<DomElement>, height: number) => {
   // Set both height and flex-basis as some browsers don't support flex-basis. However don't set it on
   // IE 11 since it incorrectly includes margins in the flex-basis calculations so it can't be relied on.
   Css.set(tabview, 'height', height + 'px');
-  if (!PlatformDetection.detect().browser.isIE()) {
+  if (!BrowserDetection.isIE()) {
     Css.set(tabview, 'flex-basis', height + 'px');
   } else {
     Css.remove(tabview, 'flex-basis');

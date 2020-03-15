@@ -8,7 +8,7 @@
 import { Behaviour, Focusing, Tabstopping, FormField, AlloyComponent } from '@ephox/alloy';
 import { Types } from '@ephox/bridge';
 import { Cell, Option } from '@ephox/katamari';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import { Attr } from '@ephox/sugar';
 
 import { RepresentingConfigs } from '../alien/RepresentingConfigs';
@@ -17,7 +17,7 @@ import { renderLabel, renderFormFieldWith } from '../alien/FieldLabeller';
 import { UiFactoryBackstageProviders } from '../../backstage/Backstage';
 import { Omit } from '../Omit';
 
-const platformNeedsSandboxing = !(PlatformDetection.detect().browser.isIE() || PlatformDetection.detect().browser.isEdge());
+const platformNeedsSandboxing = !(BrowserDetection.isIE() || BrowserDetection.isEdge());
 
 interface IFrameSourcing {
   getValue: (frame: AlloyComponent) => string;

@@ -1,5 +1,5 @@
 import { Arr } from '@ephox/katamari';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import * as Insert from 'ephox/sugar/api/dom/Insert';
 import * as Remove from 'ephox/sugar/api/dom/Remove';
 import * as Body from 'ephox/sugar/api/node/Body';
@@ -22,7 +22,7 @@ UnitTest.test('VisibilityTest', function () {
   assert.eq(false, Visibility.isVisible(s));
 
   Insert.append(Body.body(), s);
-  const expected = PlatformDetection.detect().browser.isFirefox();
+  const expected = BrowserDetection.isFirefox();
   assert.eq(expected, Visibility.isVisible(s)); // tricked you! height and width are zero == hidden
 
   const d = Div();

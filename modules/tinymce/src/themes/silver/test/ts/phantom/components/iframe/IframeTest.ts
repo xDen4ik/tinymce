@@ -2,14 +2,14 @@ import { ApproxStructure, Assertions } from '@ephox/agar';
 import { AlloyComponent, Composing, GuiFactory, TestHelpers } from '@ephox/alloy';
 import { UnitTest } from '@ephox/bedrock-client';
 import { Option } from '@ephox/katamari';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 
 import { renderIFrame } from 'tinymce/themes/silver/ui/dialog/IFrame';
 import { RepresentingSteps } from '../../../module/ReperesentingSteps';
 import TestProviders from '../../../module/TestProviders';
 
 UnitTest.asynctest('IFrame component Test', (success, failure) => {
-  const platformNeedsSandboxing = !(PlatformDetection.detect().browser.isIE() || PlatformDetection.detect().browser.isEdge());
+  const platformNeedsSandboxing = !(BrowserDetection.isIE() || BrowserDetection.isEdge());
 
   const sAssertInitialIframeStructure = (component: AlloyComponent) => {
     return Assertions.sAssertStructure(

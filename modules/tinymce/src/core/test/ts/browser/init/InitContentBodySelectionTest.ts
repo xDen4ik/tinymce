@@ -2,12 +2,12 @@ import { Assertions, Log, Logger, Pipeline, Step } from '@ephox/agar';
 import { UnitTest } from '@ephox/bedrock-client';
 import { HTMLTextAreaElement } from '@ephox/dom-globals';
 import { TinyApis, TinyLoader } from '@ephox/mcagar';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import Editor from 'tinymce/core/api/Editor';
 import Theme from 'tinymce/themes/silver/Theme';
 
 UnitTest.asynctest('browser.tinymce.core.init.InitContentBodySelectionTest', (success, failure) => {
-  const isIE = PlatformDetection.detect().browser.isIE();
+  const isIE = BrowserDetection.isIE();
   Theme();
 
   const sInitAndAssertContent = (label: string, html: string, path: number[], offset = 0, extraSettings = {}) => {

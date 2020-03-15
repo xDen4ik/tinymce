@@ -1,7 +1,7 @@
 import { FieldSchema, Processor, ValueSchema } from '@ephox/boulder';
 import { clearTimeout, KeyboardEvent, setTimeout } from '@ephox/dom-globals';
 import { Arr, Cell, Option } from '@ephox/katamari';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import { DomEvent, Element, EventArgs, EventUnbinder, Node, SelectorExists } from '@ephox/sugar';
 
 import * as Keys from '../alien/Keys';
@@ -15,7 +15,7 @@ const isDangerous = (event: EventArgs<KeyboardEvent>): boolean => {
   return keyEv.which === Keys.BACKSPACE()[0] && !Arr.contains([ 'input', 'textarea' ], Node.name(event.target())) && !SelectorExists.closest(event.target(), '[contenteditable="true"]');
 };
 
-const isFirefox: boolean = PlatformDetection.detect().browser.isFirefox();
+const isFirefox: boolean = BrowserDetection.isFirefox();
 
 export interface GuiEventSettings {
   triggerEvent: (eventName: string, event: EventFormat) => boolean;

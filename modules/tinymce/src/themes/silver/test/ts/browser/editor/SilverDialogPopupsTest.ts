@@ -3,7 +3,7 @@ import { UnitTest } from '@ephox/bedrock-client';
 import { document, ClientRect } from '@ephox/dom-globals';
 import { Result } from '@ephox/katamari';
 import { TinyApis, TinyLoader } from '@ephox/mcagar';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import { Element, Body, SelectorExists } from '@ephox/sugar';
 import Editor from 'tinymce/core/api/Editor';
 import SilverTheme from 'tinymce/themes/silver/Theme';
@@ -40,7 +40,7 @@ UnitTest.asynctest('Editor Dialog Popups Test', (success, failure) => {
       // NOTE: This test uses the caretRangeFromPoint API which is not supported on every browser. We are
       // using this API to check if the popups appearing from things like the color input button and
       // the urlinput are on top of the dialog. Just test in Chrome.
-      Pipeline.async({ }, PlatformDetection.detect().browser.isChrome() ? [
+      Pipeline.async({ }, BrowserDetection.isChrome() ? [
         Log.stepsAsStep('TBA', 'Trigger the colorswatch and check that the swatch appears in front of the dialog', [
           tinyApis.sFocus(),
           Mouse.sClickOn(Body.body(), 'button:contains("Show Color Dialog")'),

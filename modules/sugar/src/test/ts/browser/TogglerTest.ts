@@ -52,7 +52,7 @@ UnitTest.test('TogglerTest', function () {
 
   const checkDisplayBlockRemoved = function (has) {
     // oh IE, you bastard
-    // var isie = PlatformDetection.detect().browser.isIE();
+    // var isie = BrowserDetection.isIE();
     // var off = isie ? 'block' : undefined;
     const v = has ? 'none' : 'block';
     assert.eq(v, Css.get(c, 'display'));

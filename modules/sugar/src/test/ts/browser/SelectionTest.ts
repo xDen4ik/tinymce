@@ -1,4 +1,4 @@
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import * as Compare from 'ephox/sugar/api/dom/Compare';
 import * as Hierarchy from 'ephox/sugar/api/dom/Hierarchy';
 import * as InsertAll from 'ephox/sugar/api/dom/InsertAll';
@@ -51,7 +51,7 @@ UnitTest.test('Browser Test: SelectionTest', function () {
   assertSelection('(p1text, 1) -> (p2text, 2)', p1text, 1, p2text, 1);
 
   setSelection(p2text, 2, p1text, 3);
-  if (! PlatformDetection.detect().browser.isIE()) { assertSelection('(p2text, 2) -> (p1text, 3)', p2text, 2, p1text, 3); } else { assertSelection('reversed (p1text, 3) -> (p2text, 2)', p1text, 3, p2text, 2); }
+  if (! BrowserDetection.isIE()) { assertSelection('(p2text, 2) -> (p1text, 3)', p2text, 2, p1text, 3); } else { assertSelection('reversed (p1text, 3) -> (p2text, 2)', p1text, 3, p2text, 2); }
 
   const assertFragmentHtml = function (expected, fragment) {
     const div = Element.fromTag('div');

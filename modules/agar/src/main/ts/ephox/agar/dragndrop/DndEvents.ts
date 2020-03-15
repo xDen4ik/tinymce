@@ -1,9 +1,9 @@
 import { document, Window, DataTransfer, DragEvent } from '@ephox/dom-globals';
 import { Element } from '@ephox/sugar';
 import { setReadWriteMode, setReadOnlyMode, setProtectedMode } from '../datatransfer/Mode';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 
-const platform = PlatformDetection.detect();
+const isIE = BrowserDetection.isIE();
 
 const createDndEvent = (name: string) => (win: Window, x: number, y: number, dataTransfer: DataTransfer): DragEvent => {
   const event: any = document.createEvent('CustomEvent');
@@ -22,7 +22,7 @@ const createDndEvent = (name: string) => (win: Window, x: number, y: number, dat
 
   // IE doesn't update the defaultPrevented state for some reason
   // and it's read only so we need to have a different property
-  if (platform.browser.isIE()) {
+  if (isIE) {
     const orgPreventDefault = event.preventDefault;
     event.preventDefault = () => {
       event.ieDefaultPrevented = true;

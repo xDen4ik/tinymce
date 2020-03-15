@@ -3,13 +3,13 @@ import { TestHelpers } from '@ephox/alloy';
 import { UnitTest } from '@ephox/bedrock-client';
 import { document } from '@ephox/dom-globals';
 import { TinyApis, TinyLoader, TinyUi } from '@ephox/mcagar';
-import { PlatformDetection } from '@ephox/sand';
+import { BrowserDetection } from '@ephox/sand';
 import { Body, Element } from '@ephox/sugar';
 
 import Theme from 'tinymce/themes/silver/Theme';
 
 UnitTest.asynctest('OxideFontFormatMenuTest', (success, failure) => {
-  const isIE = PlatformDetection.detect().browser.isIE();
+  const isIE = BrowserDetection.isIE();
   Theme();
 
   TinyLoader.setup(

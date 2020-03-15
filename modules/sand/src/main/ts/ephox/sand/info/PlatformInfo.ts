@@ -1,9 +1,9 @@
-import { Fun, Strings } from '@ephox/katamari';
+import { Strings } from '@ephox/katamari';
 
 export interface PlatformInfo {
-  name: string;
-  versionRegexes: RegExp[];
-  search: (uastring: string) => boolean;
+  readonly name: string;
+  readonly versionRegexes: RegExp[];
+  readonly search: (uastring: string) => boolean;
 }
 
 const normalVersionRegex = /.*?version\/\ ?([0-9]+)\.([0-9]+).*/;
@@ -100,7 +100,7 @@ const oses: PlatformInfo[] = [
   },
 ];
 
-export const PlatformInfo = {
-  browsers: Fun.constant(browsers),
-  oses: Fun.constant(oses)
+export {
+  browsers,
+  oses
 };

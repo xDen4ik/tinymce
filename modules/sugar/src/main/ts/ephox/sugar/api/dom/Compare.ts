@@ -1,6 +1,6 @@
 import { Node as DomNode } from '@ephox/dom-globals';
 import { Arr, Fun } from '@ephox/katamari';
-import { Node, PlatformDetection } from '@ephox/sand';
+import { Node, BrowserDetection } from '@ephox/sand';
 import Element from '../node/Element';
 import * as Selectors from '../search/Selectors';
 
@@ -32,11 +32,9 @@ const ieContains = function (e1: Element<DomNode>, e2: Element<DomNode>) {
   return Node.documentPositionContainedBy(e1.dom(), e2.dom());
 };
 
-const browser = PlatformDetection.detect().browser;
-
 // Returns: true if node e1 contains e2, otherwise false.
 // (returns false if e1===e2: A node does not contain itself).
-const contains = browser.isIE() ? ieContains : regularContains;
+const contains = BrowserDetection.isIE() ? ieContains : regularContains;
 
 const is = Selectors.is;
 

@@ -1,4 +1,5 @@
 import * as StrAppend from '../str/StrAppend';
+import * as Arr from './Arr';
 
 const checkRange = (str: string, substr: string, start: number): boolean =>
   substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
@@ -39,6 +40,10 @@ export const ensureTrailing = function (str: string, suffix: string) {
 
 export const contains = function (str: string, substr: string) {
   return str.indexOf(substr) !== -1;
+};
+
+export const containsAll = (str: string, substrs: string[]): boolean => {
+  return Arr.forall(substrs, (substr) => contains(str, substr));
 };
 
 export const capitalize = function (str: string) {

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 # [6.0.0] - 2020-02-13
 
+### Changed
+- Changed `SnapConfig` type (used in dragging behaviour) so that its fields are raw values instead of functions.
+
 ### Removed
 - Removed `getMoreButton` and `getOverflow` methods from the `SplitSlidingToolbar` component.
 - Removed `getMoreButton` method from the `SplitFloatingToolbar` component.

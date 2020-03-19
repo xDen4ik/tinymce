@@ -52,7 +52,7 @@ const populateSegments = (segments: Segment[], entry: Entry): void => {
     Css.set(segments[i].item, 'list-style-type', 'none');
   }
   Arr.last(segments).each((segment) => {
-    Attr.setAll(segment.list, entry.listAttributes);
+    Attr.setAll(segment.list, fix(entry.listAttributes));
     Attr.setAll(segment.item, entry.itemAttributes);
     InsertAll.append(segment.item, entry.content);
   });
@@ -107,3 +107,11 @@ const composeList = (scope: Document, entries: Entry[]): Option<Element> => {
 };
 
 export { composeList };
+
+const fix = (entry) => {
+  const result = {...entry};
+  if (result.start) {
+    delete result.start;
+  }
+  return result;
+}

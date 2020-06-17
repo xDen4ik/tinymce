@@ -1,9 +1,11 @@
-import { Event, Events, Bindable } from '@ephox/porkbun';
+import { HTMLTableElement } from '@ephox/dom-globals';
+import { Bindable, Event, Events } from '@ephox/porkbun';
+import { TableSize } from '@ephox/snooker';
+import { Element } from '@ephox/sugar';
 import * as Adjustments from '../resize/Adjustments';
 import { BarManager } from '../resize/BarManager';
 import * as BarPositions from '../resize/BarPositions';
 import { ResizeWire } from './ResizeWire';
-import { Element } from '@ephox/sugar';
 
 type ColInfo = BarPositions.ColInfo;
 type BarPositions<A> = BarPositions.BarPositions<A>;
@@ -40,7 +42,7 @@ export interface TableResize {
   readonly events: TableResizeEventRegistry;
 }
 
-const create = (wire: ResizeWire, vdirection: BarPositions<ColInfo>): TableResize => {
+const create = (wire: ResizeWire, vdirection: BarPositions<ColInfo>, lazySizing: (element: Element<HTMLTableElement>) => TableSize): TableResize => {
   const hdirection = BarPositions.height;
   const manager = BarManager(wire, vdirection, hdirection);
 
@@ -64,7 +66,8 @@ const create = (wire: ResizeWire, vdirection: BarPositions<ColInfo>): TableResiz
   manager.events.adjustWidth.bind(function (event) {
     events.trigger.beforeResize(event.table());
     const delta = vdirection.delta(event.delta(), event.table());
-    Adjustments.adjustWidth(event.table(), delta, event.column(), vdirection);
+    const tableSize = lazySizing(event.table());
+    Adjustments.adjustWidth(event.table(), delta, event.column(), vdirection, tableSize);
     events.trigger.afterResize(event.table());
   });
 

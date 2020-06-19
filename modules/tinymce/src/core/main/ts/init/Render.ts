@@ -169,10 +169,10 @@ const loadScripts = function (editor: Editor, suffix: string) {
   });
 };
 
-const getStyleSheetLoader = (element: Element<DomElement>, editorSettings: EditorSettings): StyleSheetLoader =>
+const getStyleSheetLoader = (element: Element<DomElement>, editor: Editor): StyleSheetLoader =>
   StyleSheetLoaderRegistry.instance.forElement(element, {
-    contentCssCors: editorSettings.contentCssCors,
-    referrerPolicy: editorSettings.referrerPolicy
+    contentCssCors: Settings.hasContentCssCors(editor),
+    referrerPolicy: Settings.getReferrerPolice(editor)
   });
 
 const render = function (editor: Editor) {
@@ -202,7 +202,7 @@ const render = function (editor: Editor) {
     return;
   }
 
-  editor.ui.styleSheetLoader = getStyleSheetLoader(Element.fromDom(editor.getElement()), settings);
+  editor.ui.styleSheetLoader = getStyleSheetLoader(Element.fromDom(editor.getElement()), editor);
 
   // Hide target element early to prevent content flashing
   if (!Settings.isInline(editor)) {

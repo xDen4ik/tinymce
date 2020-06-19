@@ -167,6 +167,10 @@ const shouldDisableNodechange = (editor: Editor): boolean => editor.getParam('di
 
 const isReadOnly = (editor: Editor): boolean => editor.getParam('readonly');
 
+const hasContentCssCors = (editor: Editor): boolean => editor.getParam('contentCssCors');
+
+const getReferrerPolice = (editor: Editor) => editor.getParam('referrerPolicy');
+
 export {
   getIframeAttrs,
   getDocType,
@@ -223,5 +227,7 @@ export {
   hasForcedRootBlock,
   getCustomUndoRedoLevels,
   shouldDisableNodechange,
-  isReadOnly
+  isReadOnly,
+  hasContentCssCors,
+  getReferrerPolice
 };

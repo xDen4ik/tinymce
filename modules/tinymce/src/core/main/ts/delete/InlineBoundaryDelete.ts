@@ -128,7 +128,7 @@ const backspaceDeleteCollapsed = function (editor: Editor, caret, forward: boole
 };
 
 const backspaceDelete = function (editor: Editor, caret, forward?: boolean) {
-  if (editor.selection.isCollapsed() && Settings.isFeatureEnabled(editor)) {
+  if (editor.selection.isCollapsed() && Settings.isInlineBoundariesEnabled(editor)) {
     const from = CaretPosition.fromRangeStart(editor.selection.getRng());
     return backspaceDeleteCollapsed(editor, caret, forward, from);
   }

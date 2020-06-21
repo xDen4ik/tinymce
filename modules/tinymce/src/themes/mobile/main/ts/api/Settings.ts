@@ -13,7 +13,7 @@ const defaults = [ 'undo', 'bold', 'italic', 'link', 'image', 'bullist', 'styles
 const isSkinDisabled = (editor: Editor): boolean => editor.getParam('skin') === false;
 
 const readOnlyOnInit = (_editor: Editor) =>
-  // Intentional short circuit, TODO: implement editor.getParam('mobile')
+  // Intentional short circuit because stub. Was meant to reference a setting for readonly on init in mobile theme
   false;
 
 const getToolbar = (editor: Editor): string[] => editor.getParam('toolbar', defaults, 'array');

@@ -38,7 +38,8 @@ const isSkinContentCss = (editor: Editor, href: string) => {
   const skin = Settings.getSkin(editor);
 
   if (skin) {
-    const skinUrl = Settings.getSkinUrl(editor) ? editor.documentBaseURI.toAbsolute(Settings.getSkinUrl(editor)) : EditorManager.baseURL + '/skins/ui/' + skin;
+    const skinUrlBase = Settings.getSkinUrl(editor);
+    const skinUrl = skinUrlBase ? editor.documentBaseURI.toAbsolute(skinUrlBase) : EditorManager.baseURL + '/skins/ui/' + skin;
     const contentSkinUrlPart = EditorManager.baseURL + '/skins/content/';
     return href === skinUrl + '/content' + (editor.inline ? '.inline' : '') + '.min.css' || href.indexOf(contentSkinUrlPart) !== -1;
   }

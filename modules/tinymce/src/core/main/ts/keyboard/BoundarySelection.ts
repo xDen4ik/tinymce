@@ -85,13 +85,13 @@ const renderInsideInlineCaret = function (isInlineTarget: NodePredicate, editor:
 
 const move = function (editor: Editor, caret: Cell<Text>, forward: boolean) {
   return function () {
-    return Settings.isFeatureEnabled(editor) ? findLocation(editor, caret, forward).isSome() : false;
+    return Settings.isInlineBoundariesEnabled(editor) ? findLocation(editor, caret, forward).isSome() : false;
   };
 };
 
 const moveWord = function (forward: boolean, editor: Editor, _caret: Cell<Text>) {
   return function () {
-    return Settings.isFeatureEnabled(editor) ? WordSelection.moveByWord(forward, editor) : false;
+    return Settings.isInlineBoundariesEnabled(editor) ? WordSelection.moveByWord(forward, editor) : false;
   };
 };
 
@@ -104,7 +104,7 @@ const setupSelectedState = function (editor: Editor): Cell<Text> {
     // as such we should ignore the first node change, as we don't want the editor to steal focus
     // during the initial load. If the content is changed afterwords then we are okay with it
     // stealing focus since it likely means the editor is being interacted with.
-    if (Settings.isFeatureEnabled(editor) && !(Env.browser.isIE() && e.initial)) {
+    if (Settings.isInlineBoundariesEnabled(editor) && !(Env.browser.isIE() && e.initial)) {
       toggleInlines(isInlineTarget, editor.dom, e.parents);
       safeRemoveCaretContainer(editor, caret);
       renderInsideInlineCaret(isInlineTarget, editor, caret, e.parents);

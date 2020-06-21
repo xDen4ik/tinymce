@@ -188,10 +188,10 @@ const getCssText = function (editor: Editor, format) {
   let name, previewFrag;
   let previewCss = '', parentFontSize;
 
-  let previewStyles = Settings.getPreviewStyles(editor);
+  let previewStyles = Settings.getPreviewStyles(editor) || '';
 
   // No preview forced
-  if (previewStyles === false) {
+  if (previewStyles === '') {
     return '';
   }
 

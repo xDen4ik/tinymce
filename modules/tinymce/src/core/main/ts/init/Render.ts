@@ -172,7 +172,7 @@ const loadScripts = function (editor: Editor, suffix: string) {
 const getStyleSheetLoader = (element: Element<DomElement>, editor: Editor): StyleSheetLoader =>
   StyleSheetLoaderRegistry.instance.forElement(element, {
     contentCssCors: Settings.hasContentCssCors(editor),
-    referrerPolicy: Settings.getReferrerPolice(editor)
+    referrerPolicy: Settings.getReferrerPolicy(editor)
   });
 
 const render = function (editor: Editor) {
@@ -235,7 +235,7 @@ const render = function (editor: Editor) {
     });
 
     // Check page uses id="submit" or name="submit" for it's submit button
-    if (Settings.shouldSubmitPatch(editor) && !form.submit.nodeType && !form.submit.length && !form._mceOldSubmit) {
+    if (Settings.shouldPatchSubmit(editor) && !form.submit.nodeType && !form.submit.length && !form._mceOldSubmit) {
       form._mceOldSubmit = form.submit;
       form.submit = function () {
         editor.editorManager.triggerSave();

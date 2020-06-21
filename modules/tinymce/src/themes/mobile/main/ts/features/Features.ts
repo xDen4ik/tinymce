@@ -23,19 +23,18 @@ import * as StyleFormats from '../util/StyleFormats';
 import * as Settings from '../api/Settings';
 import { MobileRealm } from '../ui/IosRealm';
 
-const extract = function (rawToolbar) {
+const extract = (rawToolbar: string): string[] => {
   // Ignoring groups
   const toolbar = rawToolbar.replace(/\|/g, ' ').trim();
   return toolbar.length > 0 ? toolbar.split(/\s+/) : [ ];
 };
 
-const identifyFromArray = function (toolbar) {
-  return Arr.bind(toolbar, function (item) {
-    return Type.isArray(item) ? identifyFromArray(item) : extract(item);
-  });
-};
+const identifyFromArray = (toolbar: string[]): string[] =>
+  Arr.bind(toolbar, (item: string | string[]) =>
+    Type.isArray(item) ? identifyFromArray(item) : extract(item)
+  );
 
-const identify = (editor: Editor) => {
+const identify = (editor: Editor): string[] => {
   // Firstly, flatten the toolbar
   const toolbar = Settings.getToolbar(editor);
   return Type.isArray(toolbar) ? identifyFromArray(toolbar) : extract(toolbar);

@@ -137,7 +137,7 @@ const getTheme = (editor: Editor) => editor.getParam('theme');
 
 const shouldValidate = (editor: Editor): boolean => editor.getParam('validate');
 
-const isFeatureEnabled = (editor: Editor): boolean => editor.getParam('inline_boundaries') !== false;
+const isInlineBoundariesEnabled = (editor: Editor): boolean => editor.getParam('inline_boundaries') !== false;
 
 const getFormats = (editor: Editor) => editor.getParam('formats');
 
@@ -151,7 +151,7 @@ const isInline = (editor: Editor): boolean => editor.getParam('inline');
 
 const hasHiddenInput = (editor: Editor): boolean => editor.getParam('hidden_input');
 
-const shouldSubmitPatch = (editor: Editor): boolean => editor.getParam('submit_patch');
+const shouldPatchSubmit = (editor: Editor): boolean => editor.getParam('submit_patch');
 
 const isEncodingXml = (editor: Editor): boolean => editor.getParam('encoding') === 'xml';
 
@@ -159,17 +159,17 @@ const shouldAddFormSubmitTrigger = (editor: Editor): boolean => editor.getParam(
 
 const shouldAddUnloadTrigger = (editor: Editor): boolean => editor.getParam('add_unload_trigger');
 
-const hasForcedRootBlock = (editor: Editor) => editor.getParam('forced_root_block');
+const hasForcedRootBlock = (editor: Editor): boolean => getForcedRootBlock(editor) !== '';
 
 const getCustomUndoRedoLevels = (editor: Editor): number => editor.getParam('custom_undo_redo_levels', 0, 'number');
 
-const shouldDisableNodechange = (editor: Editor): boolean => editor.getParam('disable_nodechange');
+const shouldDisableNodeChange = (editor: Editor): boolean => editor.getParam('disable_nodechange');
 
 const isReadOnly = (editor: Editor): boolean => editor.getParam('readonly');
 
-const hasContentCssCors = (editor: Editor): boolean => editor.getParam('contentCssCors');
+const hasContentCssCors = (editor: Editor): boolean => getForcedRootBlock(editor) !== '';;
 
-const getReferrerPolice = (editor: Editor) => editor.getParam('referrerPolicy');
+const getPlugins = (editor: Editor) => editor.getParam('plugins');
 
 export {
   getIframeAttrs,
@@ -213,21 +213,21 @@ export {
   getServiceMessage,
   getTheme,
   shouldValidate,
-  isFeatureEnabled,
+  isInlineBoundariesEnabled,
   getFormats,
   getPreviewStyles,
   getCustomUiSelector,
   getThemeUrl,
   isInline,
   hasHiddenInput,
-  shouldSubmitPatch,
+  shouldPatchSubmit,
   isEncodingXml,
   shouldAddFormSubmitTrigger,
   shouldAddUnloadTrigger,
   hasForcedRootBlock,
   getCustomUndoRedoLevels,
-  shouldDisableNodechange,
+  shouldDisableNodeChange,
   isReadOnly,
   hasContentCssCors,
-  getReferrerPolice
+  getPlugins
 };

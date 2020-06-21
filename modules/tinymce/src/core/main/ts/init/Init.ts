@@ -59,7 +59,7 @@ const trimLegacyPrefix = function (name: string) {
 const initPlugins = function (editor: Editor) {
   const initializedPlugins = [];
 
-  Tools.each(editor.getParam('plugins').split(/[ ,]/), function (name) {
+  Tools.each(Settings.getPlugins(editor).split(/[ ,]/), function (name) {
     initPlugin(editor, initializedPlugins, trimLegacyPrefix(name));
   });
 };
@@ -85,7 +85,7 @@ const initTheme = (editor: Editor) => {
   const theme = Settings.getTheme(editor);
 
   if (Type.isString(theme)) {
-    editor.settings.theme = trimLegacyPrefix(theme); // Kept until a proper API can be made.
+    editor.settings.theme = trimLegacyPrefix(theme); // Kept until a proper API can be made. TINY-6142
 
     const Theme = ThemeManager.get(theme);
     editor.theme = new Theme(editor, ThemeManager.urls[theme]);

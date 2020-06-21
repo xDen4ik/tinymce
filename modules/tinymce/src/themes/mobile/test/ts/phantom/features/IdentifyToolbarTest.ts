@@ -5,7 +5,7 @@ import { UnitTest } from '@ephox/bedrock-client';
 UnitTest.test('features.IdentifyToolbarTest', function () {
   const check = function (label: string, expected: string[], input: string | string[] | string[][] | undefined) {
     const dummyEditor = {
-      getParam: () => input
+      getParam: (_name: string, defaultValue: any) => input !== undefined ? input : defaultValue
     };
     const actual = Features.identify(dummyEditor as any);
     Assertions.assertEq(label, expected, actual);

@@ -27,7 +27,7 @@ const ModernThemeSelectors: ThemeSelectors = {
 };
 
 const SilverThemeSelectors: ThemeSelectors = {
-  toolBarSelector: (editor: Editor) => Arr.exists([ Settings.getToolbarMode(editor), Settings.getToolbarDrawer(editor) ], (s) => s === 'floating' || s === 'sliding') ? '.tox-toolbar-overlord' : '.tox-toolbar',
+  toolBarSelector: (editor: Editor) => Arr.exists([ editor.getParam('toolbar_mode'), editor.getParam('toolbar_drawer') ], (s) => s === 'floating' || s === 'sliding') ? '.tox-toolbar-overlord' : '.tox-toolbar',
   menuBarSelector: '.tox-menubar',
   dialogCloseSelector: '.tox-button:contains("Cancel")',
   dialogSubmitSelector: '.tox-button:contains("Save")'
